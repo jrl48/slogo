@@ -58,7 +58,7 @@ Joseph Lilien (jrl48), Virginia Cheng (vc54), Alan Cavalcanti (akm50), Gaurav Ku
 
 }
 
-public class Game  
+* public class Game  
 
 {
 
@@ -74,9 +74,9 @@ public class Game
 
 In the Game class:
 
-*public void updateBoard()
+* public void updateBoard()
 
-public abstract class Board 
+* public abstract class Board 
 
 { 
 
@@ -169,19 +169,19 @@ public abstract class Board
 
 In the Game Class:
 
-*public void writeCurrentStateXML() 
+* public void writeCurrentStateXML() 
 
-*public double[] gameCount()
+* public double[] gameCount()
 
-*public double getBoardNumCells()
+* public double getBoardNumCells()
 
-*public int getNumStates()
+* public int getNumStates()
 
-*public void changeSingleCell(int x, int y, int newState)
+* public void changeSingleCell(int x, int y, int newState)
 
-*public int getBoardSize()
+* public int getBoardSize()
 
-public class XMLWriter { 
+* public class XMLWriter { 
 
       public XMLWriter(String location, String gameType) 
 
@@ -199,7 +199,7 @@ public class XMLWriter {
 
 }
 
-public class XMLParser 
+* public class XMLParser 
 
 {
 
@@ -225,35 +225,35 @@ public class XMLParser
 
 In the UI Class:
 
-*public void initNewBoard(int numOfCells)
+* public void initNewBoard(int numOfCells)
 
-*public void updateBoard()
+* public void updateBoard()
 
 
 #### Internal Visualization API
 
 In the UI Class:
 
-*public Scene init()
+* public Scene init()
 
-*public void step(double elapsedTime)
+* public void step(double elapsedTime)
 
-*public String getTitle () 
+* public String getTitle () 
 
-*public void setTitle(String s) 
+* public void setTitle(String s) 
 
-*public void setGame(Game g) 
+* public void setGame(Game g) 
 
-*public Game getGame() 
+* public Game getGame() 
 
-*public Properties openPropertiesFile (String fileName) throws Exception()
+* public Properties openPropertiesFile (String fileName) throws Exception()
 
-*public String getErrors(String error)
+* public String getErrors(String error)
 
 
 #### Not in API
 
-public class Main extends Application
+* public class Main extends Application
 
       public void start (Stage s);
 
@@ -263,6 +263,6 @@ In the Game Class:
 
 * public void writeInitialXML(String gametype)
 
-public void setUI(UI ui) 
+* public void setUI(UI ui) 
 
 
