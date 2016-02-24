@@ -1,6 +1,6 @@
 package frontend;
 
-import backend.CommandParser;
+//import backend.CommandParser;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -23,7 +23,7 @@ public class CommandLine {
     }
     private void handleKeyInput(KeyCode code){
         if(code.equals(KeyCode.ENTER)){
-           CommandParser.getParser().parse(myTextField.getText());
+           //CommandParser.getParser().parse(myTextField.getText());
            myTextField.clear();
         }
     }
