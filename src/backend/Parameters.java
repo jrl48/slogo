@@ -8,3 +8,4 @@ public abstract class Parameters {
 	
 	public abstract void addParam(Object paramType, String param);
 }
+
