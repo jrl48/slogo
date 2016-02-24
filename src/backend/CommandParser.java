@@ -43,9 +43,9 @@ public class CommandParser {
 				UserInterface.displayError("That is not a command!");
 			return desiredCommand;
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			throwError(e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throwError(e);
 		}
 	}
 	
@@ -66,7 +66,7 @@ public class CommandParser {
 		return myParameters;
 	}
 	
-	private void throwError() {
+	private void throwError(Exception e) {
 		// CHANGE THIS LATER!!!!!!!!!!!!!!!!!!
 		e.printStackTrace();
 	}
