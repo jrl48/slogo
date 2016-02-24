@@ -12,19 +12,24 @@ import frontend.UserInterface;
 
 public class CommandParser {
 	
+	private final static CommandParser myParser = new CommandParser();
 	private String myCommand;
 	private String myLanguage;
 	private Parameters myParameters;
 	private Map<String, Integer> commandInputs;
 	
 
-	public CommandParser() {
+	private CommandParser() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	public void parse(String command) {
 		// TODO put it all together
 				
+	}
+	
+	public CommandParser getParser(){
+		return myParser;
 	}
 	
 	private ParseNode makeTree(String[] commands){
