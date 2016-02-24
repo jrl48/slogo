@@ -24,6 +24,7 @@ public class CommandParser {
 		ParseNode root = new ParseNode(commands[0]);
 		List<ParseNode> instructions = new ArrayList<ParseNode>();
 		for(int i = 0;i< commands.length; i++){
+			int size = instructions.size() - 1;
 			ParseNode currentNode = new ParseNode(commands[i]);
 			if(!parseCommand(commands[i]).equals("")){
 				currentNode.setValue(parseCommand(commands[i]));
@@ -32,16 +33,16 @@ public class CommandParser {
 			if(i == 0){
 				root = currentNode;
 			}
-			
-			ParseNode parent = instructions.get(instructions.size() -1);
-			for(int j = instructions.size() -1 ; j >= 0; j--){
-				parent = instructions.get(j);
-				if(parent.getChildren().size() < commandInputs.get(parent)){
-					break;
+			else{
+				ParseNode parent = instructions.get(size);
+				for(int j = size; j >= 0; j--){
+					parent = instructions.get(j);
+					if(parent.getChildren().size() < commandInputs.get(parent)){
+						break;
+					}
 				}
+				parent.addChild(currentNode);
 			}
-			
-			parent.addChild(currentNode);	
 		}
 		return root;
 	}
