@@ -1,9 +1,14 @@
 package frontend;
 
 import java.util.ResourceBundle;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
@@ -33,8 +38,31 @@ public class UserInterface {
         s.setTitle(sceneResources.getString("TITLE"));
         s.setResizable(false);
         root = new Group();
-        myScene = new Scene(root, WIDTH, HEIGHT, Color.SKYBLUE);
+        myScene = new Scene(root, WIDTH, HEIGHT);
         myScene.getStylesheets().add(DEFAULT_RESOURCE_PACKAGE + STYLESHEET);
+        root.getChildren().add(makeGridPane());
         s.setScene(myScene);
+    }
+    
+    private GridPane makeGridPane(){
+        GridPane myGridPane = new GridPane();
+        myGridPane.setHgap(10);
+        myGridPane.setVgap(10);
+        myGridPane.setPadding(new Insets(0, 10, 0, 10));
+        myGridPane.setGridLinesVisible(true);
+        
+        Text category = new Text("Sales:");
+        category.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        myGridPane.add(category, 1, 0); 
+
+        // Title in column 3, row 1
+        Text chartTitle = new Text("Current Year");
+        chartTitle.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        myGridPane.add(chartTitle, 2, 0);
+
+        // Subtitle in columns 2-3, row 2
+        Text chartSubtitle = new Text("Goods and Services");
+        myGridPane.add(chartSubtitle, 1, 1, 2, 1);
+        return myGridPane;
     }
 }
