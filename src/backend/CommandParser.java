@@ -22,9 +22,9 @@ public class CommandParser {
 		myLanguage = language;
 	}
 	
-	private String parseCommand(String command) {
-		// TODO search through properties file to find command
-	}
+//	private String parseCommand(String command) {
+//		// TODO search through properties file to find command
+//	}
 	
 	public Parameters getParameters() {
 		return myParameters;

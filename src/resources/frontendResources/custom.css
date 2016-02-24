@@ -2,5 +2,24 @@
     -fx-base: skyblue;
     -fx-background: skyblue;
 }
+.myGridPane {
+	-fx-grid-lines-visible: true;
+	-fx-padding: 10 10 10 10;
+	-fx-hgap: 20;
+	-fx-vgap: 20;
+}
+.myDisplay {
+	-fx-background-color: white;
+	
+}
+.myCommandLine{
+	-fx-background-color: black;
+	-fx-font-family: "Courier New";
+	-fx-font-size: 10pt;
+	-fx-text-fill: white;
+	-fx-wrap-text: true;
+}
 
-
+.myCommandLine .content{
+	-fx-background-color: black;
+}
