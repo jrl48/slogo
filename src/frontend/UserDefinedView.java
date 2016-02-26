@@ -5,18 +5,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
-public class WorkspaceView {
+public class UserDefinedView {
     private static final double WIDTH = 250;
-    private static final double HEIGHT = 200;
+    private static final double HEIGHT = 400;
     private static final double COMMAND_WIDTH = 170;
     private Label myTerminalLabel;
     private TableView<TerminalEntry> myTableView;
     
-    public WorkspaceView(){
-        initWorkspaceView();
+    public UserDefinedView(){
+        initUserDefinedView();
     }
     
-    private void initWorkspaceView(){
+    private void initUserDefinedView(){
         initLabel();
         initTable();        
     }
@@ -24,7 +24,7 @@ public class WorkspaceView {
     @SuppressWarnings("unchecked")
     private void initTable () {
         myTableView = new TableView<TerminalEntry>();
-        TableColumn<TerminalEntry, String> commandColumn = new TableColumn<TerminalEntry, String>("Name"); //TODO resource file
+        TableColumn<TerminalEntry, String> commandColumn = new TableColumn<TerminalEntry, String>("Command"); //TODO resource file
         commandColumn.setPrefWidth(COMMAND_WIDTH);
         TableColumn<TerminalEntry, Integer> resultColumn = new TableColumn<TerminalEntry, Integer>("Value"); //TODO resource file
         myTableView.getColumns().addAll(commandColumn,resultColumn);
@@ -33,7 +33,7 @@ public class WorkspaceView {
     }
 
     private void initLabel () {
-        myTerminalLabel = new Label("Workspace"); //TODO set resource file
+        myTerminalLabel = new Label("User Defined Commands"); //TODO set resource file
         myTerminalLabel.getStyleClass().add("LABELID"); //TODO deal with this
     }
 

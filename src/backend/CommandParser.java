@@ -72,6 +72,7 @@ public class CommandParser {
 		myLanguage = language;
 	}
 	
+
 	private String parseCommand(String command) {
 		try {
 			FileInputStream fileInput = new FileInputStream(new File(myLanguage + ".properties"));
