@@ -59,6 +59,10 @@ public class CommandParser {
 		return root;
 	}
 	
+	private void readTree(ParseNode root){
+		
+	}
+	
 	
 	private void inputCommand(String command) {
 		myCommand = command;
