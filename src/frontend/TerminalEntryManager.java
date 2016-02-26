@@ -19,4 +19,7 @@ public class TerminalEntryManager {
     public void removeEntry(TerminalEntry entry){
         myObservableEntries.remove(entry);
     }
+    public ObservableList<TerminalEntry> getEntryList(){
+        return myObservableEntries;
+    }
 }

@@ -1,9 +1,12 @@
 package frontend;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class TerminalView {
     private static final double WIDTH = 250;
@@ -12,24 +15,30 @@ public class TerminalView {
     private Label myTerminalLabel;
     private TableView<TerminalEntry> myTableView;
     
-    public TerminalView(){
-        initTerminalView();
-    }
-    
-    private void initTerminalView(){
+    public TerminalView(TerminalEntryManager manager){
+        initTable(manager);
         initLabel();
-        initTable();        
     }
 
-    @SuppressWarnings("unchecked")
-    private void initTable () {
+    private void initTable (TerminalEntryManager manager) {
         myTableView = new TableView<TerminalEntry>();
-        TableColumn<TerminalEntry, String> commandColumn = new TableColumn<TerminalEntry, String>("Command"); //TODO resource file
-        commandColumn.setPrefWidth(COMMAND_WIDTH);
-        TableColumn<TerminalEntry, Integer> resultColumn = new TableColumn<TerminalEntry, Integer>("Result"); //TODO resource file
-        myTableView.getColumns().addAll(commandColumn,resultColumn);
+        List<TableColumn<TerminalEntry, Object>> columns = makeColumns();         
+        myTableView.getColumns().addAll(columns);
+        myTableView.setItems(manager.getEntryList());
         myTableView.getStyleClass().add("TABLEVIEWID"); //TODO deal with this
         myTableView.setPrefSize(WIDTH, HEIGHT);
+    }
+
+    private List<TableColumn<TerminalEntry, Object>> makeColumns () {
+        List<TableColumn<TerminalEntry, Object>> columns = new ArrayList<TableColumn<TerminalEntry, Object>>();
+        TableColumn<TerminalEntry, Object> commandColumn = new TableColumn<TerminalEntry, Object>("Command"); //TODO resource file
+        commandColumn.setCellValueFactory(new PropertyValueFactory<TerminalEntry,Object>("command"));
+        commandColumn.setPrefWidth(COMMAND_WIDTH);
+        TableColumn<TerminalEntry, Object> resultColumn = new TableColumn<TerminalEntry, Object>("Result"); //TODO resource file
+        resultColumn.setCellValueFactory(new PropertyValueFactory<TerminalEntry,Object>("result"));
+        columns.add(commandColumn);
+        columns.add(resultColumn);
+        return columns;
     }
 
     private void initLabel () {

@@ -43,6 +43,7 @@ public class UserInterface {
     private TerminalView myTerminal;
     private WorkspaceView myWorkspace;
     private UserDefinedView myUserDefined;
+    private TerminalEntryManager myTerminalManager;
 
     private UserInterface () {
     }
@@ -64,8 +65,9 @@ public class UserInterface {
 
     private void initModules () {
         myDisplay = new Display();
-        myCommandLine = new CommandLine();
-        myTerminal = new TerminalView();
+        myTerminalManager = new TerminalEntryManager();
+        myCommandLine = new CommandLine(myTerminalManager);
+        myTerminal = new TerminalView(myTerminalManager);
         myWorkspace = new WorkspaceView();
         myUserDefined = new UserDefinedView();
     }

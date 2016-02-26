@@ -13,21 +13,21 @@ public class CommandLine {
     private static final double HEIGHT = 35;
     private TextArea myTextField;
     private Button myGoButton;
-    
-    public CommandLine(){
-        initCommandLine();
+        
+    public CommandLine(TerminalEntryManager manager){
+        initCommandLine(manager);
     }
     
-    private void initCommandLine(){
+    private void initCommandLine(TerminalEntryManager manager){
         myTextField = new TextArea();       
         myTextField.getStyleClass().add(UserInterface.sceneResources.getString("COMMANDLINEID"));
         myTextField.setPrefSize(WIDTH, HEIGHT);
         myGoButton = new Button("GO"); //TODO use resource file
-        myGoButton.setOnAction(e -> enterCommand());
+        myGoButton.setOnAction(e -> enterCommand(manager));
     }
     
-    private void enterCommand(){
-        myTextField.getText(); //TODO Do Something here
+    private void enterCommand(TerminalEntryManager manager){
+        manager.addEntry(new TerminalEntry(myTextField.getText(),0)); //TODO Do Something here
         myTextField.clear();
     }
     
