@@ -1,12 +1,16 @@
 package frontend;
 
 import java.util.ResourceBundle;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -63,6 +67,8 @@ public class UserInterface {
         
         myGridPane.add(myDisplay.getPane(), 1, 1);         
         myGridPane.add(myCommandLine.getTextField(), 1, 2);
+        myGridPane.add(makeHBox(), 2, 2);
+        myGridPane.add(makeVBox(), 2, 1);
         
      // Title in column 3, row 1
         Text chartTitle = new Text("Current Year");
@@ -70,6 +76,19 @@ public class UserInterface {
         myGridPane.add(chartTitle, 2, 0);
         
         return myGridPane;
+    }
+
+    private Node makeVBox () {
+        VBox myVBox = new VBox();
+        myVBox.getStyleClass().add("VBOXID"); //TODO deal with this and set insets
+        return myVBox;
+    }
+
+    private Node makeHBox () {
+        HBox myHBox = new HBox();
+        myHBox.getStyleClass().add("HBOXID"); //TODO deal with this
+        myHBox.getChildren().add(myCommandLine.getButton());       
+        return myHBox;
     }
 
 
