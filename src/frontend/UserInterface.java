@@ -22,14 +22,13 @@ import javafx.stage.Stage;
 
 
 public class UserInterface {
-    private final static UserInterface myUserInterface = new UserInterface();
     public static final String DEFAULT_RESOURCE_PACKAGE = "resources/frontendResources/";
     private static final String SCENE = "Scene";
     private static final String STYLESHEET = "custom.css";
     private static final String BUTTONLABELS = "ButtonLabels";
-    public static final ResourceBundle sceneResources =
+    private ResourceBundle sceneResources =
             ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + SCENE);
-    public static final ResourceBundle buttonResources =
+    private ResourceBundle buttonResources =
             ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + BUTTONLABELS);
     public static final double WIDTH = 1100;
     public static final double HEIGHT = 600;
@@ -45,11 +44,7 @@ public class UserInterface {
     private UserDefinedView myUserDefined;
     private TerminalEntryManager myTerminalManager;
 
-    private UserInterface () {
-    }
-
-    public static UserInterface getUserInterface () {
-        return myUserInterface;
+    public UserInterface () {
     }
 
     public void init (Stage s) {
