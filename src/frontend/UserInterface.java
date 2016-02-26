@@ -67,7 +67,7 @@ public class UserInterface {
         myDisplay = new Display();
         myTerminalManager = new TerminalEntryManager();
         myCommandLine = new CommandLine(myTerminalManager);
-        myTerminal = new TerminalView(myTerminalManager);
+        myTerminal = new TerminalView(myCommandLine, myTerminalManager);
         myWorkspace = new WorkspaceView();
         myUserDefined = new UserDefinedView();
     }

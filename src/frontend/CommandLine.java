@@ -31,7 +31,7 @@ public class CommandLine {
         myTextField.clear();
     }
     
-    public Node getTextField(){
+    public TextArea getTextField(){
         return myTextField;
     }
     public Node getButton(){

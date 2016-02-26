@@ -15,27 +15,36 @@ public class TerminalView {
     private Label myTerminalLabel;
     private TableView<TerminalEntry> myTableView;
     
-    public TerminalView(TerminalEntryManager manager){
-        initTable(manager);
+    public TerminalView(CommandLine command, TerminalEntryManager manager){
+        initTable(command, manager);
         initLabel();
     }
 
-    private void initTable (TerminalEntryManager manager) {
+    private void initTable (CommandLine command, TerminalEntryManager manager) {
         myTableView = new TableView<TerminalEntry>();
         List<TableColumn<TerminalEntry, Object>> columns = makeColumns();         
         myTableView.getColumns().addAll(columns);
         myTableView.setItems(manager.getEntryList());
+        defineListener(command);
         myTableView.getStyleClass().add("TABLEVIEWID"); //TODO deal with this
         myTableView.setPrefSize(WIDTH, HEIGHT);
     }
 
+    private void defineListener(CommandLine command){
+        myTableView.getSelectionModel().selectedItemProperty().addListener((observableValue,oldValue,newValue)-> setCommand(command, newValue));
+    }
+    private void setCommand(CommandLine command, TerminalEntry newValue){
+        if(myTableView.getSelectionModel().getSelectedItem()!=null){
+            command.getTextField().setText(newValue.getCommand());
+        }
+    }
     private List<TableColumn<TerminalEntry, Object>> makeColumns () {
         List<TableColumn<TerminalEntry, Object>> columns = new ArrayList<TableColumn<TerminalEntry, Object>>();
         TableColumn<TerminalEntry, Object> commandColumn = new TableColumn<TerminalEntry, Object>("Command"); //TODO resource file
         commandColumn.setCellValueFactory(new PropertyValueFactory<TerminalEntry,Object>("command"));
         commandColumn.setPrefWidth(COMMAND_WIDTH);
         TableColumn<TerminalEntry, Object> resultColumn = new TableColumn<TerminalEntry, Object>("Result"); //TODO resource file
-        resultColumn.setCellValueFactory(new PropertyValueFactory<TerminalEntry,Object>("result"));
+        resultColumn.setCellValueFactory(new PropertyValueFactory<TerminalEntry,Object>("result"));       
         columns.add(commandColumn);
         columns.add(resultColumn);
         return columns;
