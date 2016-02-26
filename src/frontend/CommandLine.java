@@ -19,11 +19,11 @@ public class CommandLine {
     private TextArea myTextField;
     private Button myGoButton;
         
-    public CommandLine(TerminalEntryManager manager){
+    public CommandLine(EntryManager manager){
         initCommandLine(manager);
     }
     
-    private void initCommandLine(TerminalEntryManager manager){
+    private void initCommandLine(EntryManager manager){
         myTextField = new TextArea();       
         myTextField.getStyleClass().add(sceneResources.getString("COMMANDLINEID"));
         myTextField.setPrefSize(WIDTH, HEIGHT);
@@ -31,8 +31,8 @@ public class CommandLine {
         myGoButton.setOnAction(e -> enterCommand(manager));
     }
     
-    private void enterCommand(TerminalEntryManager manager){
-        manager.addEntry(new TerminalEntry(myTextField.getText(),0)); //TODO Do Something here
+    private void enterCommand(EntryManager manager){
+        manager.addEntry(new TerminalEntry(myTextField.getText(),0)); //TODO Do Something Different here
         myTextField.clear();
     }
     
