@@ -66,9 +66,14 @@ public class UserInterface {
         myCommandManager = new EntryManager();
         myWorkspaceManager = new EntryManager();
         myCommandLine = new CommandLine(myTerminalManager);
+        // TODO: Take this out! FOR DEBUGGING ONLY
+    	myCommandLine.setDisplay(myDisplay);
+    	// -----------------------------
+    	
         myTerminal = new TerminalView(myCommandLine, myTerminalManager, "Terminal", new String[]{"Command","Result"}); //TODO resource file
         myWorkspace = new WorkspaceView(myWorkspaceManager, "Workspace", new String[]{"Variable","Value"});
         myUserDefined = new UserDefinedView(myCommandLine,myCommandManager, "User Defined Commands", new String[]{"Command", "Value"});//TODO Resource file
+
     }
 
     private GridPane makeGridPane () {
