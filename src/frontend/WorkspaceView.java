@@ -21,9 +21,9 @@ public class WorkspaceView extends ModuleView{
         getMyTableView().setEditable(true);
     }      
 
-    private void makeEditable () {
-        getColumnsList().get(variableColIndex).setOnEditCommit(e->handle(CellEditEvent<StringIntEntry,String>));
-    }
+//    private void makeEditable () {
+//        getColumnsList().get(variableColIndex).setOnEditCommit(e->handle(CellEditEvent<StringIntEntry,String>));
+//    }
 
     @Override
     protected void setSizing (List<TableColumn<Entry, Object>> columns) {
