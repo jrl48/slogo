@@ -18,9 +18,17 @@ public class CommandLine {
     private static final double HEIGHT = 35;
     private TextArea myTextField;
     private Button myGoButton;
+    
+    // Submitting code pressing SHIFT+ENTER
+    private boolean shiftPressed;
+    private boolean enterPressed;
+    
+    // TODO: Take this out! FOR DEBUGGING ONLY
+    private Display display;
+    // --------------------------------
         
     public CommandLine(TerminalEntryManager manager){
-        initCommandLine(manager);
+        initCommandLine(manager); 
     }
     
     private void initCommandLine(TerminalEntryManager manager){
@@ -29,12 +37,47 @@ public class CommandLine {
         myTextField.setPrefSize(WIDTH, HEIGHT);
         myGoButton = new Button("GO"); //TODO use resource file
         myGoButton.setOnAction(e -> enterCommand(manager));
+        shiftPressed = false;
+        enterPressed = false;
+        
+        myTextField.setOnKeyPressed(e -> keyPressed(e.getCode(), manager, true));
+        myTextField.setOnKeyReleased(e -> keyPressed(e.getCode(), manager, false));
     }
     
     private void enterCommand(TerminalEntryManager manager){
-        manager.addEntry(new TerminalEntry(myTextField.getText(),0)); //TODO Do Something here
-        myTextField.clear();
+    	if ( !myTextField.getText().isEmpty() )
+    	{
+    		manager.addEntry(new TerminalEntry(myTextField.getText(),0)); //TODO Do Something here
+        	
+    		// TODO: Take this out! FOR DEBUGGING ONLY
+        	if ( myTextField.getText().equals("fd") )
+        		display.moveTurtleForward(20);
+        	else if ( myTextField.getText().equals("pen") )
+        		display.toggleTurtlePen();
+        	else if ( myTextField.getText().equals("turn right") )
+        		display.turnTurtle(90);
+        	else if ( myTextField.getText().equals("turn left") )
+        		display.turnTurtle(-90);
+        	// -----------------------------
+        	
+    		myTextField.clear();
+    	}
     }
+    
+    private void keyPressed(KeyCode code, TerminalEntryManager manager, boolean beingPressed)
+    {
+    	if ( code == KeyCode.SHIFT )
+    		shiftPressed = beingPressed;
+    	
+    	else if ( code ==  KeyCode.ENTER)
+    		enterPressed = beingPressed;
+    	
+    	if ( enterPressed && shiftPressed )
+    		enterCommand(manager);
+    	
+    }
+    
+  
     
     public TextArea getTextField(){
         return myTextField;
@@ -42,4 +85,11 @@ public class CommandLine {
     public Node getButton(){
         return myGoButton;
     }    
+    
+    // TODO: Take this out! FOR DEBUGGING ONLY
+    public void setDisplay(Display display)
+    {
+    	this.display = display;
+    }
+    // -------------------------------------
 }

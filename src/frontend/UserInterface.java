@@ -62,6 +62,10 @@ public class UserInterface {
         myDisplay = new Display();
         myTerminalManager = new TerminalEntryManager();
         myCommandLine = new CommandLine(myTerminalManager);
+        // TODO: Take this out! FOR DEBUGGING ONLY
+    	myCommandLine.setDisplay(myDisplay);
+    	// -----------------------------
+    	
         myTerminal = new TerminalView(myCommandLine, myTerminalManager);
         myWorkspace = new WorkspaceView();
         myUserDefined = new UserDefinedView();
