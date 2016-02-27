@@ -27,11 +27,13 @@ public class CommandLine {
     private Display display;
     // --------------------------------
         
-    public CommandLine(TerminalEntryManager manager){
-        initCommandLine(manager); 
+
+    public CommandLine(EntryManager manager){
+        initCommandLine(manager);
+
     }
     
-    private void initCommandLine(TerminalEntryManager manager){
+    private void initCommandLine(EntryManager manager){
         myTextField = new TextArea();       
         myTextField.getStyleClass().add(sceneResources.getString("COMMANDLINEID"));
         myTextField.setPrefSize(WIDTH, HEIGHT);
@@ -44,10 +46,10 @@ public class CommandLine {
         myTextField.setOnKeyReleased(e -> keyPressed(e.getCode(), manager, false));
     }
     
-    private void enterCommand(TerminalEntryManager manager){
+    private void enterCommand(EntryManager manager){
     	if ( !myTextField.getText().isEmpty() )
     	{
-    		manager.addEntry(new TerminalEntry(myTextField.getText(),0)); //TODO Do Something here
+    		manager.addEntry(new StringIntEntry(myTextField.getText(),0)); //TODO Do Something here
         	
     		// TODO: Take this out! FOR DEBUGGING ONLY
         	if ( myTextField.getText().equals("fd") )
@@ -64,7 +66,7 @@ public class CommandLine {
     	}
     }
     
-    private void keyPressed(KeyCode code, TerminalEntryManager manager, boolean beingPressed)
+    private void keyPressed(KeyCode code, EntryManager manager, boolean beingPressed)
     {
     	if ( code == KeyCode.SHIFT )
     		shiftPressed = beingPressed;

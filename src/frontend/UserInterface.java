@@ -42,7 +42,9 @@ public class UserInterface {
     private TerminalView myTerminal;
     private WorkspaceView myWorkspace;
     private UserDefinedView myUserDefined;
-    private TerminalEntryManager myTerminalManager;
+    private EntryManager myTerminalManager;
+    private EntryManager myCommandManager;
+    private EntryManager myWorkspaceManager;
 
     public UserInterface () {
     }
@@ -60,15 +62,18 @@ public class UserInterface {
 
     private void initModules () {
         myDisplay = new Display();
-        myTerminalManager = new TerminalEntryManager();
+        myTerminalManager = new EntryManager();
+        myCommandManager = new EntryManager();
+        myWorkspaceManager = new EntryManager();
         myCommandLine = new CommandLine(myTerminalManager);
         // TODO: Take this out! FOR DEBUGGING ONLY
     	myCommandLine.setDisplay(myDisplay);
     	// -----------------------------
     	
-        myTerminal = new TerminalView(myCommandLine, myTerminalManager);
-        myWorkspace = new WorkspaceView();
-        myUserDefined = new UserDefinedView();
+        myTerminal = new TerminalView(myCommandLine, myTerminalManager, "Terminal", new String[]{"Command","Result"}); //TODO resource file
+        myWorkspace = new WorkspaceView(myWorkspaceManager, "Workspace", new String[]{"Variable","Value"});
+        myUserDefined = new UserDefinedView(myCommandLine,myCommandManager, "User Defined Commands", new String[]{"Command", "Value"});//TODO Resource file
+
     }
 
     private GridPane makeGridPane () {
@@ -78,9 +83,9 @@ public class UserInterface {
         myGridPane.add(myDisplay.getPane(), 1, 1);
         myGridPane.add(myCommandLine.getTextField(), 1, 2, 1, 5);
         myGridPane.add(makeHBox(new ArrayList<Node>(Arrays.asList(myCommandLine.getButton()))), 2, 6);
-        myGridPane.add(makeVBox(new ArrayList<Node>(Arrays.asList(myTerminal.getMyTerminalLabel(), myTerminal.getMyTableView(),
-            myWorkspace.getMyTerminalLabel(), myWorkspace.getMyTableView()))), 2, 1,2,5);
-        myGridPane.add(makeVBox(new ArrayList<Node>(Arrays.asList(myUserDefined.getMyTerminalLabel(),myUserDefined.getMyTableView()))), 4, 1);
+        myGridPane.add(makeVBox(new ArrayList<Node>(Arrays.asList(myTerminal.getMyLabel(), myTerminal.getMyTableView(),
+            myWorkspace.getMyLabel(), myWorkspace.getMyTableView()))), 2, 1,2,5);
+        myGridPane.add(makeVBox(new ArrayList<Node>(Arrays.asList(myUserDefined.getMyLabel(),myUserDefined.getMyTableView()))), 4, 1);
         return myGridPane;
     }
     
