@@ -22,7 +22,7 @@ public class TerminalView extends ModuleView {
     
     private void setCommand(CommandLine command, Entry newValue){
         if(getMyTableView().getSelectionModel().getSelectedItem()!=null){
-            command.getTextField().setText(newValue.getCommand());
+            command.getTextField().setText((String) newValue.getFirstValue());
         }
     }
     @Override

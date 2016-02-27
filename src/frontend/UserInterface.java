@@ -67,7 +67,7 @@ public class UserInterface {
         myWorkspaceManager = new EntryManager();
         myCommandLine = new CommandLine(myTerminalManager);
         myTerminal = new TerminalView(myCommandLine, myTerminalManager, "Terminal", new String[]{"Command","Result"}); //TODO resource file
-        myWorkspace = new WorkspaceView(myWorkspaceManager, "Workspace", new String[]{"Variable", "Value"});
+        myWorkspace = new WorkspaceView(myWorkspaceManager, "Workspace", new String[]{"Variable","Value"});
         myUserDefined = new UserDefinedView(myCommandLine,myCommandManager, "User Defined Commands", new String[]{"Command", "Value"});//TODO Resource file
     }
 

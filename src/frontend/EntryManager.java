@@ -14,7 +14,7 @@ public class EntryManager {
         myObservableEntries= FXCollections.observableList(myEntries);
     }
     public void addEntry(Entry entry){
-        myObservableEntries.add((TerminalEntry) entry);
+        myObservableEntries.add(entry);
     }
     public void removeEntry(Entry entry){
         myObservableEntries.remove(entry);
