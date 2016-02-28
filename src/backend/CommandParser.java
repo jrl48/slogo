@@ -12,11 +12,12 @@ import frontend.UserInterface;
 
 public class CommandParser {
 	
+	private final static CommandParser myParser = new CommandParser();
 	private String myCommand;
 	private String myLanguage;
 	private Parameters myParameters;
 
-	public CommandParser() {
+	private CommandParser() {
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -29,6 +30,37 @@ public class CommandParser {
 		
 	}
 	
+	public CommandParser getParser(){
+		return myParser;
+	}
+	
+	private ParseNode makeTree(String[] commands){
+		ParseNode root = new ParseNode(commands[0]);
+		List<ParseNode> instructions = new ArrayList<ParseNode>();
+		for(int i = 0;i< commands.length; i++){
+			int size = instructions.size() - 1;
+			ParseNode currentNode = new ParseNode(commands[i]);
+			if(!parseCommand(commands[i]).equals("")){
+				currentNode.setValue(parseCommand(commands[i]));
+				instructions.add(currentNode);
+			}
+			if(i == 0){
+				root = currentNode;
+			}
+			else{
+				ParseNode parent = instructions.get(size);
+				for(int j = size; j >= 0; j--){
+					parent = instructions.get(j);
+					if(parent.getChildren().size() < commandInputs.get(parent)){
+						break;
+					}
+				}
+				parent.addChild(currentNode);
+			}
+		}
+		return root;
+	}
+
 	private void inputCommand(String command) {
 		myCommand = command;
 	}
@@ -37,6 +69,7 @@ public class CommandParser {
 		myLanguage = language;
 	}
 	
+
 	private String parseCommand(String command) {
 		try {
 			FileInputStream fileInput = new FileInputStream(new File(myLanguage + ".properties"));
