@@ -119,33 +119,33 @@ public class CommandParser {
 	
 
 	private static String parseCommand(String command) {
-		if(command.equals("SUM")){
-			//System.out.println("SUMASUMASUMA");
-			commandInputs.put(command, 2);
-			return command;
-		}
-		else if(command.equals("SUB")){
-			commandInputs.put(command, 2);
-			return command;
-		}
-		else{
-			return "";
-		}
-//		try {
-//			FileInputStream fileInput = new FileInputStream(new File(myLanguage + ".properties"));
-//			Properties properties = new Properties();
-//			properties.load(fileInput);
-//			fileInput.close();
-//			Enumeration commands = properties.keys();
-//			String desiredCommand = getDesiredCommand(properties,commands,command);
-//			if (desiredCommand.equals(""))
-//				UserInterface.displayError("That is not a command!");
-//			return desiredCommand;
-//		} catch (FileNotFoundException e) {
-//			throwError(e);
-//		} catch (IOException e) {
-//			throwError(e);
+//		if(command.equals("SUM")){
+//			//System.out.println("SUMASUMASUMA");
+//			commandInputs.put(command, 2);
+//			return command;
 //		}
+//		else if(command.equals("SUB")){
+//			commandInputs.put(command, 2);
+//			return command;
+//		else{
+//			return "";
+//		}
+		try {
+			FileInputStream fileInput = new FileInputStream(new File(myLanguage + ".properties"));
+			Properties properties = new Properties();
+			properties.load(fileInput);
+			fileInput.close();
+			Enumeration commands = properties.keys();
+			String desiredCommand = getDesiredCommand(properties,commands,command);
+			if (desiredCommand.equals(""))
+				UserInterface.displayError("That is not a command!");
+			return desiredCommand;
+		} catch (FileNotFoundException e) {
+			throwError(e);
+		} catch (IOException e) {
+			throwError(e);
+		}
+
 	}
 	
 	private String getDesiredCommand(Properties properties, Enumeration commands, String command) {
