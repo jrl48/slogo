@@ -47,9 +47,6 @@ public class CommandLine {
     }
     
     private void enterCommand(EntryManager manager){
-
-        manager.addEntry(new StringNumEntry(myTextField.getText(),0)); //TODO Do Something Different here
-
     	if ( !myTextField.getText().isEmpty() )
     	{
     		manager.addEntry(new StringNumEntry(myTextField.getText(),0)); //TODO Do Something here

@@ -34,7 +34,7 @@ public class WorkspaceView extends ModuleView {
     private void makeEditable (TableColumn<Entry,String> colOne, TableColumn<Entry,Double> colTwo){
         colOne.setCellFactory(TextFieldTableCell.forTableColumn());
         colOne.setOnEditCommit(e->setVar(e.getNewValue()));
-        colTwo.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+        colTwo.setCellFactory(TextFieldTableCell.forTableColumn(new CheckedDoubleStringConverter()));
         colTwo.setOnEditCommit(e->setValue(e.getNewValue()));
     }
 
