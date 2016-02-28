@@ -1,15 +1,16 @@
 package frontend;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class StringIntEntry implements Entry {
+public class StringNumEntry implements Entry {
     private SimpleStringProperty firstValue;
-    private SimpleIntegerProperty secondValue;
+    private SimpleDoubleProperty secondValue;
     
-    public StringIntEntry(String command, Integer result){
+    public StringNumEntry(String command, Integer result){
         this.firstValue = new SimpleStringProperty(command);
-        this.secondValue = new SimpleIntegerProperty(result);
+        this.secondValue = new SimpleDoubleProperty(result);
     }
 
     @Override
@@ -23,12 +24,12 @@ public class StringIntEntry implements Entry {
     }
     
     @Override
-    public Integer getSecondValue () {
+    public Double getSecondValue () {
         return secondValue.get();
     }
     
     @Override
     public void setSecondValue (Object result) {
-        this.secondValue.set((Integer) result);
+        this.secondValue.set((Double) result);
     }
 }

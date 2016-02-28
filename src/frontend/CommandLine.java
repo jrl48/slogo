@@ -32,7 +32,7 @@ public class CommandLine {
     }
     
     private void enterCommand(EntryManager manager){
-        manager.addEntry(new StringIntEntry(myTextField.getText(),0)); //TODO Do Something Different here
+        manager.addEntry(new StringNumEntry(myTextField.getText(),0)); //TODO Do Something Different here
         myTextField.clear();
     }
     
