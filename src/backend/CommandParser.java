@@ -1,11 +1,13 @@
 package backend;
 
+import java.awt.List;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.Properties;
 
 import frontend.UserInterface;
@@ -16,6 +18,7 @@ public class CommandParser {
 	private String myCommand;
 	private String myLanguage;
 	private Parameters myParameters;
+	private Map<String,Integer> commandInputs;
 
 	private CommandParser() {
 		// TODO Auto-generated constructor stub
