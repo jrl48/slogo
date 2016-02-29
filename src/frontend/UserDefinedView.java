@@ -18,9 +18,9 @@ public class UserDefinedView extends ModuleView{
     }
 
     @Override
-    protected void setSizing (List<TableColumn<Entry, Object>> columns) {
+    protected void setSizing () {
         getMyTableView().setPrefSize(WIDTH, HEIGHT);
-        columns.get(commandColInd).setPrefWidth(COMMAND_WIDTH);
+        getMyTableView().getColumns().get(commandColInd).setPrefWidth(COMMAND_WIDTH);
     }
 
 
