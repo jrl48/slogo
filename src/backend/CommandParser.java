@@ -1,5 +1,6 @@
 package backend;
 
+
 import java.util.*;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,7 +9,8 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import frontend.UserInterface;
+//import frontend.UserInterface;
+
 
 public class CommandParser {
 	
@@ -65,7 +67,7 @@ public class CommandParser {
 		return root;
 	}
 	
-	private static int readTree(ParseNode root){
+	private static double readTree(ParseNode root){
 		ParseNode current = root;
 		while(root.getChildren().size() > 0){
 			dfs(root, current);
@@ -84,23 +86,38 @@ public class CommandParser {
 		}
 		if(count == 0){
 			if(current.getChildren().size() == commandInputs.get(current.getName())){
+				MathCommands mathmathmath = new MathCommands();
 				//call the correct method with current
 				//make sure I have the correct # of kids
 				//current == the instruction
 				//its kids == the inputs
 				//int value;
 				//current.setValue(value);
-				if(current.getName().equals("SUM") || current.getName().equals("SUB")){
-					List<ParseNode> womp = current.getChildren();
-					int one = womp.get(0).getValue();
-					int two = womp.get(1).getValue();
-					if(current.getName().equals("SUB")){
-						two = -1*two;
-					}
-					int value = sum(one,two);
-					current.setValue(value);
-					current.removeChildren();	
+				List<ParseNode> womp = current.getChildren();
+				double[] args = new double[womp.size()];
+				int i = 0;
+				for(ParseNode w: womp){
+					args[i] = w.getValue();
+					i++;
 				}
+				
+				current.setValue(mathmathmath.callCommand(current.getName(), args));
+				current.removeChildren();
+				
+				
+				
+				
+//				if(current.getName().equals("SUM") || current.getName().equals("SUB")){
+//					List<ParseNode> womp = current.getChildren();
+//					int one = womp.get(0).getValue();
+//					int two = womp.get(1).getValue();
+//					if(current.getName().equals("SUB")){
+//						two = -1*two;
+//					}
+//					int value = sum(one,two);
+//					current.setValue(value);
+//					current.removeChildren();	
+//				}
 			}
 		}
 	}
@@ -127,6 +144,7 @@ public class CommandParser {
 //		else if(command.equals("SUB")){
 //			commandInputs.put(command, 2);
 //			return command;
+//		}
 //		else{
 //			return "";
 //		}
@@ -171,13 +189,13 @@ public class CommandParser {
 	}
 	
     public static void main(String[] args){
-        String command = "SUM SUM 7 1 SUB SUM 1 0 5";
+        String command = "SUM 1 SUM 1 1";
         String[] commands = command.split(" ");
         for(String s: commands){
         	System.out.println(s);
         }
         ParseNode root = makeTree(commands);
-        int x = readTree(root);
+        double x = readTree(root);
         System.out.println(x);
         
     }

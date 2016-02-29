@@ -5,7 +5,7 @@ import java.util.*;
 public class ParseNode {
 	    
 	    private String myName;
-	    private int myValue;
+	    private double myValue;
 	    private List<ParseNode> myChildren;
 
 
@@ -20,7 +20,7 @@ public class ParseNode {
 //	        myChildren = children;
 //	    }
 	    
-	    public void setValue(int value){
+	    public void setValue(double value){
 	    	myValue = value;
 	    }
 	    
@@ -28,7 +28,7 @@ public class ParseNode {
 	    	myName = name;
 	    }
 	    
-	    public int getValue(){
+	    public double getValue(){
 	    	return myValue;
 	    }
 	    
