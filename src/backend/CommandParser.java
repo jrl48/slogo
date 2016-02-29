@@ -1,5 +1,6 @@
 package backend;
 
+
 import java.util.*;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,7 +9,8 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import frontend.UserInterface;
+//import frontend.UserInterface;
+
 
 public class CommandParser {
 	
@@ -16,7 +18,7 @@ public class CommandParser {
 	private String myCommand;
 	private String myLanguage;
 	private Parameters myParameters;
-	private Map<String, Integer> commandInputs;
+	private static Map<String, Integer> commandInputs = new HashMap<String, Integer>();
 	
 
 	private CommandParser() {
@@ -32,24 +34,30 @@ public class CommandParser {
 		return myParser;
 	}
 	
-	private ParseNode makeTree(String[] commands){
-		ParseNode root = new ParseNode(commands[0]);
+	public static ParseNode makeTree(String[] commands){
+		//System.out.println("WEREWRWER");
+		ParseNode root = new ParseNode(parseCommand(commands[0]));
 		List<ParseNode> instructions = new ArrayList<ParseNode>();
-		for(int i = 0;i< commands.length; i++){
+		instructions.add(root);
+		for(int i = 1;i< commands.length; i++){
 			int size = instructions.size() - 1;
-			ParseNode currentNode = new ParseNode(commands[i]);
+			ParseNode currentNode = new ParseNode(parseCommand(commands[i]));
 			if(!parseCommand(commands[i]).equals("")){
-				currentNode.setValue(parseCommand(commands[i]));
+				//currentNode.setName(parseCommand(commands[i]));
 				instructions.add(currentNode);
 			}
-			if(i == 0){
-				root = currentNode;
-			}
 			else{
+				currentNode.setValue(Integer.parseInt(commands[i]));
+			}
+			
+//			if(i == 0){
+//				root = currentNode;
+//			}
+			if(i > 0){
 				ParseNode parent = instructions.get(size);
 				for(int j = size; j >= 0; j--){
 					parent = instructions.get(j);
-					if(parent.getChildren().size() < commandInputs.get(parent)){
+					if(parent.getChildren().size() < commandInputs.get(parent.getName())){
 						break;
 					}
 				}
@@ -59,6 +67,64 @@ public class CommandParser {
 		return root;
 	}
 	
+	private static double readTree(ParseNode root){
+		ParseNode current = root;
+		while(root.getChildren().size() > 0){
+			dfs(root, current);
+		}
+		
+		return root.getValue();
+	}
+	
+	private static void dfs(ParseNode root, ParseNode current){
+		int count = 0;
+		for(ParseNode child: current.getChildren()){
+			if(child.getChildren().size() != 0){
+				count++;
+				dfs(root, child);
+			}
+		}
+		if(count == 0){
+			if(current.getChildren().size() == commandInputs.get(current.getName())){
+				MathCommands mathmathmath = new MathCommands();
+				//call the correct method with current
+				//make sure I have the correct # of kids
+				//current == the instruction
+				//its kids == the inputs
+				//int value;
+				//current.setValue(value);
+				List<ParseNode> womp = current.getChildren();
+				double[] args = new double[womp.size()];
+				int i = 0;
+				for(ParseNode w: womp){
+					args[i] = w.getValue();
+					i++;
+				}
+				
+				current.setValue(mathmathmath.callCommand(current.getName(), args));
+				current.removeChildren();
+				
+				
+				
+				
+//				if(current.getName().equals("SUM") || current.getName().equals("SUB")){
+//					List<ParseNode> womp = current.getChildren();
+//					int one = womp.get(0).getValue();
+//					int two = womp.get(1).getValue();
+//					if(current.getName().equals("SUB")){
+//						two = -1*two;
+//					}
+//					int value = sum(one,two);
+//					current.setValue(value);
+//					current.removeChildren();	
+//				}
+			}
+		}
+	}
+	
+	private static int sum(int x, int y){
+		return x + y;
+	}
 	
 	private void inputCommand(String command) {
 		myCommand = command;
@@ -69,7 +135,19 @@ public class CommandParser {
 	}
 	
 
-	private String parseCommand(String command) {
+	private static String parseCommand(String command) {
+//		if(command.equals("SUM")){
+//			//System.out.println("SUMASUMASUMA");
+//			commandInputs.put(command, 2);
+//			return command;
+//		}
+//		else if(command.equals("SUB")){
+//			commandInputs.put(command, 2);
+//			return command;
+//		}
+//		else{
+//			return "";
+//		}
 		try {
 			FileInputStream fileInput = new FileInputStream(new File(myLanguage + ".properties"));
 			Properties properties = new Properties();
@@ -85,6 +163,7 @@ public class CommandParser {
 		} catch (IOException e) {
 			throwError(e);
 		}
+
 	}
 	
 	private String getDesiredCommand(Properties properties, Enumeration commands, String command) {
@@ -108,5 +187,17 @@ public class CommandParser {
 		// CHANGE THIS LATER!!!!!!!!!!!!!!!!!!
 		e.printStackTrace();
 	}
+	
+    public static void main(String[] args){
+        String command = "SUM 1 SUM 1 1";
+        String[] commands = command.split(" ");
+        for(String s: commands){
+        	System.out.println(s);
+        }
+        ParseNode root = makeTree(commands);
+        double x = readTree(root);
+        System.out.println(x);
+        
+    }
 
 }

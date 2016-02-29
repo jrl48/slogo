@@ -1,5 +1,14 @@
 package frontend;
 
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+
+
+//public class Display {
+//    private Pane myPane;
+//    private static final double WIDTH = 450;
+//    private static final double HEIGHT = 450;
+
 import javafx.scene.shape.Line;
 
 import java.util.ArrayList;

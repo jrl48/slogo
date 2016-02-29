@@ -9,6 +9,30 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 
+//public class CommandLine {
+//    private static final double WIDTH = 500;
+//    private static final double HEIGHT = 35;
+//    private TextArea myTextField;
+//    private Button myGoButton;
+//        
+//    public CommandLine(TerminalEntryManager manager){
+//        initCommandLine(manager);
+//    }
+//    
+//    private void initCommandLine(TerminalEntryManager manager){
+//        myTextField = new TextArea();       
+//        myTextField.getStyleClass().add(UserInterface.sceneResources.getString("COMMANDLINEID"));
+//        myTextField.setPrefSize(WIDTH, HEIGHT);
+//        myGoButton = new Button("GO"); //TODO use resource file
+//        myGoButton.setOnAction(e -> enterCommand(manager));
+//    }
+//    
+//    private void enterCommand(TerminalEntryManager manager){
+//        manager.addEntry(new TerminalEntry(myTextField.getText(),0)); //TODO Do Something here
+//        myTextField.clear();
+//    }
+//    
+//    public Node getTextField(){
 public class CommandLine {
     private static final String DEFAULT_RESOURCE_PACKAGE = "resources/frontendResources/";
     private static final String SCENE = "Scene";
@@ -90,16 +114,4 @@ public class CommandLine {
         return myGoButton;
     }    
     
-    // TODO: Take this out! FOR DEBUGGING ONLY
-    public void setDisplay(Display display)
-    {
-    	this.display = display;
-    }
-    // -------------------------------------
-    public String getLanguage(){
-        return language;
-    }
-    public void setLanguage(String lang){
-        this.language = lang;
-    }
 }
