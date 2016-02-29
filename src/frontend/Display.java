@@ -4,10 +4,17 @@ import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 
 public class Display {
@@ -24,16 +31,17 @@ public class Display {
     // List of Lines that are being drawn by the turtle
     private ArrayList<Line> lines;
     
-    public Display () {
-        initPane();
+    public Display (ColorPicker cp) {
+        initPane(cp);
     }
     
-    private void initPane()
+    private void initPane(ColorPicker cp)
     {
     	root = new Group();
         myPane = new Pane(root);
         myPane.getStyleClass().add(sceneResources.getString("DISPLAYID"));
         myPane.setPrefSize(WIDTH, HEIGHT);
+        setBinding(myPane, cp);
         
         // Biuld turtle and initialize it at Logo's (0,0)
         myTurtle = new Turtle();
@@ -44,11 +52,17 @@ public class Display {
         lines = new ArrayList<Line>();
     }
     
+    private void setBinding(Pane pane, ColorPicker cp){
+        ObjectProperty<Background> back = pane.backgroundProperty();
+        back.bind(Bindings.createObjectBinding(()->{
+            BackgroundFill fill = new BackgroundFill(cp.getValue(),CornerRadii.EMPTY,Insets.EMPTY);
+            return new Background(fill);
+        }, cp.valueProperty()));
+    }
     public Node getPane () {
         return myPane;
     }
-    
-    
+
     // Takes current Turtle's Logo's (x,y) position and update the ImageView's javafx (x,y)
     public void updateTurtleVisualPosition()
     {

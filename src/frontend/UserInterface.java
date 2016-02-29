@@ -64,8 +64,10 @@ public class UserInterface {
         s.setScene(myScene);
     }
 
-    private void initModules (Stage s) {
-        myDisplay = new Display();
+    private void initModules (Stage primaryStage) {
+        myDisplayPreferences = new DisplayPreferences(primaryStage);
+        System.out.println(myDisplayPreferences.getDispColorPicker());
+        myDisplay = new Display(myDisplayPreferences.getDispColorPicker());
         myTerminalManager = new EntryManager();
         myCommandManager = new EntryManager();
         myWorkspaceManager = new EntryManager();
@@ -79,7 +81,6 @@ public class UserInterface {
         myWorkspace = new WorkspaceView(myWorkspaceManager, "Workspace", new String[]{"Variable","Value"});
         myUserDefined = new UserDefinedView(myCommandLine,myCommandManager, "User Defined Commands", new String[]{"Command", "Value"});//TODO Resource file
         myLanguagePreferences = new LanguagePreferences(myLanguageManager,myCommandLine);
-        myDisplayPreferences = new DisplayPreferences(s);
 
     }
 
