@@ -40,6 +40,7 @@ public class CommandLine {
             ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + SCENE);
     private static final double WIDTH = 500;
     private static final double HEIGHT = 35;
+    private String language = "English";
     private TextArea myTextField;
     private Button myGoButton;
     
@@ -73,7 +74,7 @@ public class CommandLine {
     private void enterCommand(EntryManager manager){
     	if ( !myTextField.getText().isEmpty() )
     	{
-    		manager.addEntry(new StringIntEntry(myTextField.getText(),0)); //TODO Do Something here
+    		manager.addEntry(new StringNumEntry(myTextField.getText(),0)); //TODO Do Something here
         	
     		// TODO: Take this out! FOR DEBUGGING ONLY
         	if ( myTextField.getText().equals("fd") )
@@ -88,6 +89,7 @@ public class CommandLine {
         	
     		myTextField.clear();
     	}
+
     }
     
     private void keyPressed(KeyCode code, EntryManager manager, boolean beingPressed)
@@ -112,9 +114,4 @@ public class CommandLine {
         return myGoButton;
     }    
     
-    // TODO: Take this out! FOR DEBUGGING ONLY
-//    public void setDisplay(Display display)
-//    {
-//    	this.display = display;
-//    }
 }

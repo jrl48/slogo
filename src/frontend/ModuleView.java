@@ -11,10 +11,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public abstract class ModuleView {
 
-    private static final String[] entryValues = new String[] { "FirstValue", "SecondValue" };
+    protected static final String[] entryValues = new String[] { "FirstValue", "SecondValue" };
     private Label myLabel;
     private TableView<Entry> myTableView;
-    private List<TableColumn<Entry, Object>> myColumnsList;
 
     public ModuleView (EntryManager manager, String labelTitle, String[] colTitles) {
         initTable(manager, colTitles);
@@ -29,21 +28,21 @@ public abstract class ModuleView {
         myTableView.getColumns().addAll(columns);
         myTableView.setItems(manager.getEntryList());
         myTableView.getStyleClass().add("TABLEVIEWID"); // TODO deal with this
-        setSizing(columns);
+        setSizing();
     }
 
-    protected abstract void setSizing (List<TableColumn<Entry, Object>> columns); // TODO implement
+    protected abstract void setSizing (); // TODO implement
                                                                                   // this method
 
     private List<TableColumn<Entry, Object>> makeColumns (String[] colTitles, String[] values) {
-        myColumnsList = new ArrayList<TableColumn<Entry, Object>>();
+        List<TableColumn<Entry,Object>> colList = new ArrayList<TableColumn<Entry, Object>>();
         for (int i = 0; i < colTitles.length; i++) {
             TableColumn<Entry, Object> col =
                     new TableColumn<Entry, Object>(colTitles[i]); // TODO resource file
             col.setCellValueFactory(new PropertyValueFactory<Entry, Object>(values[i]));
-            myColumnsList.add(col);
+            colList.add(col);
         }
-        return myColumnsList;
+        return colList;
     }
 
     private void initLabel (String labelTitle) {
@@ -59,8 +58,5 @@ public abstract class ModuleView {
         return myTableView;
     }
     
-    public List<TableColumn<Entry,Object>> getColumnsList(){
-        return myColumnsList;
-    }
 
 }

@@ -13,10 +13,19 @@ import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 
 public class Display {
@@ -28,85 +37,96 @@ public class Display {
     private Group root;
     private static final double WIDTH = 450;
     private static final double HEIGHT = 450;
-    private Turtle turtle;
+    private Turtle myTurtle;
+    private ColorPicker penCol;
+    private SimpleBooleanProperty isPenVisible;
     
     // List of Lines that are being drawn by the turtle
     private ArrayList<Line> lines;
     
-    public Display () {
-        initPane();
+    public Display (ColorPicker dispCol, ColorPicker penCol, SimpleBooleanProperty isPenVisible) {
+        this.isPenVisible = isPenVisible;
+        this.penCol = penCol;
+        initPane(dispCol);
     }
     
-//    private void initPane(){
-//        myPane = new Pane();
-//        myPane.getStyleClass().add(UserInterface.sceneResources.getString("DISPLAYID"));
-//        myPane.setPrefSize(WIDTH, HEIGHT);
-//    }
-//    public Node getPane () {
-//        return myPane;
-//    }
-    private void initPane()
+    private void initPane(ColorPicker cp)
     {
     	root = new Group();
         myPane = new Pane(root);
         myPane.getStyleClass().add(sceneResources.getString("DISPLAYID"));
         myPane.setPrefSize(WIDTH, HEIGHT);
+        setPaneBinding(myPane, cp);
         
         // Biuld turtle and initialize it at Logo's (0,0)
-        turtle = new Turtle();
-        myPane.getChildren().add(turtle.getBody());
+        myTurtle = new Turtle();
+        myPane.getChildren().add(myTurtle.getBody());
         updateTurtleVisualPosition();
         
         // Initialize Lines array List
         lines = new ArrayList<Line>();
     }
     
+    private void setPaneBinding(Pane pane, ColorPicker cp){
+        ObjectProperty<Background> back = pane.backgroundProperty();
+        back.bind(Bindings.createObjectBinding(()->{
+            BackgroundFill fill = new BackgroundFill(cp.getValue(),CornerRadii.EMPTY,Insets.EMPTY);
+            return new Background(fill);
+        }, cp.valueProperty()));
+    }
+//    private void setLineBinding(Line line,ColorPicker cp){
+//        ObjectProperty<Paint> fill = line.fillProperty();
+//        fill.bind(Bindings.createObjectBinding(()->{
+//            
+//        }
+//    }
     public Node getPane () {
         return myPane;
     }
-    
-    
+
     // Takes current Turtle's Logo's (x,y) position and update the ImageView's javafx (x,y)
     public void updateTurtleVisualPosition()
     {
-    	double newX = WIDTH/2 + turtle.getX();
-    	double newY = HEIGHT/2 - turtle.getY();
+    	double newX = WIDTH/2 + myTurtle.getX();
+    	double newY = HEIGHT/2 - myTurtle.getY();
     	
-    	if ( turtle.penIsDown() )
+    	if ( myTurtle.penIsDown() )
     	{
-    		Line newLine = new Line(turtle.getVisualX(), turtle.getVisualY(), newX, newY);  
+    		Line newLine = new Line(myTurtle.getVisualX(), myTurtle.getVisualY(), newX, newY); 
+    		newLine.fillProperty().bind(penCol.valueProperty());
+    		newLine.visibleProperty().bind(isPenVisible);
     		lines.add( newLine );
     		myPane.getChildren().add(newLine);
     	}
     	
     	// When updating coordinates, compensate the X and Y because they reference the edge of the 
     	// image, not the center
-    	turtle.setVisualCoordinates(newX, newY);
+    	myTurtle.setVisualCoordinates(newX, newY);
     }
     
     public void toggleTurtlePen()
     {
-    	turtle.togglePen();
+    	myTurtle.togglePen();
     }
     
     public void setTurtleCoordinates(double newX, double newY)
     {
-    	turtle.setCoordinates(newX, newY);
+    	myTurtle.setCoordinates(newX, newY);
     	updateTurtleVisualPosition();
     }
     
     public void moveTurtleForward(double length)
     {
-    	double deltaX = Math.sin(turtle.getAngle() * Math.PI / 180) * length;
-    	double deltaY = Math.cos(turtle.getAngle() * Math.PI / 180) * length;
+    	double deltaX = Math.sin(myTurtle.getAngle() * Math.PI / 180) * length;
+    	double deltaY = Math.cos(myTurtle.getAngle() * Math.PI / 180) * length;
     	
-    	turtle.setCoordinates(turtle.getX() + deltaX, turtle.getY() + deltaY);
+    	myTurtle.setCoordinates(myTurtle.getX() + deltaX, myTurtle.getY() + deltaY);
     	updateTurtleVisualPosition();
     }
     
     // Turn the turtle, in DEGREES!
     public void turnTurtle(double angle)
     {
-    	turtle.rotate(angle);
+    	myTurtle.rotate(angle);
     }
 }

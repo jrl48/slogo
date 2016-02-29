@@ -81,9 +81,9 @@ public class TerminalView extends ModuleView {
         }
     }
     @Override
-    protected void setSizing (List<TableColumn<Entry, Object>> columns) {
+    protected void setSizing () {
         getMyTableView().setPrefSize(WIDTH,HEIGHT);
-        columns.get(commandColIndex).setPrefWidth(COMMAND_WIDTH);
+        getMyTableView().getColumns().get(commandColIndex).setPrefWidth(COMMAND_WIDTH);
     }
 
 
