@@ -27,8 +27,13 @@ public class WorkspaceView extends ModuleView {
         manager.addEntry(new StringNumEntry("ya", 2));
         setSizing();
         getMyTableView().setEditable(true);
+        try{
         makeEditable(((TableColumn<Entry,String>) getMyTableView().getColumns().get(variableColIndex)),
                      ((TableColumn<Entry,Double>) getMyTableView().getColumns().get(valueColIndex)));
+        }
+        catch(ClassCastException e){
+            System.err.println("Class Cast Exception: " +e.getMessage());
+        }
     }
 
     private void makeEditable (TableColumn<Entry,String> colOne, TableColumn<Entry,Double> colTwo){

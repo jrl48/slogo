@@ -67,7 +67,7 @@ public class UserInterface {
     private void initModules (Stage primaryStage) {
         myDisplayPreferences = new DisplayPreferences(primaryStage);
         System.out.println(myDisplayPreferences.getDispColorPicker());
-        myDisplay = new Display(myDisplayPreferences.getDispColorPicker());
+        myDisplay = new Display(myDisplayPreferences.getDispColorPicker(),myDisplayPreferences.getPenColorPicker(),myDisplayPreferences.getPenVisibility());
         myTerminalManager = new EntryManager();
         myCommandManager = new EntryManager();
         myWorkspaceManager = new EntryManager();
