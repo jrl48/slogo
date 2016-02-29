@@ -16,6 +16,7 @@ public class CommandLine {
             ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + SCENE);
     private static final double WIDTH = 500;
     private static final double HEIGHT = 35;
+    private String language = "English";
     private TextArea myTextField;
     private Button myGoButton;
     
@@ -95,4 +96,10 @@ public class CommandLine {
     	this.display = display;
     }
     // -------------------------------------
+    public String getLanguage(){
+        return language;
+    }
+    public void setLanguage(String lang){
+        this.language = lang;
+    }
 }

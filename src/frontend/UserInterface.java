@@ -45,26 +45,31 @@ public class UserInterface {
     private EntryManager myTerminalManager;
     private EntryManager myCommandManager;
     private EntryManager myWorkspaceManager;
+    private LanguageManager myLanguageManager;
+    private LanguagePreferences myLanguagePreferences;
+    private DisplayPreferences myDisplayPreferences;
 
     public UserInterface () {
     }
 
     public void init (Stage s) {
-        initModules();
-        s.setTitle(sceneResources.getString("TITLE"));
+        initModules(s);
+        s.setTitle(sceneResources.getString("TITLE")); //TODO put in css
         s.setResizable(false);
         root = new Group();
         myScene = new Scene(root, WIDTH, HEIGHT, Color.SKYBLUE);
+       
         myScene.getStylesheets().add(DEFAULT_RESOURCE_PACKAGE + STYLESHEET);
         root.getChildren().add(makeGridPane());
         s.setScene(myScene);
     }
 
-    private void initModules () {
+    private void initModules (Stage s) {
         myDisplay = new Display();
         myTerminalManager = new EntryManager();
         myCommandManager = new EntryManager();
         myWorkspaceManager = new EntryManager();
+        myLanguageManager = new LanguageManager();
         myCommandLine = new CommandLine(myTerminalManager);
         // TODO: Take this out! FOR DEBUGGING ONLY
     	myCommandLine.setDisplay(myDisplay);
@@ -73,6 +78,8 @@ public class UserInterface {
         myTerminal = new TerminalView(myCommandLine, myTerminalManager, "Terminal", new String[]{"Command","Result"}); //TODO resource file
         myWorkspace = new WorkspaceView(myWorkspaceManager, "Workspace", new String[]{"Variable","Value"});
         myUserDefined = new UserDefinedView(myCommandLine,myCommandManager, "User Defined Commands", new String[]{"Command", "Value"});//TODO Resource file
+        myLanguagePreferences = new LanguagePreferences(myLanguageManager,myCommandLine);
+        myDisplayPreferences = new DisplayPreferences(s);
 
     }
 
@@ -82,7 +89,7 @@ public class UserInterface {
 
         myGridPane.add(myDisplay.getPane(), 1, 1);
         myGridPane.add(myCommandLine.getTextField(), 1, 2, 1, 5);
-        myGridPane.add(makeHBox(new ArrayList<Node>(Arrays.asList(myCommandLine.getButton()))), 2, 6);
+        myGridPane.add(makeHBox(new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getButton(),myLanguagePreferences.getComboBox()))), 2, 6);
         myGridPane.add(makeVBox(new ArrayList<Node>(Arrays.asList(myTerminal.getMyLabel(), myTerminal.getMyTableView(),
             myWorkspace.getMyLabel(), myWorkspace.getMyTableView()))), 2, 1,2,5);
         myGridPane.add(makeVBox(new ArrayList<Node>(Arrays.asList(myUserDefined.getMyLabel(),myUserDefined.getMyTableView()))), 4, 1);

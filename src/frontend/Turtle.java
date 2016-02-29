@@ -15,7 +15,7 @@ public class Turtle
 	
 	public Turtle()
 	{
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream(UserInterface.DEFAULT_RESOURCE_PACKAGE+"turtle.png"));
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream(UserInterface.DEFAULT_RESOURCE_PACKAGE+"turtle.png")); //TODO fix this up
 		body = new ImageView(image);
 		x = 0;
 		y = 0;
