@@ -1,6 +1,8 @@
 package frontend;
 
 import java.util.ResourceBundle;
+
+import backend.CommandParser;
 import javafx.geometry.Pos;
 //import backend.CommandParser;
 import javafx.scene.Node;
@@ -29,56 +31,55 @@ public class CommandLine {
     // --------------------------------
         
 
-    public CommandLine(EntryManager manager){
-        initCommandLine(manager);
-
+    public CommandLine(CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace ){
+        initCommandLine(parser, terminal, command, workspace);
+        
     }
     
-    private void initCommandLine(EntryManager manager){
+    private void initCommandLine(CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace){
         myTextField = new TextArea();       
         myTextField.getStyleClass().add(sceneResources.getString("COMMANDLINEID"));
         myTextField.setPrefSize(WIDTH, HEIGHT);
         myGoButton = new Button("GO"); //TODO use resource file
-        myGoButton.setOnAction(e -> enterCommand(manager));
+        myGoButton.setOnAction(e -> enterCommand(parser, terminal, command, workspace));
         shiftPressed = false;
         enterPressed = false;
         
-        myTextField.setOnKeyPressed(e -> keyPressed(e.getCode(), manager, true));
-        myTextField.setOnKeyReleased(e -> keyPressed(e.getCode(), manager, false));
+        myTextField.setOnKeyPressed(e -> keyPressed(e.getCode(), parser, terminal, command, workspace, true));
+        myTextField.setOnKeyReleased(e -> keyPressed(e.getCode(), parser, terminal, command, workspace, false));
     }
     
-    private void enterCommand(EntryManager manager){
-    	if ( !myTextField.getText().isEmpty() )
-    	{
-    		manager.addEntry(new StringNumEntry(myTextField.getText(),0)); //TODO Do Something here
-        	
-    		// TODO: Take this out! FOR DEBUGGING ONLY
-        	if ( myTextField.getText().equals("fd") )
-        		display.moveTurtleForward(20);
-        	else if ( myTextField.getText().equals("pen") )
-        		display.toggleTurtlePen();
-        	else if ( myTextField.getText().equals("turn right") )
-        		display.turnTurtle(90);
-        	else if ( myTextField.getText().equals("turn left") )
-        		display.turnTurtle(-90);
-        	// -----------------------------
-        	
-    		myTextField.clear();
-    	}
+    private void enterCommand(CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace){
+        if ( !myTextField.getText().isEmpty() )
+        {
+                parser.parse(myTextField.getText(), terminal, command, workspace);
+                // TODO: Take this out! FOR DEBUGGING ONLY
+                if ( myTextField.getText().equals("fd") )
+                        display.moveTurtleForward(20);
+                else if ( myTextField.getText().equals("pen") )
+                        display.toggleTurtlePen();
+                else if ( myTextField.getText().equals("turn right") )
+                        display.turnTurtle(90);
+                else if ( myTextField.getText().equals("turn left") )
+                        display.turnTurtle(-90);
+                // -----------------------------
+                
+                myTextField.clear();
+        }
 
     }
     
-    private void keyPressed(KeyCode code, EntryManager manager, boolean beingPressed)
+    private void keyPressed(KeyCode code, CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace, boolean beingPressed)
     {
-    	if ( code == KeyCode.SHIFT )
-    		shiftPressed = beingPressed;
-    	
-    	else if ( code ==  KeyCode.ENTER)
-    		enterPressed = beingPressed;
-    	
-    	if ( enterPressed && shiftPressed )
-    		enterCommand(manager);
-    	
+        if ( code == KeyCode.SHIFT )
+                shiftPressed = beingPressed;
+        
+        else if ( code ==  KeyCode.ENTER)
+                enterPressed = beingPressed;
+        
+        if ( enterPressed && shiftPressed )
+                enterCommand(parser, terminal, command, workspace);
+        
     }
     
   
@@ -93,7 +94,7 @@ public class CommandLine {
     // TODO: Take this out! FOR DEBUGGING ONLY
     public void setDisplay(Display display)
     {
-    	this.display = display;
+        this.display = display;
     }
     // -------------------------------------
     public String getLanguage(){

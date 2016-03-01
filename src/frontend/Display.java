@@ -1,11 +1,21 @@
 package frontend;
 
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+
+
+//public class Display {
+//    private Pane myPane;
+//    private static final double WIDTH = 450;
+//    private static final double HEIGHT = 450;
+
 import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -15,6 +25,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 
 public class Display {
@@ -27,12 +38,16 @@ public class Display {
     private static final double WIDTH = 450;
     private static final double HEIGHT = 450;
     private Turtle myTurtle;
+    private ColorPicker penCol;
+    private SimpleBooleanProperty isPenVisible;
     
     // List of Lines that are being drawn by the turtle
     private ArrayList<Line> lines;
     
-    public Display (ColorPicker cp) {
-        initPane(cp);
+    public Display (ColorPicker dispCol, ColorPicker penCol, SimpleBooleanProperty isPenVisible) {
+        this.isPenVisible = isPenVisible;
+        this.penCol = penCol;
+        initPane(dispCol);
     }
     
     private void initPane(ColorPicker cp)
@@ -41,7 +56,7 @@ public class Display {
         myPane = new Pane(root);
         myPane.getStyleClass().add(sceneResources.getString("DISPLAYID"));
         myPane.setPrefSize(WIDTH, HEIGHT);
-        setBinding(myPane, cp);
+        setPaneBinding(myPane, cp);
         
         // Biuld turtle and initialize it at Logo's (0,0)
         myTurtle = new Turtle();
@@ -52,13 +67,19 @@ public class Display {
         lines = new ArrayList<Line>();
     }
     
-    private void setBinding(Pane pane, ColorPicker cp){
+    private void setPaneBinding(Pane pane, ColorPicker cp){
         ObjectProperty<Background> back = pane.backgroundProperty();
         back.bind(Bindings.createObjectBinding(()->{
             BackgroundFill fill = new BackgroundFill(cp.getValue(),CornerRadii.EMPTY,Insets.EMPTY);
             return new Background(fill);
         }, cp.valueProperty()));
     }
+//    private void setLineBinding(Line line,ColorPicker cp){
+//        ObjectProperty<Paint> fill = line.fillProperty();
+//        fill.bind(Bindings.createObjectBinding(()->{
+//            
+//        }
+//    }
     public Node getPane () {
         return myPane;
     }
@@ -71,7 +92,9 @@ public class Display {
     	
     	if ( myTurtle.penIsDown() )
     	{
-    		Line newLine = new Line(myTurtle.getVisualX(), myTurtle.getVisualY(), newX, newY);  
+    		Line newLine = new Line(myTurtle.getVisualX(), myTurtle.getVisualY(), newX, newY); 
+    		newLine.fillProperty().bind(penCol.valueProperty());
+    		newLine.visibleProperty().bind(isPenVisible);
     		lines.add( newLine );
     		myPane.getChildren().add(newLine);
     	}
