@@ -71,7 +71,7 @@ public class UserInterface {
 
     private void initModules (Stage primaryStage) {
         myDisplayPreferences = new DisplayPreferences(primaryStage);
-        myDisplay = new Display(myDisplayPreferences.getDispColorPicker(),myDisplayPreferences.getPenColorPicker(),myDisplayPreferences.getPenVisibility());
+        myDisplay = new Display(myDisplayPreferences);
 
         myTerminalManager = new EntryManager();
         myCommandManager = new EntryManager();

@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
+
+import com.sun.xml.internal.ws.util.StringUtils;
+
 import frontend.*;
 
 
@@ -21,11 +24,12 @@ public class CommandParser {
 	private String myCommand;
 	private String myLanguage;
 	private Parameters myParameters;
-	private Map<String, Integer> commandInputs;
+	private ParametersMap myParametersMap;
+//	private Map<String, Integer> commandInputs;
 	private Display myDisplay;
 
 	public CommandParser(Display display) {
-		commandInputs = new HashMap<String, Integer>();
+		myParametersMap = new ParametersMap();
 		myDisplay = display;
 		myLanguage = "English";
 	}
@@ -33,45 +37,68 @@ public class CommandParser {
 	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
 		System.out.println(command);
 		// TODO put it all together
-		if ( command.equals("") )
+		if (command.equals("") )
 			return;
 		String[] commandPieces = command.split(" ");
 		ParseNode commandTree = makeTree(commandPieces);
+		if(commandTree == null){
+			ErrorMessage err = new ErrorMessage("Not a Valid Command");
+			err.showError();
+			return;
+		}
 		double result = readTree(commandTree);
 		terminal.addEntry(new StringNumEntry(command,result));
 		
 	}
 	
 	public ParseNode makeTree(String[] commands){
-        for(String s: commands){
-        	System.out.println(s);
-        }
 		ParseNode root = new ParseNode(parseCommand(commands[0]));
 		List<ParseNode> instructions = new ArrayList<ParseNode>();
 		instructions.add(root);
 		for(int i = 1;i< commands.length; i++){
 			int size = instructions.size() - 1;
-			ParseNode currentNode = new ParseNode(parseCommand(commands[i]));
-			if(!parseCommand(commands[i]).equals("")){
+			String parsedCommand = parseCommand(commands[i]);
+			ParseNode currentNode = new ParseNode(parsedCommand);
+			if(!parsedCommand.equals("")){
 				//currentNode.setName(parseCommand(commands[i]));
 				instructions.add(currentNode);
 			}
 			else{
-				currentNode.setValue(Integer.parseInt(commands[i]));
+				try{
+					if(commands[i].charAt(0) == ':'){
+						//call the variables map
+						
+					}
+					currentNode.setValue(Integer.parseInt(commands[i]));
+				}
+				catch(NumberFormatException exception){
+					return null;
+				}
 			}
 			
 //			if(i == 0){
 //				root = currentNode;
 //			}
 			if(i > 0){
+				ParseNode originalParent = null;
 				ParseNode parent = instructions.get(size);
 				for(int j = size; j >= 0; j--){
 					parent = instructions.get(j);
-					if(parent.getChildren().size() < commandInputs.get(parent.getName())){
+					int numParams = myParametersMap.getNumParams(parent.getName());
+					if(numParams == -1){
+						return null;
+					}
+					if(parent.getChildren().size() < numParams){
+						originalParent = parent;
 						break;
 					}
 				}
-				parent.addChild(currentNode);
+				if(originalParent == null){
+					return null;
+				}
+				else{
+					parent.addChild(currentNode);
+				}
 			}
 		}
 		return root;
@@ -79,6 +106,11 @@ public class CommandParser {
 	
 	private double readTree(ParseNode root){
 		ParseNode current = root;
+		if(root.getChildren().size() == 0){
+			double[] args = new double[0];
+			MathCommands mathmathmath = new MathCommands();
+			root.setValue(mathmathmath.callCommand(current.getName(), args));
+		}
 		while(root.getChildren().size() > 0){
 			dfs(root, current);
 		}
@@ -95,7 +127,7 @@ public class CommandParser {
 			}
 		}
 		if(count == 0){
-			if(current.getChildren().size() == commandInputs.get(current.getName())){
+			if(current.getChildren().size() == myParametersMap.getNumParams(current.getName())){
 				MathCommands mathmathmath = new MathCommands();
 				//call the correct method with current
 				//make sure I have the correct # of kids
@@ -104,6 +136,11 @@ public class CommandParser {
 				//int value;
 				//current.setValue(value);
 				List<ParseNode> womp = current.getChildren();
+				for(ParseNode node: womp){
+					if(!node.getName().equals("")){
+						node.setValue(mathmathmath.callCommand(node.getName(), new double[0]));
+					}
+				}
 				double[] args = new double[womp.size()];
 				int i = 0;
 				for(ParseNode w: womp){
@@ -112,6 +149,7 @@ public class CommandParser {
 				}
 				
 				current.setValue(mathmathmath.callCommand(current.getName(), args));
+				current.setName("");
 				current.removeChildren();
 				
 				
@@ -154,8 +192,8 @@ public class CommandParser {
 			Enumeration commands = properties.keys();
 			String desiredCommand = getDesiredCommand(properties,commands,command);
 			if (desiredCommand.equals("")){
-				ErrorMessage err = new ErrorMessage("Not a Valid Command");
-				err.showError();
+				//ErrorMessage err = new ErrorMessage("Not a Valid Command");
+				//err.showError();
 			}
 			return desiredCommand;
 		} catch (FileNotFoundException e) {
@@ -169,7 +207,7 @@ public class CommandParser {
 	private String getDesiredCommand(Properties properties, Enumeration commands, String command) {
 		while ( commands.hasMoreElements() ) {
 			String key = (String) commands.nextElement();
-			String[] values = properties.getProperty(key).split("|");
+			String[] values = properties.getProperty(key).split("\\|");
 			for ( String value: values) {
 				if (value.equals(command)) {
 					return key;
