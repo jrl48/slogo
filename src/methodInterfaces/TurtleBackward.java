@@ -1,11 +1,10 @@
 package methodInterfaces;
+import frontend.Display;
 
-import frontend.Turtle;
-
-public class TurtleBackward implements CommandInterface {
+public class TurtleBackward implements TurtleInterface {
 
 	@Override
-	public double executeCommand(int[] args) {
+	public double executeCommand(int[] args, Display display) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

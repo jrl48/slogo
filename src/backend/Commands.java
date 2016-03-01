@@ -1,7 +1,18 @@
 package backend;
+import methodInterfaces.TurtleInterface;
+import methodInterfaces.TurtleRight;
+import methodInterfaces.TurtleSetHeading;
+import methodInterfaces.TurtleSetPosition;
+import methodInterfaces.TurtleSetTowards;
+import methodInterfaces.TurtleShowTurtle;
+import methodInterfaces.TurtleLeft;
+import methodInterfaces.TurtlePenDown;
+import methodInterfaces.TurtlePenUp;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import frontend.Display;
 import methodInterfaces.BooleanAnd;
 import methodInterfaces.BooleanEqual;
 import methodInterfaces.BooleanGreater;
@@ -24,11 +35,24 @@ import methodInterfaces.MathRemainder;
 import methodInterfaces.MathSin;
 import methodInterfaces.MathSum;
 import methodInterfaces.MathTan;
+import methodInterfaces.TurtleBackward;
+import methodInterfaces.TurtleClearScreen;
+import methodInterfaces.TurtleForward;
+import methodInterfaces.TurtleHideTurtle;
+import methodInterfaces.TurtleHome;
 
-public class MathCommands{
+public class Commands{
+	private Map<String, TurtleInterface> turtleInstructions = new HashMap<String, TurtleInterface>();
 	private Map<String, MathInterface> instructions = new HashMap<String, MathInterface>();
 	
-	public MathCommands(){
+	public Commands(){
+		createInstructionMap();
+		createTurtleMap();
+
+		//instructions.put(, value)
+	}
+	
+	private void createInstructionMap() {
 		instructions.put("Sum", new MathSum());
 		instructions.put("Difference", new MathDifference());
 		instructions.put("Product", new MathProduct());
@@ -50,10 +74,21 @@ public class MathCommands{
 		instructions.put("And", new BooleanAnd());
 		instructions.put("Or", new BooleanOr());
 		instructions.put("Not", new BooleanNot());
-		
-		
-		
-		//instructions.put(, value)
+	}
+	
+	private void createTurtleMap() {
+		turtleInstructions.put("Forward", new TurtleForward());
+		turtleInstructions.put("Backward", new TurtleBackward());
+		turtleInstructions.put("Right", new TurtleRight());
+		turtleInstructions.put("SetHeading", new TurtleSetHeading());
+		turtleInstructions.put("SetTowards", new TurtleSetTowards());
+		turtleInstructions.put("SetPosition", new TurtleSetPosition());
+		turtleInstructions.put("PenDown", new TurtlePenUp());
+		turtleInstructions.put("PenUp", new TurtlePenDown());
+		turtleInstructions.put("ShowTurtle", new TurtleShowTurtle());
+		turtleInstructions.put("HideTurtle", new TurtleHideTurtle());
+		turtleInstructions.put("Home", new TurtleHome());
+		turtleInstructions.put("ClearScreen", new TurtleClearScreen());
 	}
 	
 	public double callCommand(String s, double[] args){

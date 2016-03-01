@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Pattern;
+
 import frontend.*;
 
 
@@ -20,7 +22,6 @@ public class CommandParser {
 	//private final static CommandParser myParser = new CommandParser();
 	private String myCommand;
 	private String myLanguage;
-	private Parameters myParameters;
 	private Map<String, Integer> commandInputs;
 	private Display myDisplay;
 
@@ -169,7 +170,8 @@ public class CommandParser {
 	private String getDesiredCommand(Properties properties, Enumeration commands, String command) {
 		while ( commands.hasMoreElements() ) {
 			String key = (String) commands.nextElement();
-			String[] values = properties.getProperty(key).split("|");
+			
+			String[] values = properties.getProperty(key).split("\\|");
 			for ( String value: values) {
 				if (value.equals(command)) {
 					return key;
