@@ -1,10 +1,11 @@
 package methodInterfaces;
+import frontend.Display;
 
-public class TurtleForward implements CommandInterface {
+public class TurtleForward implements TurtleInterface {
 	
 	@Override
-	public double executeCommand(int[] args) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double executeCommand(double[] args, Display display) {
+		display.moveTurtleForward(args[0]);
+		return args[0];
 	}
 }

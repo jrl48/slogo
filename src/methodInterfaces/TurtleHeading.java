@@ -1,12 +1,12 @@
 package methodInterfaces;
+
 import frontend.Display;
 
-public class TurtleHideTurtle implements TurtleInterface {
+public class TurtleHeading implements TurtleInterface {
 	
 	@Override
 	public double executeCommand(double[] args, Display display) {
-		// TODO Auto-generated method stub
-		return 0;
+		return display.getTurtleAngle();
 	}
-	
+
 }

@@ -11,21 +11,15 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
-
-import com.sun.xml.internal.ws.util.StringUtils;
-
 import frontend.*;
 
 
 
 public class CommandParser {
 	
-	//private final static CommandParser myParser = new CommandParser();
-	private String myCommand;
 	private String myLanguage;
-	private Parameters myParameters;
 	private ParametersMap myParametersMap;
-//	private Map<String, Integer> commandInputs;
+	private Map<String, Integer> commandInputs;
 	private Display myDisplay;
 
 	public CommandParser(Display display) {
@@ -109,8 +103,8 @@ public class CommandParser {
 		ParseNode current = root;
 		if(root.getChildren().size() == 0){
 			double[] args = new double[0];
-			MathCommands mathmathmath = new MathCommands();
-			root.setValue(mathmathmath.callCommand(current.getName(), args));
+			Commands mathmathmath = new Commands();
+			root.setValue(mathmathmath.callCommand(current.getName(), args, myDisplay));
 		}
 		while(root.getChildren().size() > 0){
 			dfs(root, current);
@@ -128,8 +122,10 @@ public class CommandParser {
 			}
 		}
 		if(count == 0){
+			/*if(current.getChildren().size() == commandInputs.get(current.getName())){
+				Commands mathmathmath = new Commands();*/
 			if(current.getChildren().size() == myParametersMap.getNumParams(current.getName())){
-				MathCommands mathmathmath = new MathCommands();
+				Commands mathmathmath = new Commands();
 				//call the correct method with current
 				//make sure I have the correct # of kids
 				//current == the instruction
@@ -139,7 +135,7 @@ public class CommandParser {
 				List<ParseNode> womp = current.getChildren();
 				for(ParseNode node: womp){
 					if(!node.getName().equals("")){
-						node.setValue(mathmathmath.callCommand(node.getName(), new double[0]));
+						node.setValue(mathmathmath.callCommand(node.getName(), new double[0], myDisplay));
 					}
 				}
 				double[] args = new double[womp.size()];
@@ -149,35 +145,13 @@ public class CommandParser {
 					i++;
 				}
 				
-				current.setValue(mathmathmath.callCommand(current.getName(), args));
+				current.setValue(mathmathmath.callCommand(current.getName(), args, myDisplay));
 				current.setName("");
 				current.removeChildren();
-				
-				
-				
-				
-//				if(current.getName().equals("SUM") || current.getName().equals("SUB")){
-//					List<ParseNode> womp = current.getChildren();
-//					int one = womp.get(0).getValue();
-//					int two = womp.get(1).getValue();
-//					if(current.getName().equals("SUB")){
-//						two = -1*two;
-//					}
-//					int value = sum(one,two);
-//					current.setValue(value);
-//					current.removeChildren();	
-//				}
 			}
 		}
 	}
 	
-	private static int sum(int x, int y){
-		return x + y;
-	}
-	
-	private void inputCommand(String command) {
-		myCommand = command;
-	}
 	
 	public void setLanguage(String language) {
 		myLanguage = language;
@@ -190,8 +164,7 @@ public class CommandParser {
 			Properties properties = new Properties();
 			properties.load(fileInput);
 			fileInput.close();
-			Enumeration commands = properties.keys();
-			String desiredCommand = getDesiredCommand(properties,commands,command);
+			String desiredCommand = getDesiredCommand(properties,properties.keys(),command);
 			if (desiredCommand.equals("")){
 				//ErrorMessage err = new ErrorMessage("Not a Valid Command");
 				//err.showError();
@@ -210,16 +183,13 @@ public class CommandParser {
 			String key = (String) commands.nextElement();
 			String[] values = properties.getProperty(key).split("\\|");
 			for ( String value: values) {
+				System.out.println(value);
 				if (value.equals(command)) {
 					return key;
 				}
 			}
 		}
 		return "";
-	}
-	
-	public Parameters getParameters() {
-		return myParameters;
 	}
 	
 	private void throwError(Exception e) {

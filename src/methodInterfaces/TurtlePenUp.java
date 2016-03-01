@@ -1,10 +1,11 @@
 package methodInterfaces;
+import frontend.Display;
 
-public class TurtlePenUp implements CommandInterface {
+public class TurtlePenUp implements TurtleInterface {
 	
 	@Override
-	public double executeCommand(int[] args) {
-		// TODO Auto-generated method stub
+	public double executeCommand(double[] args, Display display) {
+		display.turtlePenUp();
 		return 0;
 	}
 	

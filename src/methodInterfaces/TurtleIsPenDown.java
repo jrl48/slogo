@@ -1,12 +1,14 @@
 package methodInterfaces;
+
 import frontend.Display;
 
-public class TurtleHideTurtle implements TurtleInterface {
+public class TurtleIsPenDown implements TurtleInterface {
 	
 	@Override
 	public double executeCommand(double[] args, Display display) {
-		// TODO Auto-generated method stub
+		if (display.isTurtlePenDown())
+			return 1;
 		return 0;
 	}
-	
+
 }

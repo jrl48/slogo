@@ -1,11 +1,12 @@
 package methodInterfaces;
+import frontend.Display;
 
-public class TurtleLeft implements CommandInterface {
+public class TurtleLeft implements TurtleInterface {
 	
 	@Override
-	public double executeCommand(int[] args) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double executeCommand(double[] args, Display display) {
+		display.turnTurtle(args[0]*(-1));
+		return args[0];
 	}
 	
 }
