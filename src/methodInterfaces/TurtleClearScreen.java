@@ -4,7 +4,7 @@ import frontend.Display;
 public class TurtleClearScreen implements TurtleInterface {
 	
 	@Override
-	public double executeCommand(int[] args, Display display) {
+	public double executeCommand(double[] args, Display display) {
 		double currX = display.getTurtleX();
 		double currY = display.getTurtleY();
 		display.setTurtleCoordinates(0, 0);

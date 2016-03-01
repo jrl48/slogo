@@ -4,7 +4,7 @@ import frontend.Display;
 public class TurtlePenUp implements TurtleInterface {
 	
 	@Override
-	public double executeCommand(int[] args, Display display) {
+	public double executeCommand(double[] args, Display display) {
 		display.turtlePenUp();
 		return 0;
 	}

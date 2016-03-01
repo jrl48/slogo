@@ -1,45 +1,9 @@
 package backend;
-import methodInterfaces.TurtleInterface;
-import methodInterfaces.TurtleRight;
-import methodInterfaces.TurtleSetHeading;
-import methodInterfaces.TurtleSetPosition;
-import methodInterfaces.TurtleSetTowards;
-import methodInterfaces.TurtleShowTurtle;
-import methodInterfaces.TurtleLeft;
-import methodInterfaces.TurtlePenDown;
-import methodInterfaces.TurtlePenUp;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import methodInterfaces.*;
 import frontend.Display;
-import methodInterfaces.BooleanAnd;
-import methodInterfaces.BooleanEqual;
-import methodInterfaces.BooleanGreater;
-import methodInterfaces.BooleanLess;
-import methodInterfaces.BooleanNot;
-import methodInterfaces.BooleanNotequal;
-import methodInterfaces.BooleanOr;
-import methodInterfaces.MathAtan;
-import methodInterfaces.MathCos;
-import methodInterfaces.MathDifference;
-import methodInterfaces.MathInterface;
-import methodInterfaces.MathLog;
-import methodInterfaces.MathMinus;
-import methodInterfaces.MathPi;
-import methodInterfaces.MathPow;
-import methodInterfaces.MathProduct;
-import methodInterfaces.MathQuotient;
-import methodInterfaces.MathRandom;
-import methodInterfaces.MathRemainder;
-import methodInterfaces.MathSin;
-import methodInterfaces.MathSum;
-import methodInterfaces.MathTan;
-import methodInterfaces.TurtleBackward;
-import methodInterfaces.TurtleClearScreen;
-import methodInterfaces.TurtleForward;
-import methodInterfaces.TurtleHideTurtle;
-import methodInterfaces.TurtleHome;
 
 public class Commands{
 	private Map<String, TurtleInterface> turtleInstructions = new HashMap<String, TurtleInterface>();
@@ -80,20 +44,32 @@ public class Commands{
 		turtleInstructions.put("Forward", new TurtleForward());
 		turtleInstructions.put("Backward", new TurtleBackward());
 		turtleInstructions.put("Right", new TurtleRight());
+		turtleInstructions.put("Left", new TurtleLeft());
 		turtleInstructions.put("SetHeading", new TurtleSetHeading());
 		turtleInstructions.put("SetTowards", new TurtleSetTowards());
 		turtleInstructions.put("SetPosition", new TurtleSetPosition());
-		turtleInstructions.put("PenDown", new TurtlePenUp());
-		turtleInstructions.put("PenUp", new TurtlePenDown());
+		turtleInstructions.put("PenUp", new TurtlePenUp());
+		turtleInstructions.put("PenDown", new TurtlePenDown());
 		turtleInstructions.put("ShowTurtle", new TurtleShowTurtle());
 		turtleInstructions.put("HideTurtle", new TurtleHideTurtle());
 		turtleInstructions.put("Home", new TurtleHome());
 		turtleInstructions.put("ClearScreen", new TurtleClearScreen());
+		turtleInstructions.put("XCoordinate", new TurtleXCor());
+		turtleInstructions.put("YCoordinate", new TurtleYCor());
+		turtleInstructions.put("Heading", new TurtleHeading());
+		turtleInstructions.put("IsPenDown", new TurtleIsPenDown());
+		//turtleInstructions.put("IsShowing", new TurtleIsShowing());
 	}
 	
-	public double callCommand(String s, double[] args){
-		MathInterface command = instructions.get(s);
-		return command.executeCommand(args);
+	public double callCommand(String s, double[] args, Display display){
+		if ( instructions.containsKey(s)) {
+			MathInterface command = instructions.get(s);
+			return command.executeCommand(args);
+		} else {
+			TurtleInterface turtleCommand = turtleInstructions.get(s);
+			return turtleCommand.executeCommand(args, display);
+		}
+		
 	}
 	
 }

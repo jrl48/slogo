@@ -1,5 +1,9 @@
 package frontend;
+
 import methodInterfaces.*;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -12,6 +16,8 @@ public class Turtle
 	private double y;
 	private boolean pen;
 	
+	private static final double WIDTH = 30;
+    private static final double HEIGHT = 30;
 	private final double DEFAULT_TURTLE_SIZE = 30;
 	
 	public Turtle()
@@ -22,6 +28,16 @@ public class Turtle
 		y = 0;
 		pen = false;
 	}
+	
+	public Turtle (ObjectProperty<Image> imageProperty) {
+        body = new ImageView();
+        Bindings.bindBidirectional(this.body.imageProperty(), imageProperty);
+        body.setFitWidth(WIDTH);
+        body.setFitHeight(HEIGHT);
+        x = 0;
+        y = 0;
+        pen = false;
+    }
 	
 	public ImageView getBody()
 	{
@@ -103,4 +119,9 @@ public class Turtle
 	public void putPenUp(){
 		pen = false;
 	}
+	
+	public boolean getPen() {
+		return pen;
+	}
+
 }
