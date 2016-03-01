@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
+
+import com.sun.xml.internal.ws.util.StringUtils;
+
 import frontend.*;
 
 
@@ -34,11 +37,11 @@ public class CommandParser {
 	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
 		System.out.println(command);
 		// TODO put it all together
-		if ( command.equals("") )
+		if (command.equals("") )
 			return;
 		String[] commandPieces = command.split(" ");
 		ParseNode commandTree = makeTree(commandPieces);
-		if(commandTree== null){
+		if(commandTree == null){
 			ErrorMessage err = new ErrorMessage("Not a Valid Command");
 			err.showError();
 			return;
@@ -49,13 +52,9 @@ public class CommandParser {
 	}
 	
 	public ParseNode makeTree(String[] commands){
-        for(String s: commands){
-        	System.out.println(s);
-        }
 		ParseNode root = new ParseNode(parseCommand(commands[0]));
 		List<ParseNode> instructions = new ArrayList<ParseNode>();
 		instructions.add(root);
-		System.out.println(root.getName());
 		for(int i = 1;i< commands.length; i++){
 			int size = instructions.size() - 1;
 			String parsedCommand = parseCommand(commands[i]);
@@ -65,14 +64,24 @@ public class CommandParser {
 				instructions.add(currentNode);
 			}
 			else{
-				currentNode.setValue(Integer.parseInt(commands[i]));
+				try{
+					if(commands[i].charAt(0) == ':'){
+						//call the variables map
+						
+					}
+					currentNode.setValue(Integer.parseInt(commands[i]));
+				}
+				catch(NumberFormatException exception){
+					return null;
+				}
 			}
 			
 //			if(i == 0){
 //				root = currentNode;
 //			}
 			if(i > 0){
-				ParseNode parent = null;
+				ParseNode originalParent = null;
+				ParseNode parent = instructions.get(size);
 				for(int j = size; j >= 0; j--){
 					parent = instructions.get(j);
 					int numParams = myParametersMap.getNumParams(parent.getName());
@@ -80,10 +89,11 @@ public class CommandParser {
 						return null;
 					}
 					if(parent.getChildren().size() < numParams){
+						originalParent = parent;
 						break;
 					}
 				}
-				if(parent.equals(null)){
+				if(originalParent == null){
 					return null;
 				}
 				else{
@@ -117,8 +127,6 @@ public class CommandParser {
 			}
 		}
 		if(count == 0){
-			System.out.println("WEREWRWER");
-			System.out.println(root.getName());
 			if(current.getChildren().size() == myParametersMap.getNumParams(current.getName())){
 				MathCommands mathmathmath = new MathCommands();
 				//call the correct method with current
@@ -141,6 +149,7 @@ public class CommandParser {
 				}
 				
 				current.setValue(mathmathmath.callCommand(current.getName(), args));
+				current.setName("");
 				current.removeChildren();
 				
 				

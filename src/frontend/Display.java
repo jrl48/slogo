@@ -44,22 +44,22 @@ public class Display {
     // List of Lines that are being drawn by the turtle
     private ArrayList<Line> lines;
     
-    public Display (ColorPicker dispCol, ColorPicker penCol, SimpleBooleanProperty isPenVisible) {
-        this.isPenVisible = isPenVisible;
-        this.penCol = penCol;
-        initPane(dispCol);
+    public Display (DisplayPreferences dispPref) {
+        this.isPenVisible = dispPref.getPenVisibility();
+        this.penCol = dispPref.getPenColorPicker();
+        initPane(dispPref);
     }
     
-    private void initPane(ColorPicker cp)
+    private void initPane(DisplayPreferences dispPref)
     {
     	root = new Group();
         myPane = new Pane(root);
         myPane.getStyleClass().add(sceneResources.getString("DISPLAYID"));
         myPane.setPrefSize(WIDTH, HEIGHT);
-        setPaneBinding(myPane, cp);
+        setPaneBinding(myPane, dispPref.getDispColorPicker());
         
         // Biuld turtle and initialize it at Logo's (0,0)
-        myTurtle = new Turtle();
+        myTurtle = new Turtle(dispPref.getImageProperty());
         myPane.getChildren().add(myTurtle.getBody());
         updateTurtleVisualPosition();
         
