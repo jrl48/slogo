@@ -1,4 +1,4 @@
-package backend;
+package methodInterfaces;
 
 public class MathCos implements MathInterface{
 	public double executeCommand(double[] args){

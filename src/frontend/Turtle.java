@@ -1,10 +1,11 @@
 package frontend;
+import methodInterfaces.*;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Turtle 
+public class Turtle
 {
 	private ImageView body;
 	private double x;

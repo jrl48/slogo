@@ -8,7 +8,7 @@ public class StringNumEntry implements Entry {
     private SimpleStringProperty firstValue;
     private SimpleDoubleProperty secondValue;
     
-    public StringNumEntry(String command, Integer result){
+    public StringNumEntry(String command, double result){
         this.firstValue = new SimpleStringProperty(command);
         this.secondValue = new SimpleDoubleProperty(result);
     }

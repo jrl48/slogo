@@ -2,6 +2,29 @@ package backend;
 import java.util.HashMap;
 import java.util.Map;
 
+import methodInterfaces.BooleanAnd;
+import methodInterfaces.BooleanEqual;
+import methodInterfaces.BooleanGreater;
+import methodInterfaces.BooleanLess;
+import methodInterfaces.BooleanNot;
+import methodInterfaces.BooleanNotequal;
+import methodInterfaces.BooleanOr;
+import methodInterfaces.MathAtan;
+import methodInterfaces.MathCos;
+import methodInterfaces.MathDifference;
+import methodInterfaces.MathInterface;
+import methodInterfaces.MathLog;
+import methodInterfaces.MathMinus;
+import methodInterfaces.MathPi;
+import methodInterfaces.MathPow;
+import methodInterfaces.MathProduct;
+import methodInterfaces.MathQuotient;
+import methodInterfaces.MathRandom;
+import methodInterfaces.MathRemainder;
+import methodInterfaces.MathSin;
+import methodInterfaces.MathSum;
+import methodInterfaces.MathTan;
+
 public class MathCommands{
 	private Map<String, MathInterface> instructions = new HashMap<String, MathInterface>();
 	

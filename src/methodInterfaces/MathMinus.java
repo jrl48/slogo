@@ -1,4 +1,4 @@
-package backend;
+package methodInterfaces;
 
 
 public class MathMinus implements MathInterface{

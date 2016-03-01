@@ -1,4 +1,4 @@
-package backend;
+package methodInterfaces;
 
 public class BooleanAnd implements MathInterface{
 	public double executeCommand(double[] args){

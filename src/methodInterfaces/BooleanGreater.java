@@ -1,4 +1,4 @@
-package backend;
+package methodInterfaces;
 
 public class BooleanGreater implements MathInterface{
 	public double executeCommand(double args[]){

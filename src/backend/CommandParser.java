@@ -2,40 +2,50 @@ package backend;
 
 
 import java.util.*;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.Properties;
+import frontend.*;
 
-//import frontend.UserInterface;
 
 
 public class CommandParser {
 	
-	private final static CommandParser myParser = new CommandParser();
+	//private final static CommandParser myParser = new CommandParser();
 	private String myCommand;
 	private String myLanguage;
 	private Parameters myParameters;
-	private static Map<String, Integer> commandInputs = new HashMap<String, Integer>();
-	
+	private Map<String, Integer> commandInputs;
+	private Display myDisplay;
 
-	private CommandParser() {
-		// TODO Auto-generated constructor stub
+	public CommandParser(Display display) {
+		commandInputs = new HashMap<String, Integer>();
+		myDisplay = display;
+		myLanguage = "English";
 	}
 	
-	public void parse(String command) {
+	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+		System.out.println(command);
 		// TODO put it all together
-				
+		if ( command.equals("") )
+			return;
+		String[] commandPieces = command.split(" ");
+		ParseNode commandTree = makeTree(commandPieces);
+		double result = readTree(commandTree);
+		terminal.addEntry(new StringNumEntry(command,result));
+		
 	}
 	
-	public CommandParser getParser(){
-		return myParser;
-	}
-	
-	public static ParseNode makeTree(String[] commands){
-		//System.out.println("WEREWRWER");
+	public ParseNode makeTree(String[] commands){
+        for(String s: commands){
+        	System.out.println(s);
+        }
 		ParseNode root = new ParseNode(parseCommand(commands[0]));
 		List<ParseNode> instructions = new ArrayList<ParseNode>();
 		instructions.add(root);
@@ -67,7 +77,7 @@ public class CommandParser {
 		return root;
 	}
 	
-	private static double readTree(ParseNode root){
+	private double readTree(ParseNode root){
 		ParseNode current = root;
 		while(root.getChildren().size() > 0){
 			dfs(root, current);
@@ -76,7 +86,7 @@ public class CommandParser {
 		return root.getValue();
 	}
 	
-	private static void dfs(ParseNode root, ParseNode current){
+	private void dfs(ParseNode root, ParseNode current){
 		int count = 0;
 		for(ParseNode child: current.getChildren()){
 			if(child.getChildren().size() != 0){
@@ -135,35 +145,25 @@ public class CommandParser {
 	}
 	
 
-	private static String parseCommand(String command) {
-//		if(command.equals("SUM")){
-//			//System.out.println("SUMASUMASUMA");
-//			commandInputs.put(command, 2);
-//			return command;
-//		}
-//		else if(command.equals("SUB")){
-//			commandInputs.put(command, 2);
-//			return command;
-//		}
-//		else{
-//			return "";
-//		}
+	private String parseCommand(String command) {
 		try {
-			FileInputStream fileInput = new FileInputStream(new File(myLanguage + ".properties"));
+			FileInputStream fileInput = new FileInputStream(new File("bin/resources/languages/" + myLanguage + ".properties"));
 			Properties properties = new Properties();
 			properties.load(fileInput);
 			fileInput.close();
 			Enumeration commands = properties.keys();
 			String desiredCommand = getDesiredCommand(properties,commands,command);
-			if (desiredCommand.equals(""))
-				UserInterface.displayError("That is not a command!");
+			if (desiredCommand.equals("")){
+				ErrorMessage err = new ErrorMessage("Not a Valid Command");
+				err.showError();
+			}
 			return desiredCommand;
 		} catch (FileNotFoundException e) {
 			throwError(e);
 		} catch (IOException e) {
 			throwError(e);
 		}
-
+		return "";
 	}
 	
 	private String getDesiredCommand(Properties properties, Enumeration commands, String command) {
@@ -188,7 +188,7 @@ public class CommandParser {
 		e.printStackTrace();
 	}
 	
-    public static void main(String[] args){
+    /*public static void main(String[] args){
         String command = "SUM 1 SUM 1 1";
         String[] commands = command.split(" ");
         for(String s: commands){
@@ -198,6 +198,6 @@ public class CommandParser {
         double x = readTree(root);
         System.out.println(x);
         
-    }
+    }*/
 
 }

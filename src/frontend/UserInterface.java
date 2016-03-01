@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import backend.CommandParser;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -38,6 +40,7 @@ public class UserInterface {
     private GridPane myGridPane;
 
     // Components
+    private CommandParser myCommandParser;
     private Display myDisplay;
     private CommandLine myCommandLine;
     private TerminalView myTerminal;
@@ -67,17 +70,18 @@ public class UserInterface {
 
     private void initModules (Stage primaryStage) {
         myDisplayPreferences = new DisplayPreferences(primaryStage);
-        System.out.println(myDisplayPreferences.getDispColorPicker());
         myDisplay = new Display(myDisplayPreferences.getDispColorPicker(),myDisplayPreferences.getPenColorPicker(),myDisplayPreferences.getPenVisibility());
+
         myTerminalManager = new EntryManager();
         myCommandManager = new EntryManager();
         myWorkspaceManager = new EntryManager();
         myLanguageManager = new LanguageManager();
-        myCommandLine = new CommandLine(myTerminalManager);
+    	myCommandParser = new CommandParser(myDisplay);
+        myCommandLine = new CommandLine(myCommandParser, myTerminalManager, myCommandManager, myWorkspaceManager);
         // TODO: Take this out! FOR DEBUGGING ONLY
     	//myCommandLine.setDisplay(myDisplay);
     	// -----------------------------
-    	
+
         myTerminal = new TerminalView(myCommandLine, myTerminalManager, "Terminal", new String[]{"Command","Result"}); //TODO resource file
         myWorkspace = new WorkspaceView(myWorkspaceManager, "Workspace", new String[]{"Variable","Value"});
         myUserDefined = new UserDefinedView(myCommandLine,myCommandManager, "User Defined Commands", new String[]{"Command", "Value"});//TODO Resource file
