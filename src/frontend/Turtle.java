@@ -90,4 +90,17 @@ public class Turtle
 	{
 		body.setRotate(body.getRotate() + angle);
 	}
+	
+	//HAVE TO ADD TO USE METHODS
+	public void setAngle(double angle) {
+		body.setRotate(angle);
+	}
+	
+	public void putPenDown(){
+		pen = true;
+	}
+	
+	public void putPenUp(){
+		pen = false;
+	}
 }

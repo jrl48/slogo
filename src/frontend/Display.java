@@ -129,4 +129,29 @@ public class Display {
     {
     	myTurtle.rotate(angle);
     }
+    
+    //HAD TO ADD TO USE METHODS (we should consider passing turtle not display)
+    public void setTurtleAngle(double angle) {
+    	myTurtle.setAngle(angle);
+    }
+    
+    public double getTurtleAngle() {
+    	return myTurtle.getAngle();
+    }
+    
+    public double getTurtleX() {
+    	return myTurtle.getVisualX();
+    }
+    
+    public double getTurtleY() {
+    	return myTurtle.getVisualY();
+    }
+    
+    public void turtlePenUp() {
+    	myTurtle.putPenUp();
+    }
+    
+    public void turtlePenDown() {
+    	myTurtle.putPenDown();
+    }
 }

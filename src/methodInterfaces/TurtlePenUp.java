@@ -5,7 +5,7 @@ public class TurtlePenUp implements TurtleInterface {
 	
 	@Override
 	public double executeCommand(int[] args, Display display) {
-		// TODO Auto-generated method stub
+		display.turtlePenUp();
 		return 0;
 	}
 	

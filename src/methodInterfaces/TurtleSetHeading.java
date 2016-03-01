@@ -5,8 +5,9 @@ public class TurtleSetHeading implements TurtleInterface {
 	
 	@Override
 	public double executeCommand(int[] args, Display display) {
-		// TODO Auto-generated method stub
-		return 0;
+		double currAngle = display.getTurtleAngle();
+		display.setTurtleAngle(args[0]);
+		return args[0]-currAngle;
 	}
 	
 }

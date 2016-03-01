@@ -97,7 +97,7 @@ public class CommandParser {
 		}
 		if(count == 0){
 			if(current.getChildren().size() == commandInputs.get(current.getName())){
-				MathCommands mathmathmath = new MathCommands();
+				Commands mathmathmath = new Commands();
 				//call the correct method with current
 				//make sure I have the correct # of kids
 				//current == the instruction
@@ -179,10 +179,6 @@ public class CommandParser {
 			}
 		}
 		return "";
-	}
-	
-	public Parameters getParameters() {
-		return myParameters;
 	}
 	
 	private void throwError(Exception e) {

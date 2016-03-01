@@ -5,7 +5,7 @@ public class TurtleBackward implements TurtleInterface {
 
 	@Override
 	public double executeCommand(int[] args, Display display) {
-		// TODO Auto-generated method stub
-		return 0;
+		display.moveTurtleForward(args[0]*(-1));
+		return args[0];
 	}
 }

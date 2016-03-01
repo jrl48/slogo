@@ -5,8 +5,8 @@ public class TurtleSetTowards implements TurtleInterface {
 	
 	@Override
 	public double executeCommand(int[] args, Display display) {
-		// TODO Auto-generated method stub
-		return 0;
+		display.setTurtleAngle(args[1]/args[0]);
+		return display.getTurtleAngle();
 	}
 	
 }

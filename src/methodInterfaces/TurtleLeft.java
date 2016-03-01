@@ -5,8 +5,8 @@ public class TurtleLeft implements TurtleInterface {
 	
 	@Override
 	public double executeCommand(int[] args, Display display) {
-		// TODO Auto-generated method stub
-		return 0;
+		display.turnTurtle(args[0]*(-1));
+		return args[0];
 	}
 	
 }

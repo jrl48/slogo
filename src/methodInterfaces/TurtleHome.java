@@ -5,8 +5,10 @@ public class TurtleHome implements TurtleInterface {
 	
 	@Override
 	public double executeCommand(int[] args, Display display) {
-		// TODO Auto-generated method stub
-		return 0;
+		double currX = display.getTurtleX();
+		double currY = display.getTurtleY();
+		display.setTurtleCoordinates(0, 0);
+		return Math.sqrt(Math.pow(currX, 2) + Math.pow(currY, 2));
 	}
 	
 }
