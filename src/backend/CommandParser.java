@@ -41,7 +41,8 @@ public class CommandParser {
 			return;
 		String[] commandPieces = command.split(" ");
 		ParseNode commandTree = makeTree(commandPieces);
-		if(commandTree == null){
+		if(commandTree == null)
+		{
 			ErrorMessage err = new ErrorMessage("Not a Valid Command");
 			err.showError();
 			return;

@@ -34,7 +34,7 @@ public class UserInterface {
     private ResourceBundle buttonResources =
             ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + BUTTONLABELS);
     public static final double WIDTH = 1100;
-    public static final double HEIGHT = 600;
+    public static final double HEIGHT = 700;
     private Scene myScene;
     private Group root;
     private GridPane myGridPane;
