@@ -1,9 +1,5 @@
 package frontend;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.util.converter.DoubleStringConverter;
 
 public class CheckedDoubleStringConverter extends DoubleStringConverter{
