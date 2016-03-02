@@ -33,7 +33,7 @@ public class CommandParser {
 	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
 		if (command.equals("") )
 			return;
-		String[] commandPieces = command.split(" ");
+		String[] commandPieces = command.split("\\s+");
 		ParseNode commandTree = makeTree(commandPieces);
 		if(commandTree == null)
 		{
@@ -170,7 +170,14 @@ public class CommandParser {
 			String key = (String) commands.nextElement();
 			String[] values = properties.getProperty(key).split("\\|");
 			for ( String value: values) {
-				if (value.equals(command)) {
+				String realValue = value;
+				if(value.startsWith("\\")){
+					realValue = value.substring(1);
+				}
+				if(value.endsWith("\\?")){
+					realValue = value.substring(0, value.length() -2) + "?";
+				}
+				if (realValue.equals(command)) {
 					return key;
 				}
 			}
