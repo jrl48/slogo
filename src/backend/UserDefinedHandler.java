@@ -146,7 +146,7 @@ public class UserDefinedHandler {
 				repcount.setSecondValue((double)i);
 				workspace.addEntry(repcount);
 				String currIter = i.toString();
-				parser.parse(newCommand + " " + currIter, terminal, commandManager, workspace);
+				parser.parse(newCommand, terminal, commandManager, workspace);
 			}
 		} catch (NumberFormatException e) {
 			throwError("Not a Valid Command!");
@@ -180,12 +180,12 @@ public class UserDefinedHandler {
 			int varLim = Integer.parseInt(variableLimit[1]);
 			Entry repcount = new StringNumEntry(variableLimit[0],0.0);
 			workspace.addEntry(repcount);
-			for ( Integer i = 1; i < varLim; i++ ) {
+			for ( Integer i = 1; i <= varLim; i++ ) {
 				workspace.removeEntry(repcount);
 				repcount.setSecondValue((double)i);
 				workspace.addEntry(repcount);
 				String currIter = i.toString();
-				parser.parse(newCommand + " " + currIter, terminal, commandManager, workspace);
+				parser.parse(newCommand, terminal, commandManager, workspace);
 			}
 		} catch (NumberFormatException e) {
 			throwError("Not a Valid Command!");
@@ -208,7 +208,7 @@ public class UserDefinedHandler {
 			}
 			Entry repcount = new StringNumEntry("repcount",0.0);
 			workspace.addEntry(repcount);
-			for ( int i = 1; i < expr; i++) {
+			for ( int i = 1; i <= expr; i++) {
 				workspace.removeEntry(repcount);
 				repcount.setSecondValue((double)i);
 				workspace.addEntry(repcount);
