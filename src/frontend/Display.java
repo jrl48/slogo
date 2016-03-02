@@ -56,7 +56,7 @@ public class Display {
         myPane.setPrefSize(WIDTH, HEIGHT);
         setPaneBinding(myPane, dispPref.getDispColorPicker());
         
-        // Biuld turtle and initialize it at Logo's (0,0)
+        // Build turtle and initialize it at Logo's (0,0)
         myTurtle = new Turtle(dispPref.getImageProperty());
         myPane.getChildren().add(myTurtle.getBody());
         updateTurtleVisualPosition();
@@ -88,7 +88,7 @@ public class Display {
     		Line newLine = new Line(myTurtle.getVisualX(), myTurtle.getVisualY(), newX, newY); 
     		newLine.setStroke(penCol.getValue());
     		lines.add( newLine );
-    		myPane.getChildren().addAll(newLine);
+    		myPane.getChildren().add(newLine);
     	}
     	
     	// When updating coordinates, compensate the X and Y because they reference the edge of the 
@@ -163,11 +163,11 @@ public class Display {
     }
     
     public void clearDisplay()
-    {
+    {    	
     	// Deletes all lines 
-    	for ( int i = 0; i < lines.size(); i++ )
+    	for ( Line toBeDeleted : lines )
     	{
-    		root.getChildren().remove(lines.get(i));
+    		myPane.getChildren().remove(toBeDeleted);
     	}
     	
     	lines.clear();

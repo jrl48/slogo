@@ -44,8 +44,12 @@ public class CommandLine {
         myTextField.setOnKeyReleased(e -> keyPressed(e.getCode(), parser, terminal, command, workspace, false));
     }
     
-    private void enterCommand(CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace){
-        if ( !myTextField.getText().isEmpty() )
+    private void enterCommand(CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace)
+    {
+    	shiftPressed = false;
+    	enterPressed = false;
+    	
+    	if ( !myTextField.getText().isEmpty() )
         {
                 parser.parse(myTextField.getText(), terminal, command, workspace);
                 myTextField.clear();
@@ -61,6 +65,10 @@ public class CommandLine {
         else if ( code ==  KeyCode.ENTER)
                 enterPressed = beingPressed;
         
+        // TODO: DEBUGGIN!!
+        // else if ( code == KeyCode.BACK_SLASH )
+        	// display.clearDisplay();
+        // ------
         if ( enterPressed && shiftPressed )
                 enterCommand(parser, terminal, command, workspace);
         
