@@ -53,17 +53,6 @@ public class CommandLine {
         if ( !myTextField.getText().isEmpty() )
         {
                 parser.parse(myTextField.getText(), terminal, command, workspace);
-                // TODO: Take this out! FOR DEBUGGING ONLY
-                if ( myTextField.getText().equals("fd") )
-                        display.moveTurtleForward(20);
-                else if ( myTextField.getText().equals("pen") )
-                        display.toggleTurtlePen();
-                else if ( myTextField.getText().equals("turn right") )
-                        display.turnTurtle(90);
-                else if ( myTextField.getText().equals("turn left") )
-                        display.turnTurtle(-90);
-                // -----------------------------
-                
                 myTextField.clear();
         }
 
