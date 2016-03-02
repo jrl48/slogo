@@ -36,9 +36,11 @@ public class UserDefinedHandler {
 	
 	public void handleLoops(String command, CommandParser parser, 
 			EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+		System.out.println(command);
 		String[] commandPieces = command.split("\\s+");
-		if ( commandPieces[0].equals(myUserDefinedCommands.get(0)))
-			makeVariable(command,workspace,terminal);
+		if ( commandPieces[0].equals(myUserDefinedCommands.get(0))){
+			System.out.println(command);
+			makeVariable(command,workspace,terminal);}
 		else if ( commandPieces[0].equals(myUserDefinedCommands.get(1)))
 			repeatLoop(command,parser,terminal,commandManager,workspace);
 		else if ( commandPieces[0].equals(myUserDefinedCommands.get(2)))
@@ -218,6 +220,7 @@ public class UserDefinedHandler {
 	}
 
 	private void makeVariable(String command, EntryManager workspace, EntryManager terminal) {
+		System.out.println(command);
 		String[] commandPieces = command.split("\\s+");
 		if (commandPieces.length != 3) {
 			throwError("Not a Valid Command!");
