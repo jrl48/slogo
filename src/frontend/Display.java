@@ -108,77 +108,59 @@ public class Display {
     	double deltaX = Math.sin(myTurtle.getAngle() * Math.PI / 180) * length;
     	double deltaY = Math.cos(myTurtle.getAngle() * Math.PI / 180) * length;
     	
-    	// TODO: There's an isse with order of operation here.... still trying to fix it
-    	// TODO: Totally seems like duplicate code. Should work on that later.
-    	
-    	while ( myTurtle.getX() + deltaX > WIDTH/2 )
+    	// TODO:BUG: Large inputs crash program
+    	boolean flag = false;
+    	do 
     	{
-    		double amountWalked = WIDTH/2 - myTurtle.getX();
-    		double deltaPrime = amountWalked / Math.tan(myTurtle.getAngle() * Math.PI / 180);
+    		flag = false;
     		
-    		myTurtle.setCoordinates(WIDTH/2, myTurtle.getY() + deltaPrime);
-    		updateTurtleVisualPosition(false);
-    		deltaX -= amountWalked;
-    		deltaY -= deltaPrime;
-    		
-    		myTurtle.setCoordinates(-WIDTH/2, myTurtle.getY() + deltaPrime);
-    		
-    		updateTurtleVisualPosition(true);
-    	}
-    
-    	while ( myTurtle.getX() + deltaX < -WIDTH/2)
-    	{
-    		double amountWalked = - (myTurtle.getX() + WIDTH / 2);
-    		// double deltaPrime = Math.cos(myTurtle.getAngle() * Math.PI / 180) * amountWalked;
-    		double deltaPrime = amountWalked / Math.tan(myTurtle.getAngle() * Math.PI / 180);
+    		for ( int multiplier : new int[] {-1, 1} )
+    		{
+    			if ( multiplier * (myTurtle.getX() + deltaX) > WIDTH/2 )
+    			{
+    				double amountWalked = multiplier * WIDTH/2 - myTurtle.getX();
+    				double deltaPrime = amountWalked / Math.tan(myTurtle.getAngle() * Math.PI / 180);
+
+    				myTurtle.setCoordinates(multiplier * WIDTH/2, myTurtle.getY() + deltaPrime);
+    				updateTurtleVisualPosition(false);
+    				deltaX -= amountWalked;
+    				deltaY -= deltaPrime;
+
+    				myTurtle.setCoordinates(-multiplier * WIDTH/2, myTurtle.getY() + deltaPrime);
+
+    				updateTurtleVisualPosition(true);
     				
-    		myTurtle.setCoordinates(-WIDTH/2, myTurtle.getY() + deltaPrime);
-    		updateTurtleVisualPosition(false);
-    		deltaX -= amountWalked;
-    		deltaY -= deltaPrime;
-    		
-    		myTurtle.setCoordinates(WIDTH/2, myTurtle.getY() + deltaPrime);
-    		updateTurtleVisualPosition(true);
-    	}
-    	
-    	while ( myTurtle.getY() + deltaY > HEIGHT/2 )
-    	{
-    		double amountWalked = HEIGHT/2 - myTurtle.getY();
-    		double deltaPrime = amountWalked * Math.tan(myTurtle.getAngle() * Math.PI / 180);
-    		
-    		myTurtle.setCoordinates( myTurtle.getX() + deltaPrime, HEIGHT/2);
-    		updateTurtleVisualPosition(false);
-    		deltaY -= amountWalked;
-    		deltaX -= deltaPrime;
-    		
-    		myTurtle.setCoordinates(myTurtle.getX() + deltaPrime, -HEIGHT/2);
-    		updateTurtleVisualPosition(true);
-    	}
-    	
-    	while ( myTurtle.getY() + deltaY < -HEIGHT/2)
-    	{
-    		double amountWalked = - (myTurtle.getY() + HEIGHT / 2);
-    		double deltaPrime = amountWalked * Math.tan(myTurtle.getAngle() * Math.PI / 180);
+    				flag = true;
+    			}
+
+    			if ( multiplier * (myTurtle.getY() + deltaY) > HEIGHT/2 )
+    			{
+    				double amountWalked = multiplier * HEIGHT/2 - myTurtle.getY();
+    				double deltaPrime = amountWalked * Math.tan(myTurtle.getAngle() * Math.PI / 180);
+
+    				myTurtle.setCoordinates( myTurtle.getX() + deltaPrime, multiplier * HEIGHT/2);
+    				updateTurtleVisualPosition(false);
+    				deltaY -= amountWalked;
+    				deltaX -= deltaPrime;
+
+    				myTurtle.setCoordinates(myTurtle.getX() + deltaPrime, -multiplier * HEIGHT/2);
+    				updateTurtleVisualPosition(true);
     				
-    		myTurtle.setCoordinates(myTurtle.getX() + deltaPrime, -HEIGHT/2);
-    		updateTurtleVisualPosition(false);
-    		deltaY -= amountWalked;
-    		deltaX -= deltaPrime;
-    		
-    		myTurtle.setCoordinates(myTurtle.getX() + deltaPrime, HEIGHT/2);
-    		updateTurtleVisualPosition(true);
-    	}
+    				flag = true;
+    			}
+    		}
+    	} while ( flag );
     	
     	myTurtle.setCoordinates(myTurtle.getX() + deltaX, myTurtle.getY() + deltaY);
     	updateTurtleVisualPosition(false);
     }
-    
+
     // Turn the turtle, in DEGREES!
     public void turnTurtle(double angle)
     {
     	myTurtle.rotate(angle);
     }
-    
+
     //HAD TO ADD TO USE METHODS (we should consider passing turtle not display)
     public void setTurtleAngle(double angle) {
     	myTurtle.setAngle(angle);
