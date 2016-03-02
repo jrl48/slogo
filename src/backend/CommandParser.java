@@ -48,7 +48,7 @@ public class CommandParser {
 			List<ParseNode> commandTree = makeTree(commandPieces,workspace);
 			if(commandTree == null)
 			{
-				throwError("Not a Valid Command!");
+				throwError("Oh shit!");
 				return;
 			}
 			for(ParseNode node: commandTree){
