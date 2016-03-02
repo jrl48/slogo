@@ -59,7 +59,7 @@ import javafx.util.converter.NumberStringConverter;
 public class WorkspaceView extends ModuleView {
     private static final double WIDTH = 250;
     private static final double HEIGHT = 200;
-    private static final double VAR_WIDTH = 200;
+    private static final double VAR_WIDTH = 170;
     private static final double VAL_WIDTH = 80;
     private int variableColIndex = 0;
     private int valueColIndex = 1;
@@ -67,10 +67,6 @@ public class WorkspaceView extends ModuleView {
     @SuppressWarnings("unchecked")
     public WorkspaceView (EntryManager manager, String labelTitle, String[] columnTitles) {
         super(manager, labelTitle, columnTitles);
-        manager.addEntry(new StringNumEntry("x", 2));
-        manager.addEntry(new StringNumEntry("y", 3));
-        manager.addEntry(new StringNumEntry("fix it", 2));
-        manager.addEntry(new StringNumEntry("ya", 2));
         setSizing();
         getMyTableView().setEditable(true);
         try{
