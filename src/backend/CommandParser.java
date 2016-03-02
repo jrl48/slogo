@@ -45,20 +45,24 @@ public class CommandParser {
 			String newCommand = command.replaceFirst(commandPieces[0], instruction);
 			myUserDefinedHandler.handleLoops(newCommand, this, terminal, commandManager, workspace);
 		} else {
-			ParseNode commandTree = makeTree(commandPieces,workspace);
+			List<ParseNode> commandTree = makeTree(commandPieces,workspace);
 			if(commandTree == null)
 			{
 				throwError("Not a Valid Command!");
 				return;
 			}
-			double result = readTree(commandTree);
-			terminal.addEntry(new StringNumEntry(command,result));
+			for(ParseNode node: commandTree){
+				double result = readTree(node);
+				terminal.addEntry(new StringNumEntry(command,result));
+			}
+			
 		}
 	}
 	
 	private List<ParseNode> makeTree(String[] commands, EntryManager workspace){
 		List<ParseNode> rootList = new ArrayList<ParseNode>();
 		ParseNode root = new ParseNode(parseCommand(commands[0]));
+		rootList.add(root);
 		if(parseCommand(commands[0]).equals("")){
 			return null;
 		}
@@ -106,14 +110,20 @@ public class CommandParser {
 					}
 				}
 				if(originalParent == null){
-					return null;
+					if(currentNode.getName().equals("")){
+						return null;
+					}
+					rootList.add(currentNode);
+					instructions.clear();
+					instructions.add(currentNode);
+					root = currentNode;
 				}
 				else{
 					parent.addChild(currentNode);
 				}
 			}
 		}
-		return root;
+		return rootList;
 	}
 	
 	private double readTree(ParseNode root){
