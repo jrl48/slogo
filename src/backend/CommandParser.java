@@ -20,11 +20,13 @@ import frontend.*;
 
 public class CommandParser {
 	
+	private UserDefinedHandler myUserDefinedHandler;
 	private String myLanguage;
 	private ParametersMap myParametersMap;
 	private Display myDisplay;
 
 	public CommandParser(Display display) {
+		myUserDefinedHandler = new UserDefinedHandler();
 		myParametersMap = new ParametersMap();
 		myDisplay = display;
 		myLanguage = "English";
@@ -34,15 +36,22 @@ public class CommandParser {
 		if (command.equals("") )
 			return;
 		String[] commandPieces = command.split("\\s+");
-		ParseNode commandTree = makeTree(commandPieces, workspace);
-		if(commandTree == null)
-		{
+		if ( commandPieces.length == 0) {
 			throwError("Not a Valid Command!");
 			return;
 		}
-		double result = readTree(commandTree);
-		terminal.addEntry(new StringNumEntry(command,result));
-		
+		if (myUserDefinedHandler.isLoopCommand(commandPieces[0])) {
+			myUserDefinedHandler.handleLoops(command, this, terminal, commandManager, workspace);
+		} else {
+			ParseNode commandTree = makeTree(commandPieces,workspace);
+			if(commandTree == null)
+			{
+				throwError("Not a Valid Command!");
+				return;
+			}
+			double result = readTree(commandTree);
+			terminal.addEntry(new StringNumEntry(command,result));
+		}
 	}
 	
 	private ParseNode makeTree(String[] commands, EntryManager workspace){
