@@ -58,7 +58,7 @@ public class Commands{
 		turtleInstructions.put("YCoordinate", new TurtleYCor());
 		turtleInstructions.put("Heading", new TurtleHeading());
 		turtleInstructions.put("IsPenDown", new TurtleIsPenDown());
-		//turtleInstructions.put("IsShowing", new TurtleIsShowing());
+		turtleInstructions.put("IsShowing", new TurtleIsShowing());
 	}
 	
 	public double callCommand(String s, double[] args, Display display){
