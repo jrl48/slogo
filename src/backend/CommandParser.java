@@ -20,11 +20,13 @@ import frontend.*;
 
 public class CommandParser {
 	
+	private UserDefinedHandler myUserDefinedHandler;
 	private String myLanguage;
 	private ParametersMap myParametersMap;
 	private Display myDisplay;
 
 	public CommandParser(Display display) {
+		myUserDefinedHandler = new UserDefinedHandler();
 		myParametersMap = new ParametersMap();
 		myDisplay = display;
 		myLanguage = "English";
@@ -33,19 +35,26 @@ public class CommandParser {
 	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
 		if (command.equals("") )
 			return;
-		String[] commandPieces = command.split(" ");
-		ParseNode commandTree = makeTree(commandPieces);
-		if(commandTree == null)
-		{
+		String[] commandPieces = command.split("\\s+");
+		if ( commandPieces.length == 0) {
 			throwError("Not a Valid Command!");
 			return;
 		}
-		double result = readTree(commandTree);
-		terminal.addEntry(new StringNumEntry(command,result));
-		
+		if (myUserDefinedHandler.isLoopCommand(commandPieces[0])) {
+			myUserDefinedHandler.handleLoops(command, this, terminal, commandManager, workspace);
+		} else {
+			ParseNode commandTree = makeTree(commandPieces,workspace);
+			if(commandTree == null)
+			{
+				throwError("Not a Valid Command!");
+				return;
+			}
+			double result = readTree(commandTree);
+			terminal.addEntry(new StringNumEntry(command,result));
+		}
 	}
 	
-	private ParseNode makeTree(String[] commands){
+	private ParseNode makeTree(String[] commands, EntryManager workspace){
 		ParseNode root = new ParseNode(parseCommand(commands[0]));
 		List<ParseNode> instructions = new ArrayList<ParseNode>();
 		instructions.add(root);
@@ -60,9 +69,17 @@ public class CommandParser {
 				try{
 					if(commands[i].charAt(0) == ':'){
 						//call the variables map
-						
+						String variable = commands[i].substring(1);
+						if(workspace.getValue(variable) == null){
+							workspace.addEntry(new StringNumEntry(variable,0.0));
+						}
+						else{
+							currentNode.setValue((double) workspace.getValue(variable));
+						}
 					}
-					currentNode.setValue(Integer.parseInt(commands[i]));
+					else{
+						currentNode.setValue(Double.parseDouble(commands[i]));
+					}
 				}
 				catch(NumberFormatException exception){
 					return null;
@@ -98,7 +115,9 @@ public class CommandParser {
 		if(root.getChildren().size() == 0){
 			double[] args = new double[0];
 			Commands commandMap = new Commands();
-			root.setValue(commandMap.callCommand(current.getName(), args, myDisplay));
+			if(!root.getName().equals("")){
+				root.setValue(commandMap.callCommand(current.getName(), args, myDisplay));
+			}	
 		}
 		while(root.getChildren().size() > 0){
 			dfs(root, current);
@@ -170,7 +189,14 @@ public class CommandParser {
 			String key = (String) commands.nextElement();
 			String[] values = properties.getProperty(key).split("\\|");
 			for ( String value: values) {
-				if (value.equals(command)) {
+				String realValue = value;
+				if(value.startsWith("\\")){
+					realValue = value.substring(1);
+				}
+				if(value.endsWith("\\?")){
+					realValue = value.substring(0, value.length() -2) + "?";
+				}
+				if (realValue.equals(command)) {
 					return key;
 				}
 			}
