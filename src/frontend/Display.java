@@ -146,4 +146,30 @@ public class Display {
     public void turtlePenDown() {
     	myTurtle.putPenDown();
     }
+    
+    public void hideTurtle()
+    {
+    	myTurtle.toggleVisibility(0);
+    }
+    
+    public void showTurtle()
+    {
+    	myTurtle.toggleVisibility(1);
+    }
+    
+    public boolean getTurtleVisibility()
+    {
+    	return myTurtle.isVisible();
+    }
+    
+    public void clearDisplay()
+    {
+    	// Deletes all lines 
+    	for ( int i = 0; i < lines.size(); i++ )
+    	{
+    		root.getChildren().remove(lines.get(i));
+    	}
+    	
+    	lines.clear();
+    }
 }

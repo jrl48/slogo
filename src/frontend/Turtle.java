@@ -124,4 +124,14 @@ public class Turtle
 		return pen;
 	}
 
+	public void toggleVisibility(double newOpacity)
+	{
+		body.setOpacity(newOpacity);
+	}
+	
+	public boolean isVisible()
+	{
+		return (body.getOpacity() == 1);
+	}
+
 }
