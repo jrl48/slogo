@@ -134,4 +134,6 @@ public class Turtle
 		return (body.getOpacity() == 1);
 	}
 
+		
+	
 }
