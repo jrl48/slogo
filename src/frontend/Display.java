@@ -157,4 +157,19 @@ public class Display {
     	myTurtle.toggleVisibility(1);
     }
     
+    public boolean getTurtleVisibility()
+    {
+    	return myTurtle.isVisible();
+    }
+    
+    public void clearDisplay()
+    {
+    	// Deletes all lines 
+    	for ( int i = 0; i < lines.size(); i++ )
+    	{
+    		root.getChildren().remove(lines.get(i));
+    	}
+    	
+    	lines.clear();
+    }
 }

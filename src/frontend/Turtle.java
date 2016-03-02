@@ -128,5 +128,10 @@ public class Turtle
 	{
 		body.setOpacity(newOpacity);
 	}
+	
+	public boolean isVisible()
+	{
+		return (body.getOpacity() == 1);
+	}
 
 }
