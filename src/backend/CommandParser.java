@@ -34,7 +34,7 @@ public class CommandParser {
 		if (command.equals("") )
 			return;
 		String[] commandPieces = command.split("\\s+");
-		ParseNode commandTree = makeTree(commandPieces);
+		ParseNode commandTree = makeTree(commandPieces, workspace);
 		if(commandTree == null)
 		{
 			throwError("Not a Valid Command!");
@@ -45,7 +45,7 @@ public class CommandParser {
 		
 	}
 	
-	private ParseNode makeTree(String[] commands){
+	private ParseNode makeTree(String[] commands, EntryManager workspace){
 		ParseNode root = new ParseNode(parseCommand(commands[0]));
 		List<ParseNode> instructions = new ArrayList<ParseNode>();
 		instructions.add(root);
@@ -60,9 +60,17 @@ public class CommandParser {
 				try{
 					if(commands[i].charAt(0) == ':'){
 						//call the variables map
-						
+						String variable = commands[i].substring(1);
+						if(workspace.getValue(variable) == null){
+							workspace.addEntry(new StringNumEntry(variable,0.0));
+						}
+						else{
+							currentNode.setValue((double) workspace.getValue(variable));
+						}
 					}
-					currentNode.setValue(Integer.parseInt(commands[i]));
+					else{
+						currentNode.setValue(Double.parseDouble(commands[i]));
+					}
 				}
 				catch(NumberFormatException exception){
 					return null;
@@ -98,7 +106,9 @@ public class CommandParser {
 		if(root.getChildren().size() == 0){
 			double[] args = new double[0];
 			Commands commandMap = new Commands();
-			root.setValue(commandMap.callCommand(current.getName(), args, myDisplay));
+			if(!root.getName().equals("")){
+				root.setValue(commandMap.callCommand(current.getName(), args, myDisplay));
+			}	
 		}
 		while(root.getChildren().size() > 0){
 			dfs(root, current);
