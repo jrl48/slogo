@@ -81,7 +81,7 @@ public class UserInterface {
         myCommandLine = new CommandLine(myCommandParser, myTerminalManager, myCommandManager, myWorkspaceManager);
        
         // TODO: Take this out! FOR DEBUGGING ONLY
-    	//myCommandLine.setDisplay(myDisplay);
+    	// myCommandLine.setDisplay(myDisplay);
     	// -----------------------------
 
         myTerminal = new TerminalView(myCommandLine, myTerminalManager, "Terminal", new String[]{"Command","Result"}); //TODO resource file
