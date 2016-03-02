@@ -22,4 +22,12 @@ public class EntryManager {
     public ObservableList<Entry> getEntryList(){
         return myObservableEntries;
     }
+    public Object getValue(String firstEntryVal){
+        for(Entry e:myObservableEntries){
+            if (e.getFirstValue().equals(firstEntryVal)){
+                return e.getSecondValue();
+            }
+        }
+        return null;
+    }
 }
