@@ -29,13 +29,11 @@ import javafx.scene.paint.Paint;
 
 
 public class Display {
-    private static final String DEFAULT_RESOURCE_PACKAGE = "resources/frontendResources/";
-    private static final String SCENE = "Scene";
     private ResourceBundle sceneResources =
-            ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + SCENE);
+            ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);
     private Pane myPane;
     private Group root;
-    private static final double WIDTH = 450;
+    private static final double WIDTH = 500;
     private static final double HEIGHT = 450;
     private Turtle myTurtle;
     private ColorPicker penCol;

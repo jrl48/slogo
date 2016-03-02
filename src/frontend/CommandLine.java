@@ -11,19 +11,17 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 
-public class CommandLine {
-    private static final String DEFAULT_RESOURCE_PACKAGE = "resources/frontendResources/";
-    private static final String SCENE = "Scene";
+public class CommandLine {    
     private ResourceBundle sceneResources =
-            ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + SCENE);
+            ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);
     private static final double WIDTH = 500;
     private static final double HEIGHT = 35;
     private TextArea myTextField;
     private Button myGoButton;
     
     // Submitting code pressing SHIFT+ENTER
-    private boolean shiftPressed;
-    private boolean enterPressed;
+    private boolean shiftPressed = false;
+    private boolean enterPressed = false;
     
 
     public CommandLine(CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace ){
@@ -35,11 +33,9 @@ public class CommandLine {
         myTextField = new TextArea();       
         myTextField.getStyleClass().add(sceneResources.getString("COMMANDLINEID"));
         myTextField.setPrefSize(WIDTH, HEIGHT);
-        myGoButton = new Button("GO"); //TODO use resource file
-        myGoButton.setOnAction(e -> enterCommand(parser, terminal, command, workspace));
-        shiftPressed = false;
-        enterPressed = false;
-        
+        myGoButton = new Button(sceneResources.getString("GOBUTTON")); 
+        myGoButton.getStyleClass().add(sceneResources.getString("BUTTONID"));
+        myGoButton.setOnAction(e -> enterCommand(parser, terminal, command, workspace));           
         myTextField.setOnKeyPressed(e -> keyPressed(e.getCode(), parser, terminal, command, workspace, true));
         myTextField.setOnKeyReleased(e -> keyPressed(e.getCode(), parser, terminal, command, workspace, false));
     }
@@ -64,11 +60,7 @@ public class CommandLine {
         
         else if ( code ==  KeyCode.ENTER)
                 enterPressed = beingPressed;
-        
-        // TODO: DEBUGGIN!!
-        // else if ( code == KeyCode.BACK_SLASH )
-        	// display.clearDisplay();
-        // ------
+
         if ( enterPressed && shiftPressed )
                 enterCommand(parser, terminal, command, workspace);
         
