@@ -5,7 +5,7 @@ public class TurtleHideTurtle implements TurtleInterface {
 	
 	@Override
 	public double executeCommand(double[] args, Display display) {
-		// TODO Auto-generated method stub
+		display.hideTurtle();
 		return 0;
 	}
 	
