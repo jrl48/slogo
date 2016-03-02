@@ -3,6 +3,7 @@ package frontend;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import backend.CommandParser;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ComboBox;
 
@@ -13,20 +14,19 @@ public class LanguagePreferences {
             new ArrayList<String>(Arrays.asList("Chinese", "English", "French", "German", "Italian",
                                                 "Portuguese", "Russian", "Spanish"));
 
-    public LanguagePreferences (LanguageManager manager,CommandLine command) {
-        init(manager,command);
+    public LanguagePreferences (LanguageManager manager,CommandParser parser) {
+        init(manager,parser);
     }
 
-    private void init (LanguageManager manager,CommandLine command) {
+    private void init (LanguageManager manager,CommandParser parser) {
         manager.addAll(languages);
         myComboBox = new ComboBox<String>(manager.getChoiceList());
         myComboBox.setPromptText("Languages");//TODO resource file
-        myComboBox.setOnAction(e->changeLanguage(command, myComboBox.getValue()));
+        myComboBox.setOnAction(e->changeLanguage(parser, myComboBox.getValue()));
     }
 
-    private void changeLanguage (CommandLine command, String language) {
-        command.setLanguage(language);
-        System.out.println("New Language is "+language);
+    private void changeLanguage (CommandParser parser, String language) {
+        parser.setLanguage(language);
     }
 
     public ComboBox<String> getComboBox () {

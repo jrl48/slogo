@@ -87,7 +87,7 @@ public class UserInterface {
         myTerminal = new TerminalView(myCommandLine, myTerminalManager, "Terminal", new String[]{"Command","Result"}); //TODO resource file
         myWorkspace = new WorkspaceView(myWorkspaceManager, "Workspace", new String[]{"Variable","Value"});
         myUserDefined = new UserDefinedView(myCommandLine,myCommandManager, "User Defined Commands", new String[]{"Command", "Value"});//TODO Resource file
-        myLanguagePreferences = new LanguagePreferences(myLanguageManager,myCommandLine);
+        myLanguagePreferences = new LanguagePreferences(myLanguageManager,myCommandParser);
         myHTMLopener = new HTMLopener();
     }
 
