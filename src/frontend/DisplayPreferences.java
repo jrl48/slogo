@@ -31,33 +31,28 @@ public class DisplayPreferences {
     private List<Node> prefList = new ArrayList<Node>();// TODO work this in
     private FileChooser imageChoice = new FileChooser();
     private ColorPicker dispColor = new ColorPicker(Color.WHITE);
-    private ColorPicker penColor = new ColorPicker(Color.WHITE);
+    private ColorPicker penColor = new ColorPicker(Color.BLACK);
     private ObjectProperty<Image> imageProperty = new SimpleObjectProperty<Image>(new Image(getClass().getClassLoader().getResourceAsStream(UserInterface.DEFAULT_RESOURCE_PACKAGE+"turtle.png")));
-    private CheckBox penVisibility = new CheckBox("Show Pen");
-    private SimpleBooleanProperty isPenVisible = new SimpleBooleanProperty(true);
     private Button chooseImage = new Button("Set Turtle Image");
     
     public DisplayPreferences (Stage s) {
         initDisplayPreferences(s);
     }
 
-    private void initDisplayPreferences (Stage s) {
+    private void initDisplayPreferences (Stage s) {// potential issue with Stage s in future
         prefStage = new Stage(); // TODO add to css
         prefStage.setTitle("Preferences");
         prefStage.setResizable(false);
-        prefStage.initModality(Modality.WINDOW_MODAL);
-        prefStage.initOwner(s);
         myVBox = new VBox();
         myVBox.setAlignment(Pos.CENTER);
         addOptions(myVBox);
         prefScene = new Scene(myVBox, 200, 300, Color.BLACK);// TODO figure out how to make color
-                                                             // show
+                                                             // show  // also magic numbers
         chooseImage.setOnAction(e->openImageChoice(s));
         
         prefStage.setScene(prefScene);
         imageChoice.setTitle("Set Turtle Image"); //TODO add resource file maybe CSS
         imageChoice.getExtensionFilters().add(new ExtensionFilter("Image Files","*.png","*.jpg","*.gif"));
-        isPenVisible.bind(penVisibility.pressedProperty());
         myDisplayButton = new Button("Preferences"); // TODO add resource file
         myDisplayButton.setOnAction(e -> openPreferences());
     }
@@ -68,7 +63,6 @@ public class DisplayPreferences {
         box.getChildren().add(dispColor);//TODO resource file
         box.getChildren().add(new Label("Choose Pen Color"));
         box.getChildren().add(penColor);
-        box.getChildren().add(penVisibility);  
     }
     private void openImageChoice(Stage s){
         File file = imageChoice.showOpenDialog(s);
@@ -84,9 +78,7 @@ public class DisplayPreferences {
         }
     }
     
-    public SimpleBooleanProperty getPenVisibility(){
-        return isPenVisible;
-    }
+  
     public ColorPicker getDispColorPicker(){
         return dispColor;
     }
