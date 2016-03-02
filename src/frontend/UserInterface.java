@@ -26,13 +26,10 @@ import javafx.stage.Stage;
 
 public class UserInterface {
     public static final String DEFAULT_RESOURCE_PACKAGE = "resources/frontendResources/";
-    private static final String SCENE = "Scene";
-    private static final String STYLESHEET = "custom.css";
-    private static final String BUTTONLABELS = "ButtonLabels";
+    public static final String SCENE = "Scene";
+    public static final String STYLESHEET = "custom.css";
     private ResourceBundle sceneResources =
             ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + SCENE);
-    private ResourceBundle buttonResources =
-            ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + BUTTONLABELS);
     public static final double WIDTH = 1100;
     public static final double HEIGHT = 600;
     private Scene myScene;
@@ -62,8 +59,7 @@ public class UserInterface {
         s.setTitle(sceneResources.getString("TITLE")); //TODO put in css
         s.setResizable(false);
         root = new Group();
-        myScene = new Scene(root, WIDTH, HEIGHT, Color.SKYBLUE);
-       
+        myScene = new Scene(root, WIDTH, HEIGHT, Color.SKYBLUE);       
         myScene.getStylesheets().add(DEFAULT_RESOURCE_PACKAGE + STYLESHEET);
         root.getChildren().add(makeGridPane());
         s.setScene(myScene);
@@ -72,21 +68,15 @@ public class UserInterface {
     private void initModules (Stage primaryStage) {
         myDisplayPreferences = new DisplayPreferences(primaryStage);
         myDisplay = new Display(myDisplayPreferences);
-
         myTerminalManager = new EntryManager();
         myCommandManager = new EntryManager();
         myWorkspaceManager = new EntryManager();
         myLanguageManager = new LanguageManager();
     	myCommandParser = new CommandParser(myDisplay);
         myCommandLine = new CommandLine(myCommandParser, myTerminalManager, myCommandManager, myWorkspaceManager);
-       
-        // TODO: Take this out! FOR DEBUGGING ONLY
-    	// myCommandLine.setDisplay(myDisplay);
-    	// -----------------------------
-
-        myTerminal = new TerminalView(myCommandLine, myTerminalManager, "Terminal", new String[]{"Command","Result"}); //TODO resource file
-        myWorkspace = new WorkspaceView(myWorkspaceManager, "Workspace", new String[]{"Variable","Value"});
-        myUserDefined = new UserDefinedView(myCommandLine,myCommandManager, "User Defined Commands", new String[]{"Command", "Value"});//TODO Resource file
+        myTerminal = new TerminalView(myCommandLine, myTerminalManager, sceneResources.getString("TERMINAL"), new String[]{sceneResources.getString("TERMINAL_1"),sceneResources.getString("TERMINAL_2")});
+        myWorkspace = new WorkspaceView(myWorkspaceManager, sceneResources.getString("WORKSPACE"), new String[]{sceneResources.getString("WORKSPACE_1"),sceneResources.getString("WORKSPACE_2")});
+        myUserDefined = new UserDefinedView(myCommandLine,myCommandManager, sceneResources.getString("USERCOMMANDS"), new String[]{sceneResources.getString("USERCOMMANDS_1"), sceneResources.getString("USERCOMMANDS_2")});
         myLanguagePreferences = new LanguagePreferences(myLanguageManager,myCommandParser);
         myHTMLopener = new HTMLopener();
     }
@@ -94,29 +84,20 @@ public class UserInterface {
     private GridPane makeGridPane () {
         myGridPane = new GridPane();
         myGridPane.getStyleClass().add(sceneResources.getString("GRIDPANEID"));
-
         myGridPane.add(myDisplay.getPane(), 1, 1);
         myGridPane.add(myCommandLine.getTextField(), 1, 2, 1, 6);
-        myGridPane.add(makeHBox(new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getButton(),myLanguagePreferences.getComboBox(),myHTMLopener.getButton()))), 2, 6,3,6);
-        myGridPane.add(makeVBox(new ArrayList<Node>(Arrays.asList(myTerminal.getMyLabel(), myTerminal.getMyTableView(),
+        myGridPane.add(makeBox(new HBox(), sceneResources.getString("HBOXID"),new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getButton(),myLanguagePreferences.getComboBox(),myHTMLopener.getButton()))), 2, 6,3,6);
+        myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),new ArrayList<Node>(Arrays.asList(myTerminal.getMyLabel(), myTerminal.getMyTableView(),
             myWorkspace.getMyLabel(), myWorkspace.getMyTableView()))), 2, 1,2,5);
-        myGridPane.add(makeVBox(new ArrayList<Node>(Arrays.asList(myUserDefined.getMyLabel(),myUserDefined.getMyTableView()))), 4, 1);
+        myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),new ArrayList<Node>(Arrays.asList(myUserDefined.getMyLabel(),myUserDefined.getMyTableView()))), 4, 1);
         return myGridPane;
     }
     
-    //TODO combine these into one method
-    private Node makeVBox (List<Node> items) {
-        VBox myVBox = new VBox();
-        myVBox.getStyleClass().add("VBOXID"); // TODO deal with this and set insets
-        myVBox.getChildren().addAll(items);
-        return myVBox;
-    }
-
-    private Node makeHBox (List<Node> items) {
-        HBox myHBox = new HBox();
-        myHBox.getStyleClass().add("HBOXID"); // TODO deal with this
-        myHBox.getChildren().addAll(items);
-        return myHBox;
+    private Node makeBox (Pane box, String cssID, List<Node> items) {
+        Pane myBox = box;
+        myBox.getStyleClass().add(cssID); 
+        myBox.getChildren().addAll(items);
+        return myBox;
     }
 
 }

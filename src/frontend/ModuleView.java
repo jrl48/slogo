@@ -2,6 +2,7 @@ package frontend;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -11,7 +12,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public abstract class ModuleView {
 
-    protected static final String[] entryValues = new String[] { "FirstValue", "SecondValue" };
+    private ResourceBundle sceneResources =
+            ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);   
+    private static final String[] entryValues = new String[] { "FirstValue", "SecondValue" };
     private Label myLabel;
     private TableView<Entry> myTableView;
 
@@ -22,17 +25,15 @@ public abstract class ModuleView {
 
     private void initTable (EntryManager manager, String[] colTitles) {
         myTableView = new TableView<Entry>();
-        List<TableColumn<Entry, Object>> columns = makeColumns(colTitles, entryValues);// TODO add
-                                                                                       // resource
-                                                                                       // file
+        List<TableColumn<Entry, Object>> columns = makeColumns(colTitles, entryValues);
         myTableView.getColumns().addAll(columns);
         myTableView.setItems(manager.getEntryList());
-        myTableView.getStyleClass().add("TABLEVIEWID"); // TODO deal with this
+        myTableView.getStyleClass().add(sceneResources.getString("TABLEVIEWID")); 
         setSizing();
     }
 
-    protected abstract void setSizing (); // TODO implement
-                                                                                  // this method
+    protected abstract void setSizing (); 
+                                                                                  
     
 
     protected void defineListener(CommandLine command){
@@ -61,8 +62,8 @@ public abstract class ModuleView {
     }
 
     private void initLabel (String labelTitle) {
-        myLabel = new Label(labelTitle); // TODO set resource file
-        myLabel.getStyleClass().add("LABELID"); // TODO deal with this
+        myLabel = new Label(labelTitle);
+        myLabel.getStyleClass().add(sceneResources.getString("LABELID"));
     }
 
     public Label getMyLabel () {
