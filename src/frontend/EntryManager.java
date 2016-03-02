@@ -23,11 +23,12 @@ public class EntryManager {
         return myObservableEntries;
     }
     public Object getValue(String firstEntryVal){
-    	for(Entry e:myObservableEntries){
-    		if(e.getFirstValue().equals(firstEntryVal)){
-    			return e.getSecondValue();
-    		}
-    	}
-    	return null;
+        for(Entry e:myObservableEntries){
+            if (e.getFirstValue().equals(firstEntryVal)){
+                return e.getSecondValue();
+            }
+        }
+        return null;
     }
+
 }
