@@ -20,11 +20,13 @@ import frontend.*;
 
 public class CommandParser {
 	
+	private UserDefinedHandler myUserDefinedHandler;
 	private String myLanguage;
 	private ParametersMap myParametersMap;
 	private Display myDisplay;
 
 	public CommandParser(Display display) {
+		myUserDefinedHandler = new UserDefinedHandler();
 		myParametersMap = new ParametersMap();
 		myDisplay = display;
 		myLanguage = "English";
@@ -34,19 +36,36 @@ public class CommandParser {
 		if (command.equals("") )
 			return;
 		String[] commandPieces = command.split("\\s+");
-		ParseNode commandTree = makeTree(commandPieces);
-		if(commandTree == null)
-		{
+		if ( commandPieces.length == 0) {
 			throwError("Not a Valid Command!");
 			return;
 		}
-		double result = readTree(commandTree);
-		terminal.addEntry(new StringNumEntry(command,result));
-		
+		String instruction = parseCommand(commandPieces[0]);
+		if (myUserDefinedHandler.isLoopCommand(instruction)) {
+			String newCommand = command.replaceFirst(commandPieces[0], instruction);
+			myUserDefinedHandler.handleLoops(newCommand, this, terminal, commandManager, workspace);
+		} else {
+			List<ParseNode> commandTree = makeTree(commandPieces,workspace);
+			if(commandTree == null)
+			{
+				throwError("Oh shit!");
+				return;
+			}
+			for(ParseNode node: commandTree){
+				double result = readTree(node);
+				terminal.addEntry(new StringNumEntry(command,result));
+			}
+			
+		}
 	}
 	
-	private ParseNode makeTree(String[] commands){
+	private List<ParseNode> makeTree(String[] commands, EntryManager workspace){
+		List<ParseNode> rootList = new ArrayList<ParseNode>();
 		ParseNode root = new ParseNode(parseCommand(commands[0]));
+		rootList.add(root);
+		if(parseCommand(commands[0]).equals("")){
+			return null;
+		}
 		List<ParseNode> instructions = new ArrayList<ParseNode>();
 		instructions.add(root);
 		for(int i = 1;i< commands.length; i++){
@@ -58,11 +77,19 @@ public class CommandParser {
 			}
 			else{
 				try{
-					if(commands[i].charAt(0) == ':'){
-						//call the variables map
-						
-					}
-					currentNode.setValue(Integer.parseInt(commands[i]));
+//					if(commands[i].charAt(0) == ':'){
+//						//call the variables map
+//						String variable = commands[i].substring(1);
+//						if(workspace.getValue(variable) == null){
+//							workspace.addEntry(new StringNumEntry(variable,0.0));
+//						}
+//						else{
+//							currentNode.setValue((double) workspace.getValue(variable));
+//						}
+//					}
+//					else{
+						currentNode.setValue(Double.parseDouble(commands[i]));
+//					}
 				}
 				catch(NumberFormatException exception){
 					return null;
@@ -83,14 +110,20 @@ public class CommandParser {
 					}
 				}
 				if(originalParent == null){
-					return null;
+					if(currentNode.getName().equals("")){
+						return null;
+					}
+					rootList.add(currentNode);
+					instructions.clear();
+					instructions.add(currentNode);
+					root = currentNode;
 				}
 				else{
 					parent.addChild(currentNode);
 				}
 			}
 		}
-		return root;
+		return rootList;
 	}
 	
 	private double readTree(ParseNode root){
@@ -98,7 +131,9 @@ public class CommandParser {
 		if(root.getChildren().size() == 0){
 			double[] args = new double[0];
 			Commands commandMap = new Commands();
-			root.setValue(commandMap.callCommand(current.getName(), args, myDisplay));
+			if(!root.getName().equals("")){
+				root.setValue(commandMap.callCommand(current.getName(), args, myDisplay));
+			}
 		}
 		while(root.getChildren().size() > 0){
 			dfs(root, current);
