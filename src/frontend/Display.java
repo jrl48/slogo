@@ -146,4 +146,15 @@ public class Display {
     public void turtlePenDown() {
     	myTurtle.putPenDown();
     }
+    
+    public void hideTurtle()
+    {
+    	myTurtle.toggleVisibility(0);
+    }
+    
+    public void showTurtle()
+    {
+    	myTurtle.toggleVisibility(1);
+    }
+    
 }
