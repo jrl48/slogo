@@ -18,7 +18,6 @@ public class CommandLine {
             ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + SCENE);
     private static final double WIDTH = 500;
     private static final double HEIGHT = 35;
-    private String language = "English";
     private TextArea myTextField;
     private Button myGoButton;
     
@@ -26,10 +25,6 @@ public class CommandLine {
     private boolean shiftPressed;
     private boolean enterPressed;
     
-    // TODO: Take this out! FOR DEBUGGING ONLY
-    private Display display;
-    // --------------------------------
-        
 
     public CommandLine(CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace ){
         initCommandLine(parser, terminal, command, workspace);
@@ -53,17 +48,6 @@ public class CommandLine {
         if ( !myTextField.getText().isEmpty() )
         {
                 parser.parse(myTextField.getText(), terminal, command, workspace);
-                // TODO: Take this out! FOR DEBUGGING ONLY
-                if ( myTextField.getText().equals("fd") )
-                        display.moveTurtleForward(20);
-                else if ( myTextField.getText().equals("pen") )
-                        display.toggleTurtlePen();
-                else if ( myTextField.getText().equals("turn right") )
-                        display.turnTurtle(90);
-                else if ( myTextField.getText().equals("turn left") )
-                        display.turnTurtle(-90);
-                // -----------------------------
-                
                 myTextField.clear();
         }
 
@@ -90,17 +74,5 @@ public class CommandLine {
     public Node getButton(){
         return myGoButton;
     }    
-    
-    // TODO: Take this out! FOR DEBUGGING ONLY
-    public void setDisplay(Display display)
-    {
-        this.display = display;
-    }
-    // -------------------------------------
-    public String getLanguage(){
-        return language;
-    }
-    public void setLanguage(String lang){
-        this.language = lang;
-    }
+
 }

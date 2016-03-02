@@ -34,7 +34,7 @@ public class UserInterface {
     private ResourceBundle buttonResources =
             ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + BUTTONLABELS);
     public static final double WIDTH = 1100;
-    public static final double HEIGHT = 700;
+    public static final double HEIGHT = 600;
     private Scene myScene;
     private Group root;
     private GridPane myGridPane;
@@ -87,7 +87,7 @@ public class UserInterface {
         myTerminal = new TerminalView(myCommandLine, myTerminalManager, "Terminal", new String[]{"Command","Result"}); //TODO resource file
         myWorkspace = new WorkspaceView(myWorkspaceManager, "Workspace", new String[]{"Variable","Value"});
         myUserDefined = new UserDefinedView(myCommandLine,myCommandManager, "User Defined Commands", new String[]{"Command", "Value"});//TODO Resource file
-        myLanguagePreferences = new LanguagePreferences(myLanguageManager,myCommandLine);
+        myLanguagePreferences = new LanguagePreferences(myLanguageManager,myCommandParser);
         myHTMLopener = new HTMLopener();
     }
 
@@ -96,12 +96,11 @@ public class UserInterface {
         myGridPane.getStyleClass().add(sceneResources.getString("GRIDPANEID"));
 
         myGridPane.add(myDisplay.getPane(), 1, 1);
-        myGridPane.add(myCommandLine.getTextField(), 1, 2, 1, 5);
-        myGridPane.add(makeHBox(new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getButton(),myLanguagePreferences.getComboBox()))), 2, 6);
+        myGridPane.add(myCommandLine.getTextField(), 1, 2, 1, 6);
+        myGridPane.add(makeHBox(new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getButton(),myLanguagePreferences.getComboBox(),myHTMLopener.getButton()))), 2, 6,3,6);
         myGridPane.add(makeVBox(new ArrayList<Node>(Arrays.asList(myTerminal.getMyLabel(), myTerminal.getMyTableView(),
             myWorkspace.getMyLabel(), myWorkspace.getMyTableView()))), 2, 1,2,5);
         myGridPane.add(makeVBox(new ArrayList<Node>(Arrays.asList(myUserDefined.getMyLabel(),myUserDefined.getMyTableView()))), 4, 1);
-        myGridPane.add(makeHBox(new ArrayList<Node>(Arrays.asList(myHTMLopener.getButton()))), 4, 2);
         return myGridPane;
     }
     

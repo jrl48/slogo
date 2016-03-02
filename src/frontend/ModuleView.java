@@ -33,6 +33,21 @@ public abstract class ModuleView {
 
     protected abstract void setSizing (); // TODO implement
                                                                                   // this method
+    
+
+    protected void defineListener(CommandLine command){
+        getMyTableView().getSelectionModel().selectedItemProperty().addListener((observableValue,oldValue,newValue)-> setCommand(command, newValue));
+    }
+    
+    private void setCommand(CommandLine command, Entry newValue){
+        if(getMyTableView().getSelectionModel().getSelectedItem()!=null){
+            command.getTextField().setText(getClickableString(newValue));
+        }
+    }
+    
+    protected String getClickableString (Entry newValue) {
+        return (String) newValue.getFirstValue();
+    }
 
     private List<TableColumn<Entry, Object>> makeColumns (String[] colTitles, String[] values) {
         List<TableColumn<Entry,Object>> colList = new ArrayList<TableColumn<Entry, Object>>();

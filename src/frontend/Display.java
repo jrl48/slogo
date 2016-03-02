@@ -39,13 +39,11 @@ public class Display {
     private static final double HEIGHT = 450;
     private Turtle myTurtle;
     private ColorPicker penCol;
-    private SimpleBooleanProperty isPenVisible;
     
     // List of Lines that are being drawn by the turtle
     private ArrayList<Line> lines;
     
     public Display (DisplayPreferences dispPref) {
-        this.isPenVisible = dispPref.getPenVisibility();
         this.penCol = dispPref.getPenColorPicker();
         initPane(dispPref);
     }
@@ -74,12 +72,7 @@ public class Display {
             return new Background(fill);
         }, cp.valueProperty()));
     }
-//    private void setLineBinding(Line line,ColorPicker cp){
-//        ObjectProperty<Paint> fill = line.fillProperty();
-//        fill.bind(Bindings.createObjectBinding(()->{
-//            
-//        }
-//    }
+
     public Node getPane () {
         return myPane;
     }
@@ -93,10 +86,9 @@ public class Display {
     	if ( myTurtle.penIsDown() )
     	{
     		Line newLine = new Line(myTurtle.getVisualX(), myTurtle.getVisualY(), newX, newY); 
-    		newLine.fillProperty().bind(penCol.valueProperty());
-    		newLine.visibleProperty().bind(isPenVisible);
+    		newLine.setStroke(penCol.getValue());
     		lines.add( newLine );
-    		myPane.getChildren().add(newLine);
+    		myPane.getChildren().addAll(newLine);
     	}
     	
     	// When updating coordinates, compensate the X and Y because they reference the edge of the 
@@ -104,10 +96,6 @@ public class Display {
     	myTurtle.setVisualCoordinates(newX, newY);
     }
     
-    public void toggleTurtlePen()
-    {
-    	myTurtle.togglePen();
-    }
     
     public void setTurtleCoordinates(double newX, double newY)
     {
@@ -157,5 +145,31 @@ public class Display {
     
     public void turtlePenDown() {
     	myTurtle.putPenDown();
+    }
+    
+    public void hideTurtle()
+    {
+    	myTurtle.toggleVisibility(0);
+    }
+    
+    public void showTurtle()
+    {
+    	myTurtle.toggleVisibility(1);
+    }
+    
+    public boolean getTurtleVisibility()
+    {
+    	return myTurtle.isVisible();
+    }
+    
+    public void clearDisplay()
+    {
+    	// Deletes all lines 
+    	for ( int i = 0; i < lines.size(); i++ )
+    	{
+    		root.getChildren().remove(lines.get(i));
+    	}
+    	
+    	lines.clear();
     }
 }
