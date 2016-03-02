@@ -90,7 +90,12 @@ public class DisplayPreferences {
         return imageProperty;
     }
     private void openPreferences () {
-        prefStage.showAndWait();
+        if(!prefStage.isShowing()){
+            prefStage.showAndWait();
+        }
+        else{
+            prefStage.toFront();
+        }
     }
 
     public Button getButton () {
