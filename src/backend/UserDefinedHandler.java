@@ -34,23 +34,22 @@ public class UserDefinedHandler {
 		return myUserDefinedCommands.contains(command);
 	}
 	
-	public void handleLoops(String command, CommandParser parser, 
+	public void handleLoops(String command, String parsedInstruction, CommandParser parser, 
 			EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
 		String[] commandPieces = command.split("\\s+");
-		if ( commandPieces[0].equals(myUserDefinedCommands.get(0))){
-			System.out.println(command);
+		if ( parsedInstruction.equals(myUserDefinedCommands.get(0))){
 			makeVariable(command,workspace,terminal);}
-		else if ( commandPieces[0].equals(myUserDefinedCommands.get(1)))
+		else if ( parsedInstruction.equals(myUserDefinedCommands.get(1)))
 			repeatLoop(command,parser,terminal,commandManager,workspace);
-		else if ( commandPieces[0].equals(myUserDefinedCommands.get(2)))
+		else if ( parsedInstruction.equals(myUserDefinedCommands.get(2)))
 			doTimesLoop(command,parser,terminal,commandManager,workspace);
-		else if ( commandPieces[0].equals(myUserDefinedCommands.get(3)))
+		else if ( parsedInstruction.equals(myUserDefinedCommands.get(3)))
 			forLoop(command,parser,terminal,commandManager,workspace);
-		else if ( commandPieces[0].equals(myUserDefinedCommands.get(4)))
+		else if ( parsedInstruction.equals(myUserDefinedCommands.get(4)))
 			ifLoop(command,parser,terminal,commandManager,workspace);
-		else if ( commandPieces[0].equals(myUserDefinedCommands.get(5)))
+		else if ( parsedInstruction.equals(myUserDefinedCommands.get(5)))
 			ifElseLoop(command,parser,terminal,commandManager,workspace);
-		else if ( commandPieces[0].equals(myUserDefinedCommands.get(6)))
+		else if ( parsedInstruction.equals(myUserDefinedCommands.get(6)))
 			makeUserInstruction();
 	}
 
