@@ -49,10 +49,8 @@ public class UserInterface {
     private LanguagePreferences myLanguagePreferences;
     private DisplayPreferences myDisplayPreferences;
     private HTMLopener myHTMLopener;   
-    private Button newWorkButton;
 
-    public UserInterface (Stage s, Button newWorkButton) {
-        this.newWorkButton = newWorkButton;
+    public UserInterface (Stage s) {
         init(s);
     }
 
@@ -83,7 +81,7 @@ public class UserInterface {
         myGridPane.getStyleClass().add(sceneResources.getString("GRIDPANEID"));
         myGridPane.add(myDisplay.getPane(), 1, 1);
         myGridPane.add(myCommandLine.getTextField(), 1, 2, 1, 6);
-        myGridPane.add(makeBox(new HBox(), sceneResources.getString("HBOXID"),new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getButton(),myLanguagePreferences.getComboBox(),myHTMLopener.getButton(),newWorkButton))), 2, 6,3,6);
+        myGridPane.add(makeBox(new HBox(), sceneResources.getString("HBOXID"),new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getButton(),myLanguagePreferences.getComboBox(),myHTMLopener.getButton()))), 2, 6,3,6);
         myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),new ArrayList<Node>(Arrays.asList(myTerminal.getMyLabel(), myTerminal.getMyTableView(),
             myWorkspace.getMyLabel(), myWorkspace.getMyTableView()))), 2, 1,2,5);
         myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),new ArrayList<Node>(Arrays.asList(myUserDefined.getMyLabel(),myUserDefined.getMyTableView()))), 4, 1);

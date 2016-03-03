@@ -1,6 +1,6 @@
 .root {
-    -fx-base: skyblue;
-    -fx-background: black;
+    -fx-base: gray;
+    -fx-background: skyblue;
 }
 
 //GridPane settings
@@ -40,12 +40,13 @@
 //TableView settings
 .myTableView{
 	-fx-cursor: hand;	
+	-fx-fill: white;
 }
 .myTableView .column-header .label{
-	-fx-text-fill: black;
+	-fx-text-fill: white;
 }
 .myTableView .placeholder {
-	-fx-background-color: gray;
+	-fx-background-color: darkgray;
 }
 
 //HBox settings

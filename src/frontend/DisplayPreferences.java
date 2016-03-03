@@ -51,7 +51,7 @@ public class DisplayPreferences {
         Stage prefStage = new Stage();
         prefStage.setTitle(prefResources.getString("PREFERENCES_TITLE"));
         prefStage.setResizable(false);
-        Scene prefScene = new Scene(initVBox(new VBox(),prefList), WIDTH, HEIGHT, Color.BLACK);// TODO figure out how to make color
+        Scene prefScene = new Scene(initVBox(new VBox(),prefList), WIDTH, HEIGHT);// TODO figure out how to make color
         prefScene.getStylesheets().add(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.STYLESHEET);
         initFileChooser(new FileChooser(),primaryStage);              
         prefStage.setScene(prefScene);
