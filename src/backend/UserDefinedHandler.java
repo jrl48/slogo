@@ -36,7 +36,6 @@ public class UserDefinedHandler {
 	
 	public void handleLoops(String command, String parsedInstruction, CommandParser parser, 
 			EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
-		System.out.println(command);
 		String[] commandPieces = command.split("\\s+");
 		if ( parsedInstruction.equals(myUserDefinedCommands.get(0))){
 			makeVariable(command,workspace,terminal);}
