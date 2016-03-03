@@ -33,6 +33,8 @@ public class CommandParser {
 	}
 	
 	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+		String commandCopy = new String();
+		commandCopy = command;
 		if (command.equals("") )
 			return;
 		String[] commandPieces = command.split("\\s+");
@@ -42,8 +44,7 @@ public class CommandParser {
 		}
 		String instruction = parseCommand(commandPieces[0]);
 		if (myUserDefinedHandler.isLoopCommand(instruction)) {
-			String newCommand = command.replaceFirst(commandPieces[0], instruction);
-			myUserDefinedHandler.handleLoops(newCommand, this, terminal, commandManager, workspace);
+			myUserDefinedHandler.handleLoops(command, instruction, this, terminal, commandManager, workspace);
 		} else {
 			List<ParseNode> commandTree = makeTree(commandPieces,workspace);
 			if(commandTree == null)
@@ -53,7 +54,7 @@ public class CommandParser {
 			}
 			for(ParseNode node: commandTree){
 				double result = readTree(node);
-				terminal.addEntry(new StringNumEntry(command,result));
+				terminal.addEntry(new StringNumEntry(commandCopy,result));
 			}
 			
 		}
@@ -78,7 +79,6 @@ public class CommandParser {
 			else{
 				try{
 					if(commands[i].charAt(0) == ':'){
-//						//call the variables map
 						String variable = commands[i].substring(1);
 						if(workspace.getValue(variable) == null){
 							workspace.addEntry(new StringNumEntry(variable,0.0));
