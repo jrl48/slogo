@@ -41,8 +41,9 @@ public class Display {
     // List of Lines that are being drawn by the turtle
     private ArrayList<Line> lines;
     
-    public Display (DisplayPreferences dispPref) {
+    public Display (DisplayPreferences dispPref, EntryManager turtleManager) {
         this.penCol = dispPref.getPenColorPicker();
+        turtleManager.addEntry(new StringNumEntry("Turtle "+(turtleManager.getEntryList().size()+1),1));
         initPane(dispPref);
     }
     
