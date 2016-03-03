@@ -9,7 +9,7 @@ import javafx.scene.control.TableView;
 
 public class UserDefinedView extends ModuleView{
     private static final double WIDTH = 250;
-    private static final double HEIGHT = 400;
+    private static final double HEIGHT = 350;
     private static final double COMMAND_WIDTH = 170;
     private int commandColInd = 0;
 

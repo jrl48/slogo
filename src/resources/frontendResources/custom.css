@@ -5,7 +5,7 @@
 
 //GridPane settings
 .myGridPane {
-	// -fx-grid-lines-visible: true;
+	//-fx-grid-lines-visible: true;
 	-fx-padding: 0 10 10 10;
 	-fx-hgap: 20;
 	-fx-vgap: 20;

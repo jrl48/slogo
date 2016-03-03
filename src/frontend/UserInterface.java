@@ -42,13 +42,16 @@ public class UserInterface {
     private TerminalView myTerminal;
     private WorkspaceView myWorkspace;
     private UserDefinedView myUserDefined;
+    private TurtleManagerView myTurtleManagerView;
     private EntryManager myTerminalManager;
     private EntryManager myCommandManager;
     private EntryManager myWorkspaceManager;
+    private EntryManager myTurtleManager;
     private LanguageManager myLanguageManager;
     private LanguagePreferences myLanguagePreferences;
     private DisplayPreferences myDisplayPreferences;
     private HTMLopener myHTMLopener;   
+    
 
     public UserInterface (Stage s) {
         init(s);
@@ -62,15 +65,17 @@ public class UserInterface {
 
     private void initModules (Stage primaryStage) {
         myDisplayPreferences = new DisplayPreferences(primaryStage);
-        myDisplay = new Display(myDisplayPreferences);
         myTerminalManager = new EntryManager();
         myCommandManager = new EntryManager();
         myWorkspaceManager = new EntryManager();
+        myTurtleManager = new EntryManager();
         myLanguageManager = new LanguageManager();
+        myDisplay = new Display(myDisplayPreferences,myTurtleManager);
     	myCommandParser = new CommandParser(myDisplay);
         myCommandLine = new CommandLine(myCommandParser, myTerminalManager, myCommandManager, myWorkspaceManager);
         myTerminal = new TerminalView(myCommandLine, myTerminalManager, sceneResources.getString("TERMINAL"), new String[]{sceneResources.getString("TERMINAL_1"),sceneResources.getString("TERMINAL_2")});
         myWorkspace = new WorkspaceView(myWorkspaceManager, sceneResources.getString("WORKSPACE"), new String[]{sceneResources.getString("WORKSPACE_1"),sceneResources.getString("WORKSPACE_2")});
+        myTurtleManagerView = new TurtleManagerView(myTurtleManager, "Active Turtles", new String[]{"ID","Active"});
         myUserDefined = new UserDefinedView(myCommandLine,myCommandManager, sceneResources.getString("USERCOMMANDS"), new String[]{sceneResources.getString("USERCOMMANDS_1"), sceneResources.getString("USERCOMMANDS_2")});
         myLanguagePreferences = new LanguagePreferences(myLanguageManager,myCommandParser);
         myHTMLopener = new HTMLopener();
@@ -84,7 +89,7 @@ public class UserInterface {
         myGridPane.add(makeBox(new HBox(), sceneResources.getString("HBOXID"),new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getButton(),myLanguagePreferences.getComboBox(),myHTMLopener.getButton()))), 2, 6,3,6);
         myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),new ArrayList<Node>(Arrays.asList(myTerminal.getMyLabel(), myTerminal.getMyTableView(),
             myWorkspace.getMyLabel(), myWorkspace.getMyTableView()))), 2, 1,2,5);
-        myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),new ArrayList<Node>(Arrays.asList(myUserDefined.getMyLabel(),myUserDefined.getMyTableView()))), 4, 1);
+        myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),new ArrayList<Node>(Arrays.asList(myUserDefined.getMyLabel(),myUserDefined.getMyTableView(), myTurtleManagerView.getMyLabel(),myTurtleManagerView.getMyTableView()))), 4, 1,4,5);
         return myGridPane;
     }
     

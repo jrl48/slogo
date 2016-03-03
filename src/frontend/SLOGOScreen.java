@@ -27,7 +27,8 @@ public class SLOGOScreen {
         root = new Group();        
         myScene = new Scene(root, WIDTH, HEIGHT, Color.SKYBLUE);          
         myScene.getStylesheets().add(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.STYLESHEET);
-        myTabPane = new TabPane();         
+        myTabPane = new TabPane();     
+        myTabPane.setPrefWidth(BUTTON_X);
         addUserInterface(sceneResources.getString("WORKSPACE"), s,false);
         initButton(s);        
         root.getChildren().add(myTabPane);
