@@ -78,7 +78,6 @@ public class CommandParser {
 			else{
 				try{
 					if(commands[i].charAt(0) == ':'){
-						//call the variables map
 						String variable = commands[i].substring(1);
 						if(workspace.getValue(variable) == null){
 							workspace.addEntry(new StringNumEntry(variable,0.0));

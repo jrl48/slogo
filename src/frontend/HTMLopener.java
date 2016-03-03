@@ -2,7 +2,7 @@ package frontend;
 
 import java.io.IOException;
 import java.net.URL;
-
+import java.util.ResourceBundle;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -16,10 +16,13 @@ public class HTMLopener
 	private Group root;
 	private Button openButton;
 	private boolean isOpen;
+	private ResourceBundle sceneResources =
+	            ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);   
 	
 	public HTMLopener()
 	{
-		openButton = new Button("Help"); // TODO: Get it from resource file
+		openButton = new Button(sceneResources.getString("HELPBUTTON")); 
+		openButton.getStyleClass().add(sceneResources.getString("BUTTONID"));
 		openButton.setOnAction(e -> openHTML());
 		stage = new Stage();
 		stage.setOnCloseRequest(e -> helpClosed());
@@ -38,7 +41,6 @@ public class HTMLopener
 		
 		isOpen = true;
 		URL url = getClass().getResource("/"+ UserInterface.DEFAULT_RESOURCE_PACKAGE+ "help.html");
-		System.out.println(url);
 		WebView webview = new WebView();
 		webview.getEngine().load(url
 			    .toExternalForm()); 	// TODO: resource file!
