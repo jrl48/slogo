@@ -59,6 +59,23 @@ public class Commands{
 		turtleInstructions.put("Heading", new TurtleHeading());
 		turtleInstructions.put("IsPenDown", new TurtleIsPenDown());
 		turtleInstructions.put("IsShowing", new TurtleIsShowing());
+		turtleInstructions.put("SetBackground", new DisplaySetBackground());
+		turtleInstructions.put("SetPenColor", new DisplaySetPenColor());
+		turtleInstructions.put("SetPenSize", new DisplaySetPenSize());
+		turtleInstructions.put("SetShape", new DisplaySetShape());
+		turtleInstructions.put("SetPalette", new DisplaySetPalette());
+		turtleInstructions.put("PenColor", new DisplayPenColor());
+		turtleInstructions.put("Shape", new DisplayShape());
+		turtleInstructions.put("Stamp", new DisplayStamp());
+		turtleInstructions.put("Id", new TurtleID());
+		turtleInstructions.put("Turtles", new TurtleTurtles());
+		turtleInstructions.put("Tell", new TurtleTell());
+		turtleInstructions.put("Ask", new TurtleAsk());
+		turtleInstructions.put("AskWith", new TurtleAskWith());
+		
+		
+		
+		
 	}
 	
 	public double callCommand(String s, double[] args, Display display){
