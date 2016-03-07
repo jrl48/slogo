@@ -24,9 +24,17 @@ public class Turtle
 	{
 		Image image = new Image(getClass().getClassLoader().getResourceAsStream(UserInterface.DEFAULT_RESOURCE_PACKAGE+"turtle.png")); //TODO fix this up
 		body = new ImageView(image);
+		
+		init();
+	}
+	
+	private void init()
+	{
 		x = 0;
 		y = 0;
 		pen = false;
+		
+		body.setOnMouseClicked(e-> handleMouseClick());
 	}
 	
 	public Turtle (ObjectProperty<Image> imageProperty) {
@@ -34,10 +42,14 @@ public class Turtle
         Bindings.bindBidirectional(this.body.imageProperty(), imageProperty);
         body.setFitWidth(WIDTH);
         body.setFitHeight(HEIGHT);
-        x = 0;
-        y = 0;
-        pen = false;
+       
+        init();
     }
+	
+	private void handleMouseClick()
+	{
+		System.out.println("HELLO!");
+	}
 	
 	public ImageView getBody()
 	{
