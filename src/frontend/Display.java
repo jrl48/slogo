@@ -43,7 +43,7 @@ public class Display {
     
     public Display (DisplayPreferences dispPref, EntryManager turtleManager) {
         this.penCol = dispPref.getPenColorPicker();
-        turtleManager.addEntry(new StringNumEntry("Turtle "+(turtleManager.getEntryList().size()+1),1));
+        turtleManager.addEntry(new StringNumEntry("Turtle "+(turtleManager.getEntryList().size()+1),1),false);
         initPane(dispPref);
     }
     

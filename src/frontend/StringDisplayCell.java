@@ -13,3 +13,4 @@ public class StringDisplayCell extends ListCell<Entry> {
     }
 
 }
+

@@ -57,11 +57,9 @@ public class UserInterface {
     private LanguagePreferences myLanguagePreferences;
     private DisplayPreferences myDisplayPreferences;
     private HTMLopener myHTMLopener;   
-    private ComboBox<Entry> mySavedWorkspaces;
     
 
-    public UserInterface (Stage s, ComboBox<Entry> savedWorkspaces) {
-        this.mySavedWorkspaces = savedWorkspaces;
+    public UserInterface (Stage s) {
         init(s);
        
     }
@@ -103,7 +101,7 @@ public class UserInterface {
     }
     
     private void initComponentLists () {
-        myButtonsList = new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getButton(),myLanguagePreferences.getComboBox(),myHTMLopener.getButton(),mySavedWorkspaces));
+        myButtonsList = new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getButton(),myLanguagePreferences.getComboBox(),myHTMLopener.getButton()));
         myFirstColList = new ArrayList<Node>(Arrays.asList(myTerminal.getMyLabel(), myTerminal.getMyTableView(),
                                                            myWorkspace.getMyLabel(), myWorkspace.getMyTableView()));
         mySecondColList = new ArrayList<Node>(Arrays.asList(myUserDefined.getMyLabel(),myUserDefined.getMyTableView(), myTurtleManagerView.getMyLabel(),myTurtleManagerView.getMyTableView()));
