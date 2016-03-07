@@ -72,7 +72,6 @@ public class Commands{
 //		turtleInstructions.put("Tell", new TurtleTell());
 //		turtleInstructions.put("Ask", new TurtleAsk());
 //		turtleInstructions.put("AskWith", new TurtleAskWith());
-//		
 		
 		
 		
