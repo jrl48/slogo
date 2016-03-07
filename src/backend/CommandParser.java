@@ -54,7 +54,7 @@ public class CommandParser {
 			}
 			for(ParseNode node: commandTree){
 				double result = readTree(node);
-				terminal.addEntry(new StringNumEntry(commandCopy,result));
+				terminal.addEntry(new StringNumEntry(commandCopy,result, false));
 			}
 			
 		}
@@ -81,7 +81,7 @@ public class CommandParser {
 					if(commands[i].charAt(0) == ':'){
 						String variable = commands[i].substring(1);
 						if(workspace.getValue(variable) == null){
-							workspace.addEntry(new StringNumEntry(variable,0.0));
+							workspace.addEntry(new StringNumEntry(variable,0.0), true);
 						}
 						else{
 							currentNode.setValue((double) workspace.getValue(variable));

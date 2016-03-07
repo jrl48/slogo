@@ -6,12 +6,14 @@ public class ParseNode {
 	    
 	    private String myName;
 	    private double myValue;
+	    private int arrayValues[];
 	    private List<ParseNode> myChildren;
 
 
 	    public ParseNode(String name) {
 	        myValue = 0;
 	        myName = name;
+	        arrayValues[] = new 
 	        myChildren = new ArrayList<ParseNode>();
 	    }
 	    

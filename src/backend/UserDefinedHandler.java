@@ -50,11 +50,14 @@ public class UserDefinedHandler {
 		else if ( parsedInstruction.equals(myUserDefinedCommands.get(5)))
 			ifElseLoop(command,parser,terminal,commandManager,workspace);
 		else if ( parsedInstruction.equals(myUserDefinedCommands.get(6)))
-			makeUserInstruction();
+			makeUserInstruction(command, parser, terminal, commandManager, workspace);
 	}
 
-	private void makeUserInstruction() {
-		throwError("Not Implemented Yet!");
+	private void makeUserInstruction(String command, CommandParser parser, 
+			EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+		
+		commandManager.addEntry();
+		
 	}
 
 	private void ifElseLoop(String command, CommandParser parser, 
