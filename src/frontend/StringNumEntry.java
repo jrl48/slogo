@@ -19,7 +19,7 @@ public class StringNumEntry implements Entry {
     }
     
     @Override
-    public void setFirstValue (Object command) {
+    public void setFirstValue (Object command) { //TODO throw err
         this.firstValue.set((String) command);
     }
     

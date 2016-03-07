@@ -14,6 +14,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
@@ -34,6 +35,11 @@ public class UserInterface {
     private ResourceBundle sceneResources =
             ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + SCENE);
     private GridPane myGridPane;
+    
+    // Component Lists
+    private List<Node> myButtonsList;
+    private List<Node> myFirstColList;
+    private List<Node> mySecondColList;
 
     // Components
     private CommandParser myCommandParser;
@@ -55,6 +61,7 @@ public class UserInterface {
 
     public UserInterface (Stage s) {
         init(s);
+       
     }
 
     public void init (Stage s) {
@@ -86,13 +93,20 @@ public class UserInterface {
         myGridPane.getStyleClass().add(sceneResources.getString("GRIDPANEID"));
         myGridPane.add(myDisplay.getPane(), 1, 1);
         myGridPane.add(myCommandLine.getTextField(), 1, 2, 1, 6);
-        myGridPane.add(makeBox(new HBox(), sceneResources.getString("HBOXID"),new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getButton(),myLanguagePreferences.getComboBox(),myHTMLopener.getButton()))), 2, 6,3,6);
-        myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),new ArrayList<Node>(Arrays.asList(myTerminal.getMyLabel(), myTerminal.getMyTableView(),
-            myWorkspace.getMyLabel(), myWorkspace.getMyTableView()))), 2, 1,2,5);
-        myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),new ArrayList<Node>(Arrays.asList(myUserDefined.getMyLabel(),myUserDefined.getMyTableView(), myTurtleManagerView.getMyLabel(),myTurtleManagerView.getMyTableView()))), 4, 1,4,5);
+        initComponentLists();
+        myGridPane.add(makeBox(new HBox(), sceneResources.getString("HBOXID"),myButtonsList), 2, 6,3,6);
+        myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),myFirstColList), 2, 1,2,5);
+        myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),mySecondColList), 4, 1,4,5);
         return myGridPane;
     }
     
+    private void initComponentLists () {
+        myButtonsList = new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getButton(),myLanguagePreferences.getComboBox(),myHTMLopener.getButton()));
+        myFirstColList = new ArrayList<Node>(Arrays.asList(myTerminal.getMyLabel(), myTerminal.getMyTableView(),
+                                                           myWorkspace.getMyLabel(), myWorkspace.getMyTableView()));
+        mySecondColList = new ArrayList<Node>(Arrays.asList(myUserDefined.getMyLabel(),myUserDefined.getMyTableView(), myTurtleManagerView.getMyLabel(),myTurtleManagerView.getMyTableView()));
+    }
+
     private Node makeBox (Pane box, String cssID, List<Node> items) {
         Pane myBox = box;
         myBox.getStyleClass().add(cssID); 
