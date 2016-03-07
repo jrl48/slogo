@@ -19,7 +19,7 @@ public class UserDefinedView extends ModuleView{
     
     public UserDefinedView(CommandLine command, EntryManager manager, String labelTitle, String[] columnTitles){
         super(manager, labelTitle, columnTitles);
-        getMyTitledPane().setExpanded(false);
+        //getMyTitledPane().setExpanded(false);
         defineListener(command);        
     }
 

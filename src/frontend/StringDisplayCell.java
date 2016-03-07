@@ -6,12 +6,8 @@ import javafx.stage.Stage;
 
 public class StringDisplayCell extends ListCell<Entry> {
     public StringDisplayCell (SLOGOScreen screen, Stage s) {
-  //      this.setOnMouseClicked(e -> handle(screen,s));
+        //TODO fix constructor
     }
-
-//    private void handle (SLOGOScreen screen, Stage s) {
-//        screen.openSavedWorkspace(s, (String) this.getItem().getFirstValue(),((UserInterface) this.getItem().getSecondValue()).getGridPane());
-//    }
 
     @Override
     protected void updateItem (Entry item, boolean empty) {

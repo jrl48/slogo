@@ -8,7 +8,7 @@ public class TurtleManagerView extends ModuleView{
     
     public TurtleManagerView (EntryManager manager, String labelTitle, String[] colTitles) {
         super(manager, labelTitle, colTitles);
-        getMyTitledPane().setExpanded(false);
+       // getMyTitledPane().setExpanded(false);
     }
     
 

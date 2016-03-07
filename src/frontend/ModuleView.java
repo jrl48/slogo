@@ -18,11 +18,13 @@ public abstract class ModuleView {
     private static final String[] entryValues = new String[] { "FirstValue", "SecondValue" };
     private TableView<Entry> myTableView;
     private TitledPane myTitledPane;
+    private String title;
 
 
     public ModuleView (EntryManager manager, String title, String[] colTitles) {
         initTable(manager, colTitles);
-        initTitledPane(title);
+        this.title = title;
+//        initTitledPane(title);
     }
 
     private void initTable (EntryManager manager, String[] colTitles) {
@@ -30,7 +32,7 @@ public abstract class ModuleView {
         List<TableColumn<Entry, Object>> columns = makeColumns(colTitles, entryValues);
         myTableView.getColumns().addAll(columns);
         myTableView.setItems(manager.getEntryList());
-        myTableView.setMinWidth(300);//TODO magic vallue
+        myTableView.setPrefWidth(300);//TODO magic vallue
         myTableView.getStyleClass().add(sceneResources.getString("TABLEVIEWID")); 
         setSizing();
     }
@@ -64,18 +66,18 @@ public abstract class ModuleView {
         return colList;
     }
 
-    private void initTitledPane (String title) {
-        myTitledPane = new TitledPane(title,getMyTableView());
-        myTitledPane.getStyleClass().add(sceneResources.getString("LABELID"));
-    }
+//    private void initTitledPane (String title) {
+//        myTitledPane = new TitledPane(title,getMyTableView());
+//        myTitledPane.getStyleClass().add(sceneResources.getString("LABELID"));
+//    }
 
-    public TitledPane getMyTitledPane () {
-        return myTitledPane;
+    public String getTitle(){
+        return title;
     }
 
     public TableView<Entry> getMyTableView () {
         return myTableView;
     }
-    
+
 
 }

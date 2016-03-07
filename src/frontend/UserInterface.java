@@ -18,6 +18,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -49,10 +51,14 @@ public class UserInterface {
     private WorkspaceView myWorkspace;
     private UserDefinedView myUserDefined;
     private TurtleManagerView myTurtleManagerView;
+    private ColorPaletteView myColorView;
+    private ShapePaletteView myShapeView;
     private EntryManager myTerminalManager;
     private EntryManager myCommandManager;
     private EntryManager myWorkspaceManager;
     private EntryManager myTurtleManager;
+    private EntryManager myColorManager;
+    private EntryManager myShapeManager;
     private LanguageManager myLanguageManager;
     private LanguagePreferences myLanguagePreferences;
     private DisplayPreferences myDisplayPreferences;
@@ -76,6 +82,8 @@ public class UserInterface {
         myCommandManager = new EntryManager();
         myWorkspaceManager = new EntryManager();
         myTurtleManager = new EntryManager();
+        myColorManager = new EntryManager();
+        myShapeManager = new EntryManager();
         myLanguageManager = new LanguageManager();
         myDisplay = new Display(myDisplayPreferences,myTurtleManager);
     	myCommandParser = new CommandParser(myDisplay);
@@ -84,6 +92,8 @@ public class UserInterface {
         myWorkspace = new WorkspaceView(myWorkspaceManager, sceneResources.getString("WORKSPACE"), new String[]{sceneResources.getString("WORKSPACE_1"),sceneResources.getString("WORKSPACE_2")});
         myTurtleManagerView = new TurtleManagerView(myTurtleManager, "Active Turtles", new String[]{"ID","Active"});
         myUserDefined = new UserDefinedView(myCommandLine,myCommandManager, sceneResources.getString("USERCOMMANDS"), new String[]{sceneResources.getString("USERCOMMANDS_1"), sceneResources.getString("USERCOMMANDS_2")});
+        myColorView = new ColorPaletteView(myColorManager, "Color Palette", new String[]{"Index","Color"});
+        myShapeView = new ShapePaletteView(myShapeManager, "Palettes", new String[]{"Index","Shape"});
         myLanguagePreferences = new LanguagePreferences(myLanguageManager,myCommandParser);
         myHTMLopener = new HTMLopener();
     }
@@ -100,12 +110,30 @@ public class UserInterface {
         return myGridPane;
     }
     
-    private void initComponentLists () {
+    private void initComponentLists () {        
         myButtonsList = new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getButton(),myLanguagePreferences.getComboBox(),myHTMLopener.getButton()));
-        myFirstColList = new ArrayList<Node>(Arrays.asList(myTerminal.getMyTitledPane(),
-                                                           myWorkspace.getMyTitledPane(),myUserDefined.getMyTitledPane(),myTurtleManagerView.getMyTitledPane()));
+        myFirstColList = new ArrayList<Node>(Arrays.asList(makePane(myTerminal.getTitle(),myTerminal.getMyTableView(),true),
+                                                           makePane(myWorkspace.getTitle(),myWorkspace.getMyTableView(),true),
+                                                           makePane(myUserDefined.getTitle(),myUserDefined.getMyTableView(),false),
+                                                           makePane(myTurtleManagerView.getTitle(),myTurtleManagerView.getMyTableView(),false),
+                                                           makePane(myShapeView.getTitle(),sideBySideTable(myColorView.getMyTableView(),myShapeView.getMyTableView()),false)));
+    }
+    
+    private Node sideBySideTable (TableView<Entry> myTableView, TableView<Entry> myTableView2) {
+        GridPane gp = new GridPane();
+        gp.setHgap(10.0);//TODO css
+        gp.add(myTableView, 0, 0);
+        gp.add(myTableView2, 1, 0);
+        return gp;
     }
 
+    private Node makePane(String title, Node content, Boolean isExpanded){
+        TitledPane pane = new TitledPane(title,content);
+        pane.getStyleClass().add(sceneResources.getString("LABELID"));
+        pane.setExpanded(isExpanded);
+        pane.setMinWidth(297);//TODO magic numb
+        return pane;
+    }
     private Node makeBox (Pane box, String cssID, List<Node> items, Boolean scrollable) {        
         Pane myBox = box;
         myBox.getStyleClass().add(cssID); 
