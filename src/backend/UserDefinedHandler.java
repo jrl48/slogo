@@ -9,6 +9,7 @@ import frontend.Entry;
 import frontend.EntryManager;
 import frontend.ErrorMessage;
 import frontend.StringNumEntry;
+import frontend.StringStringEntry;
 
 public class UserDefinedHandler {
 	
@@ -36,7 +37,7 @@ public class UserDefinedHandler {
 	
 	public void handleLoops(String command, String parsedInstruction, CommandParser parser, 
 			EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
-		String[] commandPieces = command.split("\\s+");
+		//String[] commandPieces = command.split("\\s+");
 		if ( parsedInstruction.equals(myUserDefinedCommands.get(0))){
 			makeVariable(command,workspace,terminal);}
 		else if ( parsedInstruction.equals(myUserDefinedCommands.get(1)))
@@ -55,9 +56,36 @@ public class UserDefinedHandler {
 
 	private void makeUserInstruction(String command, CommandParser parser, 
 			EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+		String substring1 = new String();
+		String substring2 = new String();
+		int breakpoint = command.indexOf(']');
+		substring1 = command.substring(2, breakpoint + 1);
+		substring2 = command.substring(breakpoint + 4, command.length() - 1);
+		substring1 = substring1.trim();
+		substring2 = substring2.trim();
 		
-		commandManager.addEntry();
-		
+		String substring1point5 = "";
+		String[] first = substring2.split("\\s+");
+		for(int i = 1; i < first.length; i++){
+			substring1point5 = substring1point5 +" " + first[i];
+		}
+		System.out.println(substring1point5);
+		String[] instructions = substring2.split("\\s+");
+		for(int i = 0; i < instructions.length; i++){
+			String s = instructions[i];
+			if(parser.parseCommand(s).equals("")){
+				if(substring1point5.contains(s)){
+					instructions[i] = "1";
+				}
+			}
+		}
+		if(parser.makeTree(instructions, workspace) == null){
+			terminal.addEntry(new StringNumEntry(command,0.0), false);
+		}
+		else{
+			terminal.addEntry(new StringNumEntry(command,1.0), false);
+			commandManager.addEntry(new StringStringEntry(substring1, substring2), false);
+		}
 	}
 
 	private void ifElseLoop(String command, CommandParser parser, 
@@ -107,7 +135,7 @@ public class UserDefinedHandler {
 			if ( expr != 0 )
 				parser.parse(newCommand, terminal, commandManager, workspace);
 			else
-				terminal.addEntry(new StringNumEntry(command,0.0));
+				terminal.addEntry(new StringNumEntry(command,0.0), false);
 		} catch (NumberFormatException e) {
 			throwError("Not a Valid Command!");
 		}
@@ -141,11 +169,11 @@ public class UserDefinedHandler {
 			int endNum = Integer.parseInt(loopStuff[2]);
 			int increment = Integer.parseInt(loopStuff[3]);
 			Entry repcount = new StringNumEntry(loopStuff[0],startNum);
-			workspace.addEntry(repcount);
+			workspace.addEntry(repcount, true);
 			for ( Integer i = startNum; i < endNum; i+=increment ) {
 				workspace.removeEntry(repcount);
 				repcount.setSecondValue((double)i);
-				workspace.addEntry(repcount);
+				workspace.addEntry(repcount, true);
 				String currIter = i.toString();
 				parser.parse(newCommand, terminal, commandManager, workspace);
 			}
@@ -180,11 +208,11 @@ public class UserDefinedHandler {
 		try {
 			int varLim = Integer.parseInt(variableLimit[1]);
 			Entry repcount = new StringNumEntry(variableLimit[0],0.0);
-			workspace.addEntry(repcount);
+			workspace.addEntry(repcount, true);
 			for ( Integer i = 1; i <= varLim; i++ ) {
 				workspace.removeEntry(repcount);
 				repcount.setSecondValue((double)i);
-				workspace.addEntry(repcount);
+				workspace.addEntry(repcount, true);
 				String currIter = i.toString();
 				parser.parse(newCommand, terminal, commandManager, workspace);
 			}
@@ -208,11 +236,11 @@ public class UserDefinedHandler {
 				return;
 			}
 			Entry repcount = new StringNumEntry("repcount",0.0);
-			workspace.addEntry(repcount);
+			workspace.addEntry(repcount, true);
 			for ( int i = 1; i <= expr; i++) {
 				workspace.removeEntry(repcount);
 				repcount.setSecondValue((double)i);
-				workspace.addEntry(repcount);
+				workspace.addEntry(repcount, true);
 				parser.parse(newCommand, terminal, commandManager, workspace);
 			}
 		} catch (NumberFormatException e) {
@@ -227,8 +255,8 @@ public class UserDefinedHandler {
 			throwError("Not a Valid Command!");
 		} 
 		try {
-			workspace.addEntry(new StringNumEntry(commandPieces[1],Double.parseDouble(commandPieces[2])));
-			terminal.addEntry(new StringNumEntry(command,Double.parseDouble(commandPieces[2])));
+			workspace.addEntry(new StringNumEntry(commandPieces[1],Double.parseDouble(commandPieces[2])), true);
+			terminal.addEntry(new StringNumEntry(command,Double.parseDouble(commandPieces[2])), false);
 		} catch (NumberFormatException e) {
 			throwError("Not a Valid Command!");
 		}

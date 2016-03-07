@@ -19,13 +19,13 @@ public class EntryManager {
             for(Entry e: myObservableEntries){
                 if(entry.getFirstValue().equals(e.getFirstValue())){
                     myObservableEntries.set(count, entry);
+                    return;
                 }
                 count++;
             }
         }
-        else{
-            myObservableEntries.add(entry);
-        }
+       	myObservableEntries.add(entry);
+
     }
     public void removeEntry(Entry entry){
         myObservableEntries.remove(entry);
@@ -37,6 +37,15 @@ public class EntryManager {
         for(Entry e:myObservableEntries){
             if (e.getFirstValue().equals(firstEntryVal)){
                 return e.getSecondValue();
+            }
+        }
+        return null;
+    }
+    public Object contains(String value){
+        for(Entry e:myObservableEntries){
+        	String stringValue = (String) e.getFirstValue();
+            if (stringValue.startsWith(value)){
+                return e.getFirstValue();
             }
         }
         return null;

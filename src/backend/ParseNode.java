@@ -13,7 +13,7 @@ public class ParseNode {
 	    public ParseNode(String name) {
 	        myValue = 0;
 	        myName = name;
-	        arrayValues[] = new 
+//	        arrayValues[] = new 
 	        myChildren = new ArrayList<ParseNode>();
 	    }
 	    
