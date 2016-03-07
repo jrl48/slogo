@@ -58,7 +58,7 @@ import javafx.util.converter.NumberStringConverter;
 
 public class WorkspaceView extends ModuleView {
     private static final double WIDTH = 250;
-    private static final double HEIGHT = 200;
+    private static final double HEIGHT = 150;
     private static final double VAR_WIDTH = 170;
     private static final double VAL_WIDTH = 80;
     private int variableColIndex = 0;
@@ -93,7 +93,7 @@ public class WorkspaceView extends ModuleView {
         ((StringNumEntry)getMyTableView().getSelectionModel().getSelectedItem()).setFirstValue(newValue);
     }
     @Override
-    protected void setSizing () {
+    protected void setSizing () { 
         getMyTableView().setPrefSize(WIDTH, HEIGHT);
         getMyTableView().getColumns().get(variableColIndex).setPrefWidth(VAR_WIDTH);
         getMyTableView().getColumns().get(valueColIndex).setPrefWidth(VAL_WIDTH);

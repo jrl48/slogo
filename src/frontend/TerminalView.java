@@ -2,7 +2,7 @@ package frontend;
 
 public class TerminalView extends ModuleView {
     private static final double WIDTH = 250;
-    private static final double HEIGHT = 300;
+    private static final double HEIGHT = 230;
     private static final double COMMAND_WIDTH = 170;
     private int commandColIndex = 0;
     

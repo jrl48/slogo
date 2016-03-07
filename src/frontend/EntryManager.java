@@ -19,9 +19,12 @@ public class EntryManager {
             for(Entry e: myObservableEntries){
                 if(entry.getFirstValue().equals(e.getFirstValue())){
                     myObservableEntries.set(count, entry);
+                    return;
                 }
                 count++;
             }
+            myObservableEntries.add(entry);
+            
         }
         else{
             myObservableEntries.add(entry);

@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
@@ -39,7 +40,6 @@ public class UserInterface {
     // Component Lists
     private List<Node> myButtonsList;
     private List<Node> myFirstColList;
-    private List<Node> mySecondColList;
 
     // Components
     private CommandParser myCommandParser;
@@ -94,23 +94,28 @@ public class UserInterface {
         myGridPane.add(myDisplay.getPane(), 1, 1);
         myGridPane.add(myCommandLine.getTextField(), 1, 2, 1, 6);
         initComponentLists();
-        myGridPane.add(makeBox(new HBox(), sceneResources.getString("HBOXID"),myButtonsList), 2, 6,3,6);
-        myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),myFirstColList), 2, 1,2,5);
-        myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),mySecondColList), 4, 1,4,5);
+        myGridPane.add(makeBox(new HBox(), sceneResources.getString("HBOXID"),myButtonsList,false), 2, 6,3,6);
+        myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),myFirstColList,true), 2, 1,2,5);
+       // myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),mySecondColList), 4, 1,4,5);
         return myGridPane;
     }
     
     private void initComponentLists () {
         myButtonsList = new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getButton(),myLanguagePreferences.getComboBox(),myHTMLopener.getButton()));
-        myFirstColList = new ArrayList<Node>(Arrays.asList(myTerminal.getMyLabel(), myTerminal.getMyTableView(),
-                                                           myWorkspace.getMyLabel(), myWorkspace.getMyTableView()));
-        mySecondColList = new ArrayList<Node>(Arrays.asList(myUserDefined.getMyLabel(),myUserDefined.getMyTableView(), myTurtleManagerView.getMyLabel(),myTurtleManagerView.getMyTableView()));
+        myFirstColList = new ArrayList<Node>(Arrays.asList(myTerminal.getMyTitledPane(),
+                                                           myWorkspace.getMyTitledPane(),myUserDefined.getMyTitledPane(),myTurtleManagerView.getMyTitledPane()));
     }
 
-    private Node makeBox (Pane box, String cssID, List<Node> items) {
+    private Node makeBox (Pane box, String cssID, List<Node> items, Boolean scrollable) {        
         Pane myBox = box;
         myBox.getStyleClass().add(cssID); 
         myBox.getChildren().addAll(items);
+        if(scrollable){
+            ScrollPane scroll = new ScrollPane(myBox);
+            scroll.setMaxHeight(510);//TODO magic number
+            scroll.setMinWidth(300);//TODO magic number
+            return scroll;
+        }
         return myBox;
     }
     public GridPane getGridPane(){

@@ -17,9 +17,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 public class SLOGOScreen {   
-    public static final double WIDTH = 1100;
+    public static final double WIDTH = 880;
     public static final double HEIGHT = 640;
     private static final double HBOX_X = WIDTH - 215;
     private static final double HBOX_Y = 30;
@@ -56,30 +57,39 @@ public class SLOGOScreen {
         mySavedWorkspaces = new ComboBox<Entry>(mySavedManager.getEntryList());        
         mySavedWorkspaces.setPromptText("Saved Workspaces");
         mySavedWorkspaces.getStyleClass().add(sceneResources.getString("BUTTONID"));
-        mySavedWorkspaces.setCellFactory(c-> new StringDisplayCell());
+        mySavedWorkspaces.setConverter(new StringConverter<Entry>(){
+            @Override
+            public String toString(final Entry entry){
+                return "Saved Workspaces";
+            }
+            @Override
+            public Entry fromString (String arg0) {
+                return null;
+            }
+        });
+        mySavedWorkspaces.setCellFactory(c-> new StringDisplayCell(this,s));
         mySavedWorkspaces.setOnAction(e->openSavedWorkspace(s,(String) mySavedWorkspaces.getSelectionModel().getSelectedItem().getFirstValue(),(GridPane) mySavedWorkspaces.getSelectionModel().getSelectedItem().getSecondValue()));
         myControls.getChildren().add(mySavedWorkspaces); 
     }
-    private void openSavedWorkspace (Stage s, String title, GridPane UIPane) {
+    public void openSavedWorkspace (Stage s, String title, GridPane UIPane) {
         if(myUIPaneList.contains(UIPane)){
             myTabPane.getSelectionModel().select(myUIPaneList.indexOf(UIPane));
         }
         else{
             addUserInterface(title,s,true,UIPane);
         }
-        mySavedWorkspaces.setAccessibleText("null");
     }
-    public void addUserInterface(String title, Stage s, Boolean isClosable,GridPane UIPane){
+    private void addUserInterface(String title, Stage s, Boolean isClosable,GridPane UIPane){
         if(UIPane==null){
             UserInterface UI = new UserInterface(s);
             UIPane = UI.getGridPane();
+            title = title+" "+(myTabPane.getTabs().size()+1);
         }
         myUIPaneList.add(UIPane);
-        Tab t = new Tab(title+" "+(myTabPane.getTabs().size()+1));
+        Tab t = new Tab(title);
         t.setClosable(isClosable);        
         t.setContent(UIPane);
-        t.setOnCloseRequest(e->{myUIPaneList.remove(myTabPane.getSelectionModel().getSelectedIndex());
-                                                      mySavedWorkspaces.getSelectionModel().clearSelection();});
+        t.setOnCloseRequest(e->{myUIPaneList.remove(myTabPane.getSelectionModel().getSelectedIndex());});
         myTabPane.getTabs().add(t);
         myTabPane.getSelectionModel().select(t);
     }
