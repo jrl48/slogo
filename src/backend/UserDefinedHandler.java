@@ -78,7 +78,7 @@ public class UserDefinedHandler {
 				}
 			}
 		}
-		if(parser.makeTree(instructions, workspace) == null){
+		if(parser.makeTree(instructions, workspace, commandManager) == null){
 			terminal.addEntry(new StringNumEntry(command,0.0), false);
 		}
 		else{
@@ -143,6 +143,7 @@ public class UserDefinedHandler {
 			if ( expr != 0 )
 				parser.parse(newCommand, terminal, commandManager, workspace);
 			else
+
 				terminal.addEntry(new StringNumEntry(command,0.0), false);
 		} catch (NumberFormatException e) {
 			parser.throwError("Not a Valid Command!");
@@ -180,6 +181,7 @@ public class UserDefinedHandler {
 			int endNum = Integer.parseInt(loopStuff[2]);
 			int increment = Integer.parseInt(loopStuff[3]);
 			Entry repcount = new StringNumEntry(loopStuff[0],startNum);
+
 			workspace.addEntry(repcount, true);
 			for ( Integer i = startNum; i < endNum; i+=increment ) {
 				workspace.removeEntry(repcount);
@@ -222,6 +224,7 @@ public class UserDefinedHandler {
 		try {
 			int varLim = Integer.parseInt(variableLimit[1]);
 			Entry repcount = new StringNumEntry(variableLimit[0],0.0);
+
 			workspace.addEntry(repcount, true);
 			for ( Integer i = 1; i <= varLim; i++ ) {
 				workspace.removeEntry(repcount);
@@ -253,6 +256,7 @@ public class UserDefinedHandler {
 				return;
 			}
 			Entry repcount = new StringNumEntry("repcount",0.0);
+
 			workspace.addEntry(repcount, true);
 			for ( int i = 1; i <= expr; i++) {
 				workspace.removeEntry(repcount);
@@ -272,6 +276,7 @@ public class UserDefinedHandler {
 			parser.throwError("Not a Valid Command!");
 		} 
 		try {
+
 			workspace.addEntry(new StringNumEntry(commandPieces[1],Double.parseDouble(commandPieces[2])), true);
 			terminal.addEntry(new StringNumEntry(command,Double.parseDouble(commandPieces[2])), false);
 		} catch (NumberFormatException e) {
