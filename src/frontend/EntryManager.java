@@ -23,8 +23,12 @@ public class EntryManager {
                 }
                 count++;
             }
+            myObservableEntries.add(entry);
+            
         }
-       	myObservableEntries.add(entry);
+        else{
+            myObservableEntries.add(entry);
+        }
 
     }
     public void removeEntry(Entry entry){

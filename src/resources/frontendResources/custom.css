@@ -30,10 +30,11 @@
 
 //VBox settings
 .myUserVBox{
-	-fx-alignment: top-center;	
+	-fx-alignment: top-center;
+	//-fx-spacing: 10;	
 }
 .myLabel{
-	-fx-text-fill: black;
+	-fx-text-fill: white;
 	-fx-font-weight: bold;
 }
 
