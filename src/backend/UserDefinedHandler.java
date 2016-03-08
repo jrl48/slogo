@@ -79,7 +79,7 @@ public class UserDefinedHandler {
 				}
 			}
 		}
-		if(parser.makeTree(instructions, workspace) == null){
+		if(parser.makeTree(instructions, workspace, commandManager) == null){
 			terminal.addEntry(new StringNumEntry(command,0.0), false);
 		}
 		else{
