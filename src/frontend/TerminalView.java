@@ -1,5 +1,7 @@
 package frontend;
 
+import javafx.scene.control.TableView;
+
 public class TerminalView extends ModuleView {
     private static final double WIDTH = 250;
     private static final double HEIGHT = 230;
@@ -13,7 +15,7 @@ public class TerminalView extends ModuleView {
     }
 
     @Override
-    protected void setSizing () {
+    protected void setSizing (TableView<Entry> table) {
         getMyTableView().setPrefSize(WIDTH,HEIGHT);
         getMyTableView().getColumns().get(commandColIndex).setPrefWidth(COMMAND_WIDTH);
     }

@@ -1,5 +1,6 @@
 package frontend;
 
+import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
 
 public class TurtleManagerView extends ModuleView{
@@ -17,8 +18,8 @@ public class TurtleManagerView extends ModuleView{
     }
 
     @Override
-    protected void setSizing () {
-        getMyTableView().setPrefSize(WIDTH, HEIGHT);
+    protected void setSizing (TableView<Entry> table) {
+        table.setPrefSize(WIDTH, HEIGHT);
         
     }
 

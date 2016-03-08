@@ -1,5 +1,6 @@
 package frontend;
 
+import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
 
 public class ShapePaletteView extends ModuleView {
@@ -11,7 +12,8 @@ public class ShapePaletteView extends ModuleView {
     }
 
     @Override
-    protected void setSizing () {
+    protected void setSizing (TableView<Entry> table) {
+        table.setPrefHeight(200);
     }
 
 }

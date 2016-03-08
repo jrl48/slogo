@@ -1,6 +1,7 @@
 package frontend;
 
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -31,8 +32,8 @@ public class ColorPaletteView extends ModuleView{
     }
 
     @Override
-    protected void setSizing () {
-        getMyTableView().setPrefHeight(200);//TODO magic number
+    protected void setSizing (TableView<Entry> table) {
+        table.setPrefHeight(200);//TODO magic number
     }
 
 }

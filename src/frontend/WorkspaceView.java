@@ -50,6 +50,7 @@ import java.util.List;
 import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.DoubleStringConverter;
@@ -67,7 +68,6 @@ public class WorkspaceView extends ModuleView {
     @SuppressWarnings("unchecked")
     public WorkspaceView (EntryManager manager, String labelTitle, String[] columnTitles) {
         super(manager, labelTitle, columnTitles);
-        setSizing();
         getMyTableView().setEditable(true);
         try{
         makeEditable(((TableColumn<Entry,String>) getMyTableView().getColumns().get(variableColIndex)),
@@ -93,10 +93,10 @@ public class WorkspaceView extends ModuleView {
         ((StringNumEntry)getMyTableView().getSelectionModel().getSelectedItem()).setFirstValue(newValue);
     }
     @Override
-    protected void setSizing () { 
-        getMyTableView().setPrefSize(WIDTH, HEIGHT);
-        getMyTableView().getColumns().get(variableColIndex).setPrefWidth(VAR_WIDTH);
-        getMyTableView().getColumns().get(valueColIndex).setPrefWidth(VAL_WIDTH);
+    protected void setSizing (TableView<Entry> table) { 
+        table.setPrefSize(WIDTH, HEIGHT);
+        table.getColumns().get(variableColIndex).setPrefWidth(VAR_WIDTH);
+        table.getColumns().get(valueColIndex).setPrefWidth(VAL_WIDTH);
     }
 
 }

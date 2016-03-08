@@ -34,10 +34,10 @@ public abstract class ModuleView {
         myTableView.setItems(manager.getEntryList());
         myTableView.setPrefWidth(300);//TODO magic vallue
         myTableView.getStyleClass().add(sceneResources.getString("TABLEVIEWID")); 
-        setSizing();
+        setSizing(myTableView);
     }
 
-    protected abstract void setSizing (); 
+    protected abstract void setSizing (TableView<Entry> table); 
                                                                                   
     
 

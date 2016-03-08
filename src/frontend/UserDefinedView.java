@@ -29,10 +29,10 @@ public class UserDefinedView extends ModuleView{
     }
     
     @Override
-    protected void setSizing () { //TODO fix this bug
-        getMyTableView().setPrefSize(WIDTH, HEIGHT);
-        getMyTableView().getColumns().get(commandColInd).setPrefWidth(COMMAND_WIDTH);
-        getMyTableView().getColumns().get(valueColInd).setPrefWidth(VAL_WIDTH);
+    protected void setSizing (TableView<Entry> table) { //TODO fix this bug
+        table.setPrefSize(WIDTH, HEIGHT);
+        table.getColumns().get(commandColInd).setPrefWidth(COMMAND_WIDTH);
+        table.getColumns().get(valueColInd).setPrefWidth(VAL_WIDTH);
     }
 
 }
