@@ -75,7 +75,6 @@ public class Commands{
 		
 		
 		
-		
 	}
 	
 	public double callCommand(String s, double[] args, Display display){

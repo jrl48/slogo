@@ -33,6 +33,7 @@ public class CommandParser {
 	}
 	
 	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+		command = command.trim();
 		String commandCopy = new String();
 		commandCopy = command;
 		if (command.equals("") )
@@ -45,8 +46,12 @@ public class CommandParser {
 		String instruction = parseCommand(commandPieces[0]);
 		if (myUserDefinedHandler.isLoopCommand(instruction)) {
 			myUserDefinedHandler.handleLoops(command, instruction, this, terminal, commandManager, workspace);
-		} else {
-			List<ParseNode> commandTree = makeTree(commandPieces,workspace);
+		} 
+		else {
+			if(commandManager.contains(commandPieces[0]) != null){
+				commandPieces = methodDealer(commandManager, commandPieces, command);
+			}
+			List<ParseNode> commandTree = makeTree(commandPieces,workspace, commandManager);
 			if(commandTree == null)
 			{
 				throwError("Not a Valid Command!");
@@ -55,12 +60,40 @@ public class CommandParser {
 			for(ParseNode node: commandTree){
 				double result = readTree(node);
 				terminal.addEntry(new StringNumEntry(commandCopy,result),false);
+
 			}
 			
 		}
 	}
 	
-	private List<ParseNode> makeTree(String[] commands, EntryManager workspace){
+	private String[] methodDealer(EntryManager commandManager, String[] commandPieces, String command){
+		String originalParameters = (String)commandManager.contains(commandPieces[0]);
+		
+		int bracket = originalParameters.indexOf('[');
+		String parameters = originalParameters.substring(bracket+1, originalParameters.length() - 1).trim();
+		Map<String, String> paramToNum = new HashMap<String, String>();
+		bracket = command.indexOf('[');
+		String[] commandArray = command.substring(bracket+1, command.length() - 1).trim().split("\\s+");
+		String[] paramArray = parameters.split("\\s+");
+		if(commandArray.length != paramArray.length){
+			throwError("Incorrect Number of Parameters");
+		}
+		for(int x = 0; x < paramArray.length; x++){
+			paramToNum.put(paramArray[x], commandArray[x]);
+		}
+		
+		String actualCommands = (String) commandManager.getValue(originalParameters);
+		commandPieces = actualCommands.split("\\s+");
+		for(int y = 0; y < commandPieces.length; y++){
+			if(paramToNum.containsKey(commandPieces[y])){
+				commandPieces[y] = paramToNum.get(commandPieces[y]);
+			}
+		}
+		
+		return commandPieces;
+	}
+	
+	public List<ParseNode> makeTree(String[] commands, EntryManager workspace, EntryManager commandManager){
 		List<ParseNode> rootList = new ArrayList<ParseNode>();
 		ParseNode root = new ParseNode(parseCommand(commands[0]));
 		rootList.add(root);
@@ -82,6 +115,7 @@ public class CommandParser {
 						String variable = commands[i].substring(1);
 						if(workspace.getValue(variable) == null){
 							workspace.addEntry(new StringNumEntry(variable,0.0),true);
+
 						}
 						else{
 							currentNode.setValue((double) workspace.getValue(variable));
@@ -183,7 +217,7 @@ public class CommandParser {
 	}
 	
 
-	private String parseCommand(String command) {
+	public String parseCommand(String command) {
 		try {
 			FileInputStream fileInput = new FileInputStream(
 					new File("bin/resources/languages/" + myLanguage + ".properties"));

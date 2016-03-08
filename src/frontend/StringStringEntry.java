@@ -8,8 +8,8 @@ public class StringStringEntry implements Entry{
     private SimpleStringProperty secondValue;   
     
     public StringStringEntry(String firstVal, String secondVal){
-        this.firstValue.equals(firstVal);
-        this.secondValue.equals(secondVal);
+        this.firstValue = new SimpleStringProperty(firstVal);
+        this.secondValue = new SimpleStringProperty(secondVal);
     }
     @Override
     public String getFirstValue () {

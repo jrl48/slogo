@@ -25,7 +25,7 @@ public class UserDefinedView extends ModuleView{
 
     @Override
     protected String getClickableString (Entry newValue) {
-        return (String) newValue.getSecondValue();
+        return (String) newValue.getFirstValue();
     }
     
     @Override
