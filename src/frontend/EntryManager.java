@@ -26,7 +26,9 @@ public class EntryManager {
             myObservableEntries.add(entry);
             
         }
-       	myObservableEntries.add(entry);
+        else{
+            myObservableEntries.add(entry);
+        }
 
     }
     public void removeEntry(Entry entry){
