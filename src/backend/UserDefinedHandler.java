@@ -37,9 +37,8 @@ public class UserDefinedHandler {
 	
 	public void handleLoops(String command, String parsedInstruction, CommandParser parser, 
 			EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
-		//String[] commandPieces = command.split("\\s+");
 		if ( parsedInstruction.equals(myUserDefinedCommands.get(0))){
-			makeVariable(command,workspace,terminal);}
+			makeVariable(command,parser,workspace,terminal);}
 		else if ( parsedInstruction.equals(myUserDefinedCommands.get(1)))
 			repeatLoop(command,parser,terminal,commandManager,workspace);
 		else if ( parsedInstruction.equals(myUserDefinedCommands.get(2)))
@@ -96,17 +95,23 @@ public class UserDefinedHandler {
 			Pattern p = Pattern.compile("\\[(.*?)\\]");
 			Matcher m = p.matcher(command);
 			String newTrueCommand = "";
-			if (m.find())
+			if (m.find()) {
 				newTrueCommand = m.group(1);
+				if ( myUserDefinedCommands.contains(parser.parseCommand(newTrueCommand.split("\\s+")[0])))
+					newTrueCommand = newTrueCommand + "]";
+			}
 			else {
-				throwError("Not a Valid Command!");
+				parser.throwError("Not a Valid Command!");
 				return;
 			}
 			String newFalseCommand = "";
-			if (m.find())
+			if (m.find()) {
 				newFalseCommand = m.group(1);
+				if ( myUserDefinedCommands.contains(parser.parseCommand(newFalseCommand.split("\\s+")[0])))
+					newFalseCommand = newFalseCommand + "]";
+			}
 			else {
-				throwError("Not a Valid Command!");
+				parser.throwError("Not a Valid Command!");
 				return;
 			}
 			if ( expr != 0 )
@@ -114,7 +119,7 @@ public class UserDefinedHandler {
 			else
 				parser.parse(newFalseCommand, terminal, commandManager, workspace);
 		} catch (NumberFormatException e) {
-			throwError("Not a Valid Command!");
+			parser.throwError("Not a Valid Command!");
 		}
 	}
 
@@ -126,10 +131,13 @@ public class UserDefinedHandler {
 			Pattern p = Pattern.compile("\\[(.*?)\\]");
 			Matcher m = p.matcher(command);
 			String newCommand = "";
-			if (m.find())
+			if (m.find()) {
 				newCommand = m.group(1);
+				if ( myUserDefinedCommands.contains(parser.parseCommand(newCommand.split("\\s+")[0])))
+					newCommand = newCommand + "]";
+			}
 			else {
-				throwError("Not a Valid Command!");
+				parser.throwError("Not a Valid Command!");
 				return;
 			}
 			if ( expr != 0 )
@@ -137,7 +145,7 @@ public class UserDefinedHandler {
 			else
 				terminal.addEntry(new StringNumEntry(command,0.0), false);
 		} catch (NumberFormatException e) {
-			throwError("Not a Valid Command!");
+			parser.throwError("Not a Valid Command!");
 		}
 	}
 
@@ -149,19 +157,22 @@ public class UserDefinedHandler {
 		if (m.find())
 			loopInfo = m.group(1);
 		else {
-			throwError("Not a Valid Command!");
+			parser.throwError("Not a Valid Command!");
 			return;
 		}
 		String newCommand = "";
-		if (m.find())
+		if (m.find()) {
 			newCommand = m.group(1);
+			if ( myUserDefinedCommands.contains(parser.parseCommand(newCommand.split("\\s+")[0])))
+				newCommand = newCommand + "]";
+		}
 		else {
-			throwError("Not a Valid Command!");
+			parser.throwError("Not a Valid Command!");
 			return;
 		}
 		String[] loopStuff = loopInfo.split("\\s+");
 		if ( loopStuff.length != 4) {
-			throwError("Not a Valid Command!");
+			parser.throwError("Not a Valid Command!");
 			return;
 		}
 		try {
@@ -178,7 +189,7 @@ public class UserDefinedHandler {
 				parser.parse(newCommand, terminal, commandManager, workspace);
 			}
 		} catch (NumberFormatException e) {
-			throwError("Not a Valid Command!");
+			parser.throwError("Not a Valid Command!");
 		}
 	}
 
@@ -190,19 +201,22 @@ public class UserDefinedHandler {
 		if (m.find())
 			varLimit = m.group(1);
 		else {
-			throwError("Not a Valid Command!");
+			parser.throwError("Not a Valid Command!");
 			return;
 		}
 		String newCommand = "";
-		if (m.find())
+		if (m.find()) {
 			newCommand = m.group(1);
+			if ( myUserDefinedCommands.contains(parser.parseCommand(newCommand.split("\\s+")[0])))
+				newCommand = newCommand + "]";
+		}
 		else {
-			throwError("Not a Valid Command!");
+			parser.throwError("Not a Valid Command!");
 			return;
 		}
 		String[] variableLimit = varLimit.split("\\s+");
 		if ( variableLimit.length != 2) {
-			throwError("Not a Valid Command!");
+			parser.throwError("Not a Valid Command!");
 			return;
 		}
 		try {
@@ -217,7 +231,7 @@ public class UserDefinedHandler {
 				parser.parse(newCommand, terminal, commandManager, workspace);
 			}
 		} catch (NumberFormatException e) {
-			throwError("Not a Valid Command!");
+			parser.throwError("Not a Valid Command!");
 		}
 	}
 
@@ -229,10 +243,13 @@ public class UserDefinedHandler {
 			Pattern p = Pattern.compile("\\[(.*?)\\]");
 			Matcher m = p.matcher(command);
 			String newCommand = "";
-			if (m.find())
+			if (m.find()) {
 				newCommand = m.group(1);
+				if ( myUserDefinedCommands.contains(parser.parseCommand(newCommand.split("\\s+")[0])))
+					newCommand = newCommand + "]";
+			}
 			else {
-				throwError("Not a Valid Command!");
+				parser.throwError("Not a Valid Command!");
 				return;
 			}
 			Entry repcount = new StringNumEntry("repcount",0.0);
@@ -244,27 +261,23 @@ public class UserDefinedHandler {
 				parser.parse(newCommand, terminal, commandManager, workspace);
 			}
 		} catch (NumberFormatException e) {
-			throwError("Not a Valid Command!");
+			parser.throwError("Not a Valid Command!");
 		}
 	}
 
-	private void makeVariable(String command, EntryManager workspace, EntryManager terminal) {
+	private void makeVariable(String command, CommandParser parser, EntryManager workspace, EntryManager terminal) {
 		System.out.println(command);
 		String[] commandPieces = command.split("\\s+");
 		if (commandPieces.length != 3) {
-			throwError("Not a Valid Command!");
+			parser.throwError("Not a Valid Command!");
 		} 
 		try {
 			workspace.addEntry(new StringNumEntry(commandPieces[1],Double.parseDouble(commandPieces[2])), true);
 			terminal.addEntry(new StringNumEntry(command,Double.parseDouble(commandPieces[2])), false);
 		} catch (NumberFormatException e) {
-			throwError("Not a Valid Command!");
+			parser.throwError("Not a Valid Command!");
 		}
 	}
 	
-	private void throwError(String errorMessage) {
-		ErrorMessage err = new ErrorMessage(errorMessage);
-		err.showError();
-	}
 
 }

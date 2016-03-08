@@ -20,13 +20,13 @@ import frontend.*;
 
 public class CommandParser {
 	
-	private UserDefinedHandler myUserDefinedHandler;
+	private UserDefinedCommands myUserDefinedHandler;
 	private String myLanguage;
 	private ParametersMap myParametersMap;
 	private Display myDisplay;
 
 	public CommandParser(Display display) {
-		myUserDefinedHandler = new UserDefinedHandler();
+		myUserDefinedHandler = new UserDefinedCommands();
 		myParametersMap = new ParametersMap();
 		myDisplay = display;
 		myLanguage = "English";
@@ -45,7 +45,7 @@ public class CommandParser {
 		}
 		String instruction = parseCommand(commandPieces[0]);
 		if (myUserDefinedHandler.isLoopCommand(instruction)) {
-			myUserDefinedHandler.handleLoops(command, instruction, this, terminal, commandManager, workspace);
+			myUserDefinedHandler.callCommand(command, instruction, this, terminal, commandManager, workspace);
 		} 
 		else {
 			if(commandManager.contains(commandPieces[0]) != null){
@@ -246,7 +246,7 @@ public class CommandParser {
 		return "";
 	}
 	
-	private void throwError(String errorMessage) {
+	public void throwError(String errorMessage) {
 		ErrorMessage err = new ErrorMessage(errorMessage);
 		err.showError();
 	}
