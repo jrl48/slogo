@@ -1,6 +1,8 @@
 package backend;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import methodInterfaces.*;
 import frontend.Display;
@@ -8,6 +10,7 @@ import frontend.Display;
 public class Commands{
 	private Map<String, TurtleInterface> turtleInstructions = new HashMap<String, TurtleInterface>();
 	private Map<String, MathInterface> instructions = new HashMap<String, MathInterface>();
+	//private Map<String UserDefinedInterface> userDefinedInstructions = new HashMap<String, UserDefinedInterface>();
 	
 	public Commands(){
 		createInstructionMap();
@@ -72,9 +75,6 @@ public class Commands{
 //		turtleInstructions.put("Tell", new TurtleTell());
 //		turtleInstructions.put("Ask", new TurtleAsk());
 //		turtleInstructions.put("AskWith", new TurtleAskWith());
-		
-		
-		
 	}
 	
 	public double callCommand(String s, double[] args, Display display){
@@ -84,8 +84,7 @@ public class Commands{
 		} else {
 			TurtleInterface turtleCommand = turtleInstructions.get(s);
 			return turtleCommand.executeCommand(args, display);
-		}
-		
+		}	
 	}
 	
 }
