@@ -1,11 +1,11 @@
 package methodInterfaces;
 
-import frontend.Display;
+import frontend.SingleTurtle;
 
 public class TurtleIsShowing implements TurtleInterface {
 	
 	@Override
-	public double executeCommand(double[] args, Display display) {
+	public double executeCommand(double[] args, SingleTurtle display) {
 		if (display.getTurtleVisibility())
 			return 1;
 		return 0;

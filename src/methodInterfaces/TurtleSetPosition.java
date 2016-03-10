@@ -1,10 +1,10 @@
 package methodInterfaces;
-import frontend.Display;
+import frontend.SingleTurtle;
 
 public class TurtleSetPosition implements TurtleInterface {
 	
 	@Override
-	public double executeCommand(double[] args, Display display) {
+	public double executeCommand(double[] args, SingleTurtle display) {
 		double currX = display.getTurtleX();
 		double currY = display.getTurtleY();
 		display.setTurtleCoordinates(args[0], args[1]);

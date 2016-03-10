@@ -1,11 +1,11 @@
 package methodInterfaces;
 
-import frontend.Display;
+import frontend.SingleTurtle;
 
 public class TurtleHeading implements TurtleInterface {
 	
 	@Override
-	public double executeCommand(double[] args, Display display) {
+	public double executeCommand(double[] args, SingleTurtle display) {
 		return display.getTurtleAngle();
 	}
 
