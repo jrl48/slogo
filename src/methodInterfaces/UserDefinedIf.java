@@ -1,6 +1,7 @@
 package methodInterfaces;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,7 +12,7 @@ import frontend.StringNumEntry;
 public class UserDefinedIf implements UserDefinedInterface {
 
 	@Override
-	public void executeCommand(String command, CommandParser parser, ArrayList<String> userDefinedCommands,
+	public void executeCommand(String command, CommandParser parser, List<String> userDefinedCommands,
 			EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
 		String[] commandPieces = command.split("\\s+");
 		try {

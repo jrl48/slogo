@@ -1,6 +1,7 @@
 package methodInterfaces;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import backend.CommandParser;
 import frontend.EntryManager;
@@ -10,7 +11,7 @@ import frontend.StringStringEntry;
 public class UserDefinedMakeUserInstruction implements UserDefinedInterface {
 
 	@Override
-	public void executeCommand(String command, CommandParser parser, ArrayList<String> userDefinedCommands,
+	public void executeCommand(String command, CommandParser parser, List<String> userDefinedCommands,
 			EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
 		String substring1 = new String();
 		String substring2 = new String();
@@ -35,7 +36,7 @@ public class UserDefinedMakeUserInstruction implements UserDefinedInterface {
 				}
 			}
 		}
-		if(parser.makeTree(instructions, workspace) == null){
+		if(parser.makeTree(instructions, workspace, commandManager) == null){
 			terminal.addEntry(new StringNumEntry(command,0.0), false);
 		}
 		else{
