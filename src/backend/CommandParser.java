@@ -32,7 +32,7 @@ public class CommandParser {
 		myLanguage = "English";
 	}
 	
-	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, MultipleTurtles myTurtles) {
 		command = command.trim();
 		String commandCopy = new String();
 		commandCopy = command;
@@ -48,8 +48,14 @@ public class CommandParser {
 			myUserDefinedHandler.callCommand(command, instruction, this, terminal, commandManager, workspace);
 		} 
 		else {
+			System.out.println("WHY");
 			if(commandManager.contains(commandPieces[0]) != null){
+				System.out.println("Hello");
 				commandPieces = methodDealer(commandManager, commandPieces, command);
+			}
+			System.out.println("WOAH");
+			for(String x: commandPieces){
+				System.out.println(x);
 			}
 			List<ParseNode> commandTree = makeTree(commandPieces,workspace, commandManager);
 			if(commandTree == null)
@@ -58,7 +64,7 @@ public class CommandParser {
 				return;
 			}
 			for(ParseNode node: commandTree){
-				double result = readTree(node);
+				double result = readTree(node, myTurtles);
 				terminal.addEntry(new StringNumEntry(commandCopy,result),false);
 
 			}
@@ -68,12 +74,14 @@ public class CommandParser {
 	
 	private String[] methodDealer(EntryManager commandManager, String[] commandPieces, String command){
 		String originalParameters = (String)commandManager.contains(commandPieces[0]);
-		
 		int bracket = originalParameters.indexOf('[');
 		String parameters = originalParameters.substring(bracket+1, originalParameters.length() - 1).trim();
 		Map<String, String> paramToNum = new HashMap<String, String>();
 		bracket = command.indexOf('[');
-		String[] commandArray = command.substring(bracket+1, command.length() - 1).trim().split("\\s+");
+		int endBracket = command.indexOf(']');
+		System.out.println("WEREWRWE");
+
+		String[] commandArray = command.substring(bracket+1, endBracket).trim().split("\\s+");
 		String[] paramArray = parameters.split("\\s+");
 		if(commandArray.length != paramArray.length){
 			throwError("Incorrect Number of Parameters");
@@ -82,14 +90,17 @@ public class CommandParser {
 			paramToNum.put(paramArray[x], commandArray[x]);
 		}
 		
-		String actualCommands = (String) commandManager.getValue(originalParameters);
+		String actualCommands = (String) commandManager.getValue(originalParameters) +  command.substring(endBracket+1);
 		commandPieces = actualCommands.split("\\s+");
 		for(int y = 0; y < commandPieces.length; y++){
 			if(paramToNum.containsKey(commandPieces[y])){
 				commandPieces[y] = paramToNum.get(commandPieces[y]);
 			}
 		}
-		
+//		
+//		for (String x: commandPieces){
+//			System.out.println(x);
+//		}
 		return commandPieces;
 	}
 	
@@ -108,6 +119,53 @@ public class CommandParser {
 			ParseNode currentNode = new ParseNode(parsedCommand);
 			if(!parsedCommand.equals("")){
 				instructions.add(currentNode);
+			}
+			else if(commandManager.contains(commands[i]) != null){
+				String newString = "";
+				for(int j = i;j < commands.length; j++){
+					newString = newString + " " + commands [j];
+				}
+				newString = newString.trim();
+				String[] newCommands = newString.split("\\s+");
+				newCommands = methodDealer(commandManager, newCommands, newString);
+				List<ParseNode> newRoots = makeTree(newCommands, workspace, commandManager);
+				if(newRoots == null){
+					return null;
+				}
+				System.out.println("WEREWRWEREW");
+				for(ParseNode newNode: newRoots){
+				//**************************REFACTOR THIS PART**************************
+				if(i > 0){
+					ParseNode originalParent = null;
+					ParseNode parent = instructions.get(size);
+					for(int j = size; j >= 0; j--){
+						parent = instructions.get(j);
+						int numParams = myParametersMap.getNumParams(parent.getName());
+						if(numParams == -1){
+							return null;
+						}
+						if(parent.getChildren().size() < numParams){
+							originalParent = parent;
+							break;
+						}
+					}
+					if(originalParent == null){
+						if(newNode.getName().equals("")){
+							return null;
+						}
+						rootList.add(newNode);
+						instructions.clear();
+						instructions.add(newNode);
+						root = newNode;
+					}
+					else{
+						parent.addChild(newNode);
+					}
+				}
+				//***********************************VA**********************************
+				}
+				System.out.println(rootList);
+				return rootList;
 			}
 			else{
 				try{
@@ -160,28 +218,28 @@ public class CommandParser {
 		return rootList;
 	}
 	
-	private double readTree(ParseNode root){
+	private double readTree(ParseNode root, MultipleTurtles MyTurtles){
 		ParseNode current = root;
 		if(root.getChildren().size() == 0){
 			double[] args = new double[0];
 			Commands commandMap = new Commands();
 			if(!root.getName().equals("")){
-				root.setValue(commandMap.callCommand(current.getName(), args, myDisplay));
+				root.setValue(commandMap.callCommand(current.getName(), args, myDisplay, MyTurtles));
 			}
 		}
 		while(root.getChildren().size() > 0){
-			dfs(root, current);
+			dfs(root, current, MyTurtles);
 		}
 		
 		return root.getValue();
 	}
 	
-	private void dfs(ParseNode root, ParseNode current){
+	private void dfs(ParseNode root, ParseNode current, MultipleTurtles myTurtles){
 		int count = 0;
 		for(ParseNode child: current.getChildren()){
 			if(child.getChildren().size() != 0){
 				count++;
-				dfs(root, child);
+				dfs(root, child, myTurtles);
 			}
 		}
 		if(count == 0){
@@ -194,7 +252,7 @@ public class CommandParser {
 				List<ParseNode> nodeChildren = current.getChildren();
 				for(ParseNode node: nodeChildren){
 					if(!node.getName().equals("")){
-						node.setValue(commandMap.callCommand(node.getName(), new double[0], myDisplay));
+						node.setValue(commandMap.callCommand(node.getName(), new double[0], myDisplay, myTurtles));
 					}
 				}
 				double[] args = new double[nodeChildren.size()];
@@ -204,7 +262,7 @@ public class CommandParser {
 					i++;
 				}
 				
-				current.setValue(commandMap.callCommand(current.getName(), args, myDisplay));
+				current.setValue(commandMap.callCommand(current.getName(), args, myDisplay, myTurtles));
 				current.setName("");
 				current.removeChildren();
 			}
