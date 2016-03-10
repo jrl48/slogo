@@ -22,7 +22,7 @@ import javafx.util.StringConverter;
 public class SLOGOScreen {   
     public static final double WIDTH = 880;
     public static final double HEIGHT = 640;
-    private static final double HBOX_X = WIDTH - 215;
+    private static final double HBOX_X = WIDTH - 245;
     private static final double HBOX_Y = 30;
     private Scene myScene;
     private TabPane myTabPane;
