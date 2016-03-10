@@ -35,7 +35,7 @@ public class Display {
     private Group root;
     private static final double WIDTH = 500;
     private static final double HEIGHT = 450;
-    private Turtle myTurtle;
+    private MultipleTurtles myTurtle;
     private ColorPicker penCol;
     
     // List of Lines that are being drawn by the turtle
@@ -43,7 +43,6 @@ public class Display {
     
     public Display (DisplayPreferences dispPref, EntryManager turtleManager) {
         this.penCol = dispPref.getPenColorPicker();
-        turtleManager.addEntry(new StringNumEntry("Turtle "+(turtleManager.getEntryList().size()+1),1),false);
         initPane(dispPref);
     }
     
@@ -56,7 +55,7 @@ public class Display {
         setPaneBinding(myPane, dispPref.getDispColorPicker());
         
         // Build turtle and initialize it at Logo's (0,0)
-        myTurtle = new Turtle(dispPref.getImageProperty());
+        myTurtle = new MultipleTurtles(dispPref.getImageProperty());
         myPane.getChildren().add(myTurtle.getBody());
         updateTurtleVisualPosition(false);
         

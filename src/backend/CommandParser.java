@@ -32,7 +32,7 @@ public class CommandParser {
 		myLanguage = "English";
 	}
 	
-	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, MultipleTurtles myTurtles) {
 		command = command.trim();
 		String commandCopy = new String();
 		commandCopy = command;
@@ -64,7 +64,7 @@ public class CommandParser {
 				return;
 			}
 			for(ParseNode node: commandTree){
-				double result = readTree(node);
+				double result = readTree(node, myTurtles);
 				terminal.addEntry(new StringNumEntry(commandCopy,result),false);
 
 			}
@@ -218,28 +218,28 @@ public class CommandParser {
 		return rootList;
 	}
 	
-	private double readTree(ParseNode root){
+	private double readTree(ParseNode root, MultipleTurtles MyTurtles){
 		ParseNode current = root;
 		if(root.getChildren().size() == 0){
 			double[] args = new double[0];
 			Commands commandMap = new Commands();
 			if(!root.getName().equals("")){
-				root.setValue(commandMap.callCommand(current.getName(), args, myDisplay));
+				root.setValue(commandMap.callCommand(current.getName(), args, myDisplay, MyTurtles));
 			}
 		}
 		while(root.getChildren().size() > 0){
-			dfs(root, current);
+			dfs(root, current, MyTurtles);
 		}
 		
 		return root.getValue();
 	}
 	
-	private void dfs(ParseNode root, ParseNode current){
+	private void dfs(ParseNode root, ParseNode current, MultipleTurtles myTurtles){
 		int count = 0;
 		for(ParseNode child: current.getChildren()){
 			if(child.getChildren().size() != 0){
 				count++;
-				dfs(root, child);
+				dfs(root, child, myTurtles);
 			}
 		}
 		if(count == 0){
@@ -252,7 +252,7 @@ public class CommandParser {
 				List<ParseNode> nodeChildren = current.getChildren();
 				for(ParseNode node: nodeChildren){
 					if(!node.getName().equals("")){
-						node.setValue(commandMap.callCommand(node.getName(), new double[0], myDisplay));
+						node.setValue(commandMap.callCommand(node.getName(), new double[0], myDisplay, myTurtles));
 					}
 				}
 				double[] args = new double[nodeChildren.size()];
@@ -262,7 +262,7 @@ public class CommandParser {
 					i++;
 				}
 				
-				current.setValue(commandMap.callCommand(current.getName(), args, myDisplay));
+				current.setValue(commandMap.callCommand(current.getName(), args, myDisplay, myTurtles));
 				current.setName("");
 				current.removeChildren();
 			}
