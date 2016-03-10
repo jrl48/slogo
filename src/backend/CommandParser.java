@@ -20,13 +20,13 @@ import frontend.*;
 
 public class CommandParser {
 	
-	private UserDefinedHandler myUserDefinedHandler;
+	private UserDefinedCommands myUserDefinedHandler;
 	private String myLanguage;
 	private ParametersMap myParametersMap;
 	private Display myDisplay;
 
 	public CommandParser(Display display) {
-		myUserDefinedHandler = new UserDefinedHandler();
+		myUserDefinedHandler = new UserDefinedCommands();
 		myParametersMap = new ParametersMap();
 		myDisplay = display;
 		myLanguage = "English";
@@ -45,7 +45,7 @@ public class CommandParser {
 		}
 		String instruction = parseCommand(commandPieces[0]);
 		if (myUserDefinedHandler.isLoopCommand(instruction)) {
-			myUserDefinedHandler.handleLoops(command, instruction, this, terminal, commandManager, workspace);
+			myUserDefinedHandler.callCommand(command, instruction, this, terminal, commandManager, workspace);
 		} 
 		else {
 			System.out.println("WHY");
@@ -65,7 +65,8 @@ public class CommandParser {
 			}
 			for(ParseNode node: commandTree){
 				double result = readTree(node);
-				terminal.addEntry(new StringNumEntry(commandCopy,result), false);
+				terminal.addEntry(new StringNumEntry(commandCopy,result),false);
+
 			}
 			
 		}
@@ -171,7 +172,8 @@ public class CommandParser {
 					if(commands[i].charAt(0) == ':'){
 						String variable = commands[i].substring(1);
 						if(workspace.getValue(variable) == null){
-							workspace.addEntry(new StringNumEntry(variable,0.0), true);
+							workspace.addEntry(new StringNumEntry(variable,0.0),true);
+
 						}
 						else{
 							currentNode.setValue((double) workspace.getValue(variable));
@@ -310,7 +312,7 @@ public class CommandParser {
 		return "";
 	}
 	
-	private void throwError(String errorMessage) {
+	public void throwError(String errorMessage) {
 		ErrorMessage err = new ErrorMessage(errorMessage);
 		err.showError();
 	}
