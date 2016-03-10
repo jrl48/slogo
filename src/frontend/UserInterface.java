@@ -63,6 +63,7 @@ public class UserInterface {
     private LanguagePreferences myLanguagePreferences;
     private DisplayPreferences myDisplayPreferences;
     private HTMLopener myHTMLopener;   
+    private MultipleTurtles myTurtles;
     
 
     public UserInterface (Stage s) {
@@ -86,7 +87,8 @@ public class UserInterface {
         myShapeManager = new EntryManager();
         myLanguageManager = new LanguageManager();
         myDisplay = new Display(myDisplayPreferences,myTurtleManager);
-    	myCommandParser = new CommandParser(myDisplay);
+        myTurtles = new MultipleTurtles(myDisplayPreferences.getImageProperty(), myTurtleManager, myDisplay.getPane());
+    	myCommandParser = new CommandParser(myTurtles);
         myCommandLine = new CommandLine(myCommandParser, myTerminalManager, myCommandManager, myWorkspaceManager);
         myTerminal = new TerminalView(myCommandLine, myTerminalManager, sceneResources.getString("TERMINAL"), new String[]{sceneResources.getString("TERMINAL_1"),sceneResources.getString("TERMINAL_2")});
         myWorkspace = new WorkspaceView(myWorkspaceManager, sceneResources.getString("WORKSPACE"), new String[]{sceneResources.getString("WORKSPACE_1"),sceneResources.getString("WORKSPACE_2")});

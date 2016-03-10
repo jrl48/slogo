@@ -1,11 +1,11 @@
 package methodInterfaces;
 
-import frontend.Display;
+import frontend.SingleTurtle;
 
 public class DisplaySetBackground implements TurtleInterface {
 
 	@Override
-	public double executeCommand(double[] args, Display display) {
+	public double executeCommand(double[] args, SingleTurtle display) {
 		//set background to args[0]
 		return args[0];
 	}
