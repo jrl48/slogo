@@ -50,7 +50,6 @@ public class CommandParser {
 			Pattern p = Pattern.compile("\\((.*?)\\)");
 			Matcher m = p.matcher(command);
 			if(m.find()) {
-				System.out.println(m.group(1));
 				handleGrouping(command,terminal,commandManager,workspace,myTurtles);
 				return;
 			}
@@ -65,9 +64,7 @@ public class CommandParser {
 				commandPieces = methodDealer(commandManager, commandPieces, command);
 			}
 			//System.out.println("WOAH");
-			for(String x: commandPieces){
-				System.out.println(x);
-			}
+			System.out.println(command);
 			List<ParseNode> commandTree = makeTree(commandPieces,workspace, commandManager);
 			if(commandTree == null)
 			{
@@ -108,8 +105,11 @@ public class CommandParser {
 			newCommand = newCommand + commandPieces[i] + " ";
 		}
 		String[] originalCommandPieces = command.split("\\s+");
-		if (originalCommandPieces[0] != "(")
+		originalCommandPieces[0] = originalCommandPieces[0].replaceAll("\\(","");
+		if (originalCommandPieces[0] != "\\(") {
+			System.out.println(originalCommandPieces[0]);
 			newCommand = originalCommandPieces[0] + " " + newCommand;
+		}
 		parse(newCommand,terminal,commandManager,workspace);
 		
 	}
