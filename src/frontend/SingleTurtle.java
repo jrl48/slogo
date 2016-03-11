@@ -202,6 +202,5 @@ public class SingleTurtle implements Turtle {
         setCoordinates(x,y);
         updateTurtleVisualPosition(false);
     }
-
-
+ 
 }

@@ -31,15 +31,9 @@ public class CommandParser {
 		myTurtles = display;
 		myLanguage = "English";
 	}
-	
-<<<<<<< HEAD
+
 	public void parse(String command, EntryManager terminal, EntryManager commandManager, 
-			EntryManager workspace, MultipleTurtles myTurtles) {
-||||||| merged common ancestors
-	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, MultipleTurtles myTurtles) {
-=======
-	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
->>>>>>> 6e126d87d631ddc0afc298ccc6ae215bc6511a94
+			EntryManager workspace) {
 		command = command.trim();
 		String commandCopy = new String();
 		commandCopy = command;
@@ -52,21 +46,23 @@ public class CommandParser {
 		}
 		String instruction = parseCommand(commandPieces[0]);
 		if ( commandPieces.length >= 2) {
-			Pattern p = Pattern.compile("\\(.*?\\)");
+			Pattern p = Pattern.compile("\\((.*?)\\)");
 			Matcher m = p.matcher(command);
-			if(m.find())
+			if(m.find()) {
+				System.out.println(m.group(1));
 				handleGrouping(command,terminal,commandManager,workspace,myTurtles);
+			}
 		}
-		if (myUserDefinedHandler.isLoopCommand(instruction)) {
+		else if (myUserDefinedHandler.isLoopCommand(instruction)) {
 			myUserDefinedHandler.callCommand(command, instruction, this, terminal, commandManager, workspace);
 		} 
 		else {
-			System.out.println("WHY");
+			//System.out.println("WHY");
 			if(commandManager.contains(commandPieces[0]) != null){
 				System.out.println("Hello");
 				commandPieces = methodDealer(commandManager, commandPieces, command);
 			}
-			System.out.println("WOAH");
+			//System.out.println("WOAH");
 			for(String x: commandPieces){
 				System.out.println(x);
 			}
@@ -87,10 +83,16 @@ public class CommandParser {
 	
 	private void handleGrouping(String command, EntryManager terminal, EntryManager commandManager,
 			EntryManager workspace, MultipleTurtles myTurtles) {
-		Pattern p = Pattern.compile("\\(.*?\\)");
+		Pattern p = Pattern.compile("\\((.*?)\\)");
 		Matcher m = p.matcher(command);
-		String commandInParen = m.group(1);
-		String[] commandPieces = commandInParen.split("\\s+");
+		String commandInParen = "";
+		if (m.find())
+			commandInParen = m.group(1);
+		else {
+			throwError("Not a valid Command!");
+			return;
+		}
+		String[] commandPieces = commandInParen.trim().split("\\s+");
 		String commandPiece = parseCommand(commandPieces[0]);
 		if (myParametersMap.getNumParams(commandPiece) < 2 || commandPieces.length < 3) {
 			throwError("Command cannot be grouped!");
@@ -106,7 +108,7 @@ public class CommandParser {
 		String[] originalCommandPieces = command.split("\\s+");
 		if (originalCommandPieces[0] != "(")
 			newCommand = originalCommandPieces[0] + " " + newCommand;
-		parse(newCommand,terminal,commandManager,workspace,myTurtles);
+		parse(newCommand,terminal,commandManager,workspace);
 		
 	}
 	
