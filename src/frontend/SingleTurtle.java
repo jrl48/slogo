@@ -6,9 +6,11 @@ import java.util.List;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -26,7 +28,9 @@ public class SingleTurtle implements Turtle {
     private static final double DEFAULT_TURTLE_SIZE = 30;
     private static final double DISPLAY_WIDTH = Display.WIDTH;
     private static final double DISPLAY_HEIGHT = Display.HEIGHT;
+    private static final String DEGREE = "\u00b0";
     private boolean isActive;
+    private SimpleStringProperty turtStatsProp = new SimpleStringProperty();
 
     private ColorPicker penCol;
 
@@ -35,7 +39,7 @@ public class SingleTurtle implements Turtle {
 
     public SingleTurtle (ObjectProperty<Image> imageProperty, Pane myPane) {
         this.myPane = myPane;
-        body = new ImageView();
+        this.body = new ImageView();
         Bindings.bindBidirectional(this.body.imageProperty(), imageProperty);
         body.setFitWidth(WIDTH);
         body.setFitHeight(HEIGHT);
@@ -44,8 +48,28 @@ public class SingleTurtle implements Turtle {
         pen = false;
         isActive = true;
         updateTurtleVisualPosition(false);
+        setMouseActions();
     }
     
+    private void setMouseActions () {
+        Tooltip t = new Tooltip();
+        t.textProperty().bind(turtStatsProp);
+        t.setOnShowing(e->updateTurtleStatsProp(turtleStats()));
+        Tooltip.install(body, t);
+    }
+    
+    private void updateTurtleStatsProp(String turtStats){
+        turtStatsProp.setValue(turtStats);
+    }
+    
+    private String turtleStats(){
+        StringBuilder turtStats = new StringBuilder();
+        turtStats.append(String.format("Position = [%.2f, %.2f]\n",getTurtleX(),getTurtleY()));
+        turtStats.append(String.format("Heading = %.2f",getTurtleAngle())+DEGREE+"\n");
+        turtStats.append("PenDown = "+isTurtlePenDown()+"\n");
+        return turtStats.toString();
+    }
+
     public ImageView getBody () {
         return body;
     }
