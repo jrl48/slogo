@@ -52,9 +52,10 @@ public class CommandParser {
 			if(m.find()) {
 				System.out.println(m.group(1));
 				handleGrouping(command,terminal,commandManager,workspace,myTurtles);
+				return;
 			}
 		}
-		else if (myUserDefinedHandler.isLoopCommand(instruction)) {
+		if (myUserDefinedHandler.isLoopCommand(instruction)) {
 			myUserDefinedHandler.callCommand(command, instruction, this, terminal, commandManager, workspace);
 		} 
 		else {
