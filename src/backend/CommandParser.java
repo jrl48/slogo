@@ -16,13 +16,15 @@ import java.util.regex.Pattern;
 
 import frontend.*;
 
-
+/////WHEN 
 
 public class CommandParser {
 	
 	private UserDefinedCommands myUserDefinedHandler;
 	private String myLanguage;
 	private ParametersMap myParametersMap;
+	private String originalCommand;
+
 	private MultipleTurtles myTurtles;
 
 	public CommandParser(MultipleTurtles display) {
@@ -32,10 +34,12 @@ public class CommandParser {
 		myLanguage = "English";
 	}
 	
-	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean updateString) {
 		command = command.trim();
-		String commandCopy = new String();
-		commandCopy = command;
+		System.out.println("command: "+ command);
+		if(updateString){
+			originalCommand = command;
+		}
 		if (command.equals("") )
 			return;
 		String[] commandPieces = command.split("\\s+");
@@ -44,43 +48,92 @@ public class CommandParser {
 			return;
 		}
 		String instruction = parseCommand(commandPieces[0]);
+		if ( commandPieces.length >= 2) {
+			Pattern p = Pattern.compile("\\((.*?)\\)");
+			Matcher m = p.matcher(command);
+			if(m.find()) {
+				handleGrouping(command,terminal,commandManager,workspace,myTurtles);
+				return;
+			}
+		}
 		if (myUserDefinedHandler.isLoopCommand(instruction)) {
 			myUserDefinedHandler.callCommand(command, instruction, this, terminal, commandManager, workspace);
 		} 
 		else {
-			System.out.println("WHY");
 			if(commandManager.contains(commandPieces[0]) != null){
-				System.out.println("Hello");
 				commandPieces = methodDealer(commandManager, commandPieces, command);
 			}
-			System.out.println("WOAH");
-			for(String x: commandPieces){
-				System.out.println(x);
-			}
+//			for(String x: commandPieces){
+//				System.out.println(x);
+//			}
+			
 			List<ParseNode> commandTree = makeTree(commandPieces,workspace, commandManager);
 			if(commandTree == null)
 			{
 				throwError("Not a Valid Command!");
 				return;
 			}
+			
 			for(ParseNode node: commandTree){
 				double result = readTree(node, myTurtles);
-				terminal.addEntry(new StringNumEntry(commandCopy,result),false);
+				terminal.addEntry(new StringNumEntry(originalCommand,result),false);
 
 			}
 			
 		}
 	}
 	
+	private void handleGrouping(String command, EntryManager terminal, EntryManager commandManager,
+			EntryManager workspace, MultipleTurtles myTurtles) {
+		Pattern p = Pattern.compile("\\((.*?)\\)");
+		Matcher m = p.matcher(command);
+		String commandInParen = "";
+		if (m.find())
+			commandInParen = m.group(1);
+		else {
+			throwError("Not a valid Command!");
+			return;
+		}
+		String[] commandPieces = commandInParen.trim().split("\\s+");
+		String commandPiece = parseCommand(commandPieces[0]);
+		if (myParametersMap.getNumParams(commandPiece) < 2 || commandPieces.length < 3) {
+			throwError("Command cannot be grouped!");
+			return;
+		}
+		String newCommand = "";
+		for ( int i = 0; i < commandPieces.length-2; i++ ) {
+			newCommand = newCommand + commandPieces[0] + " ";
+		}
+		for ( int i = 1; i < commandPieces.length; i++ ) {
+			newCommand = newCommand + commandPieces[i] + " ";
+		}
+		String[] originalCommandPieces = command.split("\\s+");
+		originalCommandPieces[0] = originalCommandPieces[0].replaceAll("\\(","");
+		if (originalCommandPieces[0] != "\\(") {
+			System.out.println(originalCommandPieces[0]);
+			newCommand = originalCommandPieces[0] + " " + newCommand;
+		}
+		parse(newCommand,terminal,commandManager,workspace, false);
+		
+	}
 	private String[] methodDealer(EntryManager commandManager, String[] commandPieces, String command){
 		String originalParameters = (String)commandManager.contains(commandPieces[0]);
 		int bracket = originalParameters.indexOf('[');
 		String parameters = originalParameters.substring(bracket+1, originalParameters.length() - 1).trim();
 		Map<String, String> paramToNum = new HashMap<String, String>();
 		bracket = command.indexOf('[');
-		int endBracket = command.indexOf(']');
+		int endBracket = command.lastIndexOf(']');
 		System.out.println("WEREWRWE");
-
+		
+		String insideCommand = command.substring(bracket+1, endBracket).trim();
+		System.out.println(insideCommand);
+//		if(insideCommand.contains("[") || insideCommand.contains("]")){
+//			for(String s: insideCommand.split("\\s+")){
+//				if(commandManager.contains(s) !=  ){
+//					
+//				}
+//			}
+//		}
 		String[] commandArray = command.substring(bracket+1, endBracket).trim().split("\\s+");
 		String[] paramArray = parameters.split("\\s+");
 		if(commandArray.length != paramArray.length){

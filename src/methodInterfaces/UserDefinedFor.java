@@ -50,7 +50,7 @@ public class UserDefinedFor implements UserDefinedInterface {
 				repcount.setSecondValue((double)i);
 				workspace.addEntry(repcount, true);
 				String currIter = i.toString();
-				parser.parse(newCommand, terminal, commandManager, workspace);
+				parser.parse(newCommand, terminal, commandManager, workspace, false);
 			}
 		} catch (NumberFormatException e) {
 			parser.throwError("Not a Valid Command!");
