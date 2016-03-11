@@ -1,12 +1,13 @@
 package frontend;
 
 import javafx.scene.control.TableColumn;
+import java.util.*;
 import javafx.scene.control.TableView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class ColorPaletteView extends ModuleView{
-
+    private List<Entry> myDefaults = new ArrayList<Entry>();
     public ColorPaletteView (EntryManager manager, String title, String[] colTitles) {
         super(manager, title, colTitles);        
         initDefaults(manager);
@@ -15,7 +16,7 @@ public class ColorPaletteView extends ModuleView{
 
     }
 
-    private void initDefaults (EntryManager manager) {
+    private void initDefaults (EntryManager manager) {//TODO fix this
         manager.addEntry(new StringObjectEntry((""+(manager.getEntryList().size()+1)),Color.WHITE), true);
         manager.addEntry(new StringObjectEntry((""+(manager.getEntryList().size()+1)),Color.RED), true);
         manager.addEntry(new StringObjectEntry((""+(manager.getEntryList().size()+1)),Color.ORANGE), true);
