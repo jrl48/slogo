@@ -7,40 +7,32 @@ public interface Turtle {
 
     public ImageView getBody ();
 
-    public void setCoordinates (double x, double y);
+    public void setTurtleCoordinates (double x, double y);
 
-    public boolean penIsDown ();
+    public double getTurtleX ();
 
-    // Both visual getters return the center of the turtle's ImageView body
-    public double getVisualX ();
+    public double getTurtleY ();
 
-    public double getVisualY ();
+    public double getTurtleAngle ();
 
-    public double getX ();
+    public void turnTurtle (double angle);
 
-    public double getY ();
+    public void setTurtleAngle (double angle);
 
-    public double getSize ();
+    public void turtlePenDown ();
 
-    public void setVisualCoordinates (double newX, double newY);
+    public void turtlePenUp ();
 
-    public void togglePen ();
+    public boolean isTurtlePenDown ();
 
-    public double getAngle ();
-
-    public void rotate (double angle);
-
-    // HAVE TO ADD TO USE METHODS
-    public void setAngle (double angle);
-
-    public void putPenDown ();
-
-    public void putPenUp ();
-
-    public boolean getPen ();
-
-    public void toggleVisibility (double newOpacity);
-
-    public boolean isVisible ();
+    public boolean getTurtleVisibility ();
+    
+    public void hideTurtle();
+    
+    public void showTurtle();
+    
+    public boolean isActive();
+    
+    public void setActive(boolean isActive);
 
 }

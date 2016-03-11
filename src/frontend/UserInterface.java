@@ -92,7 +92,7 @@ public class UserInterface {
         myCommandLine = new CommandLine(myCommandParser, myTerminalManager, myCommandManager, myWorkspaceManager);
         myTerminal = new TerminalView(myCommandLine, myTerminalManager, sceneResources.getString("TERMINAL"), new String[]{sceneResources.getString("TERMINAL_1"),sceneResources.getString("TERMINAL_2")});
         myWorkspace = new WorkspaceView(myWorkspaceManager, sceneResources.getString("WORKSPACE"), new String[]{sceneResources.getString("WORKSPACE_1"),sceneResources.getString("WORKSPACE_2")});
-        myTurtleManagerView = new TurtleManagerView(myTurtleManager, "Active Turtles", new String[]{"ID","Active"});
+        myTurtleManagerView = new TurtleManagerView(myTurtleManager, "Active Turtles", new String[]{"ID","Turtle"});
         myUserDefined = new UserDefinedView(myCommandLine,myCommandManager, sceneResources.getString("USERCOMMANDS"), new String[]{sceneResources.getString("USERCOMMANDS_1"), sceneResources.getString("USERCOMMANDS_2")});
         myColorView = new ColorPaletteView(myColorManager, "Color Palette", new String[]{"Index","Color"});
         myShapeView = new ShapePaletteView(myShapeManager, "Palettes", new String[]{"Index","Shape"});
