@@ -32,8 +32,9 @@ public class CommandParser {
 		myTurtles = display;
 		myLanguage = "English";
 	}
-	
-	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+
+	public void parse(String command, EntryManager terminal, EntryManager commandManager, 
+			EntryManager workspace) {
 		command = command.trim();
 		String commandCopy = new String();
 		commandCopy = command;
@@ -45,16 +46,24 @@ public class CommandParser {
 			return;
 		}
 		String instruction = parseCommand(commandPieces[0]);
-		if (myUserDefinedHandler.isLoopCommand(instruction)) {
+		if ( commandPieces.length >= 2) {
+			Pattern p = Pattern.compile("\\((.*?)\\)");
+			Matcher m = p.matcher(command);
+			if(m.find()) {
+				System.out.println(m.group(1));
+				handleGrouping(command,terminal,commandManager,workspace,myTurtles);
+			}
+		}
+		else if (myUserDefinedHandler.isLoopCommand(instruction)) {
 			myUserDefinedHandler.callCommand(command, instruction, this, terminal, commandManager, workspace);
 		} 
 		else {
-			System.out.println("WHY");
+			//System.out.println("WHY");
 			if(commandManager.contains(commandPieces[0]) != null){
 				System.out.println("Hello");
 				commandPieces = methodDealer(commandManager, commandPieces, command);
 			}
-			System.out.println("WOAH");
+			//System.out.println("WOAH");
 			for(String x: commandPieces){
 				System.out.println(x);
 			}
@@ -71,6 +80,37 @@ public class CommandParser {
 			}
 			
 		}
+	}
+	
+	private void handleGrouping(String command, EntryManager terminal, EntryManager commandManager,
+			EntryManager workspace, MultipleTurtles myTurtles) {
+		Pattern p = Pattern.compile("\\((.*?)\\)");
+		Matcher m = p.matcher(command);
+		String commandInParen = "";
+		if (m.find())
+			commandInParen = m.group(1);
+		else {
+			throwError("Not a valid Command!");
+			return;
+		}
+		String[] commandPieces = commandInParen.trim().split("\\s+");
+		String commandPiece = parseCommand(commandPieces[0]);
+		if (myParametersMap.getNumParams(commandPiece) < 2 || commandPieces.length < 3) {
+			throwError("Command cannot be grouped!");
+			return;
+		}
+		String newCommand = "";
+		for ( int i = 0; i < commandPieces.length-2; i++ ) {
+			newCommand = newCommand + commandPieces[0] + " ";
+		}
+		for ( int i = 1; i < commandPieces.length; i++ ) {
+			newCommand = newCommand + commandPieces[i] + " ";
+		}
+		String[] originalCommandPieces = command.split("\\s+");
+		if (originalCommandPieces[0] != "(")
+			newCommand = originalCommandPieces[0] + " " + newCommand;
+		parse(newCommand,terminal,commandManager,workspace);
+		
 	}
 	
 	private String[] methodDealer(EntryManager commandManager, String[] commandPieces, String command){
