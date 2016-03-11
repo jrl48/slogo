@@ -32,7 +32,8 @@ public class CommandParser {
 		myLanguage = "English";
 	}
 	
-	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, MultipleTurtles myTurtles) {
+	public void parse(String command, EntryManager terminal, EntryManager commandManager, 
+			EntryManager workspace, MultipleTurtles myTurtles) {
 		command = command.trim();
 		String commandCopy = new String();
 		commandCopy = command;
@@ -44,6 +45,12 @@ public class CommandParser {
 			return;
 		}
 		String instruction = parseCommand(commandPieces[0]);
+		if ( commandPieces.length >= 2) {
+			Pattern p = Pattern.compile("\\(.*?\\)");
+			Matcher m = p.matcher(command);
+			if(m.find())
+				handleGrouping(command,terminal,commandManager,workspace,myTurtles);
+		}
 		if (myUserDefinedHandler.isLoopCommand(instruction)) {
 			myUserDefinedHandler.callCommand(command, instruction, this, terminal, commandManager, workspace);
 		} 
@@ -70,6 +77,31 @@ public class CommandParser {
 			}
 			
 		}
+	}
+	
+	private void handleGrouping(String command, EntryManager terminal, EntryManager commandManager,
+			EntryManager workspace, MultipleTurtles myTurtles) {
+		Pattern p = Pattern.compile("\\(.*?\\)");
+		Matcher m = p.matcher(command);
+		String commandInParen = m.group(1);
+		String[] commandPieces = commandInParen.split("\\s+");
+		String commandPiece = parseCommand(commandPieces[0]);
+		if (myParametersMap.getNumParams(commandPiece) < 2 || commandPieces.length < 3) {
+			throwError("Command cannot be grouped!");
+			return;
+		}
+		String newCommand = "";
+		for ( int i = 0; i < commandPieces.length-2; i++ ) {
+			newCommand = newCommand + commandPieces[0] + " ";
+		}
+		for ( int i = 1; i < commandPieces.length; i++ ) {
+			newCommand = newCommand + commandPieces[i] + " ";
+		}
+		String[] originalCommandPieces = command.split("\\s+");
+		if (originalCommandPieces[0] != "(")
+			newCommand = originalCommandPieces[0] + " " + newCommand;
+		parse(newCommand,terminal,commandManager,workspace,myTurtles);
+		
 	}
 	
 	private String[] methodDealer(EntryManager commandManager, String[] commandPieces, String command){
