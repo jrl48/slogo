@@ -23,12 +23,13 @@ public class CommandParser {
 	private UserDefinedCommands myUserDefinedHandler;
 	private String myLanguage;
 	private ParametersMap myParametersMap;
-	MultipleTurtles myTurtles;
 
-	public CommandParser(MultipleTurtles turtles) {
+	private MultipleTurtles myTurtles;
+
+	public CommandParser(MultipleTurtles display) {
 		myUserDefinedHandler = new UserDefinedCommands();
 		myParametersMap = new ParametersMap();
-		myTurtles = turtles;
+		myTurtles = display;
 		myLanguage = "English";
 	}
 	
