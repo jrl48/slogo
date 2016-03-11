@@ -23,6 +23,7 @@ public class CommandParser {
 	private UserDefinedCommands myUserDefinedHandler;
 	private String myLanguage;
 	private ParametersMap myParametersMap;
+	private String originalCommand;
 
 	private MultipleTurtles myTurtles;
 
@@ -32,12 +33,13 @@ public class CommandParser {
 		myTurtles = display;
 		myLanguage = "English";
 	}
-
-	public void parse(String command, EntryManager terminal, EntryManager commandManager, 
-			EntryManager workspace) {
+	
+	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean updateString) {
 		command = command.trim();
-		String commandCopy = new String();
-		commandCopy = command;
+		System.out.println("command: "+ command);
+		if(updateString){
+			originalCommand = command;
+		}
 		if (command.equals("") )
 			return;
 		String[] commandPieces = command.split("\\s+");
@@ -58,22 +60,23 @@ public class CommandParser {
 			myUserDefinedHandler.callCommand(command, instruction, this, terminal, commandManager, workspace);
 		} 
 		else {
-			//System.out.println("WHY");
 			if(commandManager.contains(commandPieces[0]) != null){
-				System.out.println("Hello");
 				commandPieces = methodDealer(commandManager, commandPieces, command);
 			}
-			//System.out.println("WOAH");
-			System.out.println(command);
+//			for(String x: commandPieces){
+//				System.out.println(x);
+//			}
+			
 			List<ParseNode> commandTree = makeTree(commandPieces,workspace, commandManager);
 			if(commandTree == null)
 			{
 				throwError("Not a Valid Command!");
 				return;
 			}
+			
 			for(ParseNode node: commandTree){
 				double result = readTree(node, myTurtles);
-				terminal.addEntry(new StringNumEntry(commandCopy,result),false);
+				terminal.addEntry(new StringNumEntry(originalCommand,result),false);
 
 			}
 			
@@ -110,19 +113,27 @@ public class CommandParser {
 			System.out.println(originalCommandPieces[0]);
 			newCommand = originalCommandPieces[0] + " " + newCommand;
 		}
-		parse(newCommand,terminal,commandManager,workspace);
+		parse(newCommand,terminal,commandManager,workspace, false);
 		
 	}
-	
 	private String[] methodDealer(EntryManager commandManager, String[] commandPieces, String command){
 		String originalParameters = (String)commandManager.contains(commandPieces[0]);
 		int bracket = originalParameters.indexOf('[');
 		String parameters = originalParameters.substring(bracket+1, originalParameters.length() - 1).trim();
 		Map<String, String> paramToNum = new HashMap<String, String>();
 		bracket = command.indexOf('[');
-		int endBracket = command.indexOf(']');
+		int endBracket = command.lastIndexOf(']');
 		System.out.println("WEREWRWE");
-
+		
+		String insideCommand = command.substring(bracket+1, endBracket).trim();
+		System.out.println(insideCommand);
+//		if(insideCommand.contains("[") || insideCommand.contains("]")){
+//			for(String s: insideCommand.split("\\s+")){
+//				if(commandManager.contains(s) !=  ){
+//					
+//				}
+//			}
+//		}
 		String[] commandArray = command.substring(bracket+1, endBracket).trim().split("\\s+");
 		String[] paramArray = parameters.split("\\s+");
 		if(commandArray.length != paramArray.length){

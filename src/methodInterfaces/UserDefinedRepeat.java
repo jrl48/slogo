@@ -36,7 +36,7 @@ public class UserDefinedRepeat implements UserDefinedInterface  {
 				workspace.removeEntry(repcount);
 				repcount.setSecondValue((double)i);
 				workspace.addEntry(repcount, true);
-				parser.parse(newCommand, terminal, commandManager, workspace);
+				parser.parse(newCommand, terminal, commandManager, workspace, false);
 			}
 		} catch (NumberFormatException e) {
 			parser.throwError("Not a Valid Command!");
