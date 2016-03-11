@@ -1,11 +1,8 @@
 package backend;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import methodInterfaces.*;
-import frontend.Display;
 import frontend.MultipleTurtles;
 
 public class Commands{
@@ -45,7 +42,8 @@ public class Commands{
 
 	
 	public double callCommand(String s, double[] args, MultipleTurtles myTurtles){
-		if ( instructions.containsKey(s)) {
+		if (instructions.containsKey(s)) {
+			System.out.println("I should get here though");
 			MathInterface command = instructions.get(s);
 			return command.executeCommand(args);
 		} else {
