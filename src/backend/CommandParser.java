@@ -16,13 +16,14 @@ import java.util.regex.Pattern;
 
 import frontend.*;
 
-
+/////WHEN 
 
 public class CommandParser {
 	
 	private UserDefinedCommands myUserDefinedHandler;
 	private String myLanguage;
 	private ParametersMap myParametersMap;
+
 	private MultipleTurtles myTurtles;
 
 	public CommandParser(MultipleTurtles display) {
