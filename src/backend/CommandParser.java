@@ -79,9 +79,11 @@ public class CommandParser {
 		String parameters = originalParameters.substring(bracket+1, originalParameters.length() - 1).trim();
 		Map<String, String> paramToNum = new HashMap<String, String>();
 		bracket = command.indexOf('[');
-		int endBracket = command.indexOf(']');
+		int endBracket = command.lastIndexOf(']');
 		System.out.println("WEREWRWE");
-
+		
+		String insideCommand = command.substring(bracket+1, endBracket).trim();
+		System.out.println(insideCommand);
 		String[] commandArray = command.substring(bracket+1, endBracket).trim().split("\\s+");
 		String[] paramArray = parameters.split("\\s+");
 		if(commandArray.length != paramArray.length){
