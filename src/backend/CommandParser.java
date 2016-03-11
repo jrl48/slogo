@@ -45,6 +45,18 @@ public class CommandParser {
 			return;
 		}
 		String instruction = parseCommand(commandPieces[0]);
+//<<<<<<< HEAD
+//=======
+//		if ( commandPieces.length >= 2) {
+//			Pattern p = Pattern.compile("\\((.*?)\\)");
+//			Matcher m = p.matcher(command);
+//			if(m.find()) {
+//				System.out.println(m.group(1));
+//				handleGrouping(command,terminal,commandManager,workspace,myTurtles);
+//				return;
+//			}
+//		}
+//>>>>>>> origin/master
 		if (myUserDefinedHandler.isLoopCommand(instruction)) {
 			myUserDefinedHandler.callCommand(command, instruction, this, terminal, commandManager, workspace);
 		} 
@@ -84,6 +96,13 @@ public class CommandParser {
 		
 		String insideCommand = command.substring(bracket+1, endBracket).trim();
 		System.out.println(insideCommand);
+//		if(insideCommand.contains("[") || insideCommand.contains("]")){
+//			for(String s: insideCommand.split("\\s+")){
+//				if(commandManager.contains(s) !=  ){
+//					
+//				}
+//			}
+//		}
 		String[] commandArray = command.substring(bracket+1, endBracket).trim().split("\\s+");
 		String[] paramArray = parameters.split("\\s+");
 		if(commandArray.length != paramArray.length){
