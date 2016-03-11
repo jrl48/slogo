@@ -21,14 +21,15 @@ public class SingleTurtle implements Turtle {
     private double y;
     private boolean pen;
     private Pane myPane;
-
     private static final double WIDTH = 30;
     private static final double HEIGHT = 30;
-    private final double DEFAULT_TURTLE_SIZE = 30;
+    private static final double DEFAULT_TURTLE_SIZE = 30;
+    private static final double DISPLAY_WIDTH = Display.WIDTH;
+    private static final double DISPLAY_HEIGHT = Display.HEIGHT;
     private boolean isActive;
-    
+
     private ColorPicker penCol;
-    
+
     // List of Lines that are being drawn by the turtle
     private List<Line> lines = new ArrayList<Line>();
 
@@ -42,162 +43,100 @@ public class SingleTurtle implements Turtle {
         y = 0;
         pen = false;
         isActive = true;
-        updateTurtleVisualPosition(false);        
+        updateTurtleVisualPosition(false);
     }
     
-    public boolean isActive(){
-        return this.isActive;
-    }
-    public void setActive(boolean isActive){
-        this.isActive = isActive;
-    }
     public ImageView getBody () {
         return body;
     }
 
-    public void setCoordinates (double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public boolean penIsDown () {
-        return pen;
-    }
-
     // Both visual getters return the center of the turtle's ImageView body
-    public double getVisualX () {
+    private double getVisualX () {
         return body.getX() + DEFAULT_TURTLE_SIZE / 2;
     }
 
-    public double getVisualY () {
+    private double getVisualY () {
         return body.getY() + DEFAULT_TURTLE_SIZE / 2;
     }
 
-    public double getX () {
-        return x;
-    }
-
-    public double getY () {
-        return y;
-    }
-
-    public double getSize () {
-        return DEFAULT_TURTLE_SIZE;
-    }
-
-    public void setVisualCoordinates (double newX, double newY) {
+    private void setVisualCoordinates (double newX, double newY) {
         body.setX(newX - DEFAULT_TURTLE_SIZE / 2);
         body.setY(newY - DEFAULT_TURTLE_SIZE / 2);
     }
 
-    public void togglePen () {
-        pen = !pen;
-    }
-
-    public double getAngle () {
-        return body.getRotate();
-    }
-
-    public void rotate (double angle) {
-        body.setRotate(body.getRotate() + angle);
-    }
-
-    // HAVE TO ADD TO USE METHODS
-    public void setAngle (double angle) {
-        body.setRotate(angle);
-    }
-
-    public void putPenDown () {
-        pen = true;
-    }
-
-    public void putPenUp () {
-        pen = false;
-    }
-
-    public boolean getPen () {
-        return pen;
-    }
-
-    public void toggleVisibility (double newOpacity) {
+    private void toggleVisibility (double newOpacity) {
         body.setOpacity(newOpacity);
     }
-
-    public boolean isVisible () {
-        return (body.getOpacity() == 1);
-    }
     
-    public void moveTurtleForward(double length)
-    {
-        double deltaX = Math.sin(getAngle() * Math.PI / 180) * length;
-        double deltaY = Math.cos(getAngle() * Math.PI / 180) * length;
-        
+    private void setCoordinates (double x, double y) {        
+        this.x = x;
+        this.y = y;
+    }
+
+    public void moveTurtleForward (double length) {
+        double deltaX = Math.sin(getTurtleAngle() * Math.PI / 180) * length;
+        double deltaY = Math.cos(getTurtleAngle() * Math.PI / 180) * length;
+
         // TODO:BUG: Large inputs crash program
         boolean flag = false;
-        do 
-        {
-                flag = false;
-                
-                for ( int multiplier : new int[] {-1, 1} )
-                {
-                        if ( multiplier * (getX() + deltaX) > WIDTH/2 )
-                        {
-                                double amountWalked = multiplier * WIDTH/2 - getX();
-                                double deltaPrime = amountWalked / Math.tan(getAngle() * Math.PI / 180);
+        do {
+            flag = false;
 
-                                setCoordinates(multiplier * WIDTH/2, getY() + deltaPrime);
-                                updateTurtleVisualPosition(false);
-                                deltaX -= amountWalked;
-                                deltaY -= deltaPrime;
+            for (int multiplier : new int[] { -1, 1 }) {
+                if (multiplier * (getTurtleX() + deltaX) > DISPLAY_WIDTH / 2) {
+                    double amountWalked = multiplier * DISPLAY_WIDTH / 2 - getTurtleX();
+                    double deltaPrime = amountWalked / Math.tan(getTurtleAngle() * Math.PI / 180);
 
-                                setCoordinates(-multiplier * WIDTH/2, getY() + deltaPrime);
+                    setCoordinates(multiplier * DISPLAY_WIDTH / 2, getTurtleY() + deltaPrime);
+                    updateTurtleVisualPosition(false);
+                    deltaX -= amountWalked;
+                    deltaY -= deltaPrime;
 
-                                updateTurtleVisualPosition(true);
-                                
-                                flag = true;
-                        }
+                    setCoordinates(-multiplier * DISPLAY_WIDTH / 2, getTurtleY() + deltaPrime);
 
-                        if ( multiplier * (getY() + deltaY) > HEIGHT/2 )
-                        {
-                                double amountWalked = multiplier * HEIGHT/2 - getY();
-                                double deltaPrime = amountWalked * Math.tan(getAngle() * Math.PI / 180);
+                    updateTurtleVisualPosition(true);
 
-                                setCoordinates( getX() + deltaPrime, multiplier * HEIGHT/2);
-                                updateTurtleVisualPosition(false);
-                                deltaY -= amountWalked;
-                                deltaX -= deltaPrime;
-
-                                setCoordinates(getX() + deltaPrime, -multiplier * HEIGHT/2);
-                                updateTurtleVisualPosition(true);
-                                
-                                flag = true;
-                        }
+                    flag = true;
                 }
-        } while ( flag );
-        
-        setCoordinates(getX() + deltaX, getY() + deltaY);
+
+                if (multiplier * (getTurtleY() + deltaY) > DISPLAY_HEIGHT / 2) {
+                    double amountWalked = multiplier * DISPLAY_HEIGHT / 2 - getTurtleY();
+                    double deltaPrime = amountWalked * Math.tan(getTurtleAngle() * Math.PI / 180);
+
+                    setCoordinates(getTurtleX() + deltaPrime, multiplier * DISPLAY_HEIGHT / 2);
+                    updateTurtleVisualPosition(false);
+                    deltaY -= amountWalked;
+                    deltaX -= deltaPrime;
+
+                    setCoordinates(getTurtleX() + deltaPrime, -multiplier * DISPLAY_HEIGHT / 2);
+                    updateTurtleVisualPosition(true);
+
+                    flag = true;
+                }
+            }
+        } while (flag);
+
+        setCoordinates(getTurtleX() + deltaX, getTurtleY() + deltaY);
         updateTurtleVisualPosition(false);
     }
 
     // Takes current Turtle's Logo's (x,y) position and update the ImageView's javafx (x,y)
-    public void updateTurtleVisualPosition(boolean overridePen)
-    {
-        double newX = WIDTH/2 + getX();
-        double newY = HEIGHT/2 - getY();
-        
-        if ( penIsDown() && !overridePen)
-        {
-                Line newLine = new Line(getVisualX(), getVisualY(), newX, newY); 
-           //     newLine.setStroke(penCol.getValue());
-                lines.add( newLine );
-                myPane.getChildren().add(newLine);
+    public void updateTurtleVisualPosition (boolean overridePen) {
+        double newX = DISPLAY_WIDTH / 2 + getTurtleX();
+        double newY = DISPLAY_HEIGHT / 2 - getTurtleY();
+
+        if (isTurtlePenDown() && !overridePen) {
+            Line newLine = new Line(getVisualX(), getVisualY(), newX, newY);
+            // newLine.setStroke(penCol.getValue());
+            lines.add(newLine);
+            myPane.getChildren().add(newLine);
         }
-        
-        // When updating coordinates, compensate the X and Y because they reference the edge of the 
+
+        // When updating coordinates, compensate the X and Y because they reference the edge of the
         // image, not the center
         setVisualCoordinates(newX, newY);
     }
-    
+
     public void clearDisplay () {
         // Deletes all lines
         for (Line toBeDeleted : lines) {
@@ -207,59 +146,61 @@ public class SingleTurtle implements Turtle {
         lines.clear();
     }
     
-    public void setTurtleCoordinates(double newX, double newY)
-    {
-        setCoordinates(newX, newY);
-        updateTurtleVisualPosition(false);
+    public double getTurtleX () {
+        return x;
     }
-    // Turn the turtle, in DEGREES!
-    public void turnTurtle(double angle)
-    {
-        rotate(angle);
+
+    public double getTurtleY () {
+        return y;
     }
     
-    //HAD TO ADD TO USE METHODS (we should consider passing turtle not display)
-    public void setTurtleAngle(double angle) {
-        setAngle(angle);
+    public boolean isActive () {
+        return this.isActive;
     }
-    
-    public double getTurtleAngle() {
-        return getAngle();
+
+    public void setActive (boolean isActive) {
+        this.isActive = isActive;
     }
-    
-    public double getTurtleX() {
-        return getX();
+
+    public double getTurtleAngle () {
+        return body.getRotate();
     }
-    
-    public double getTurtleY() {
-        return getY();
+
+    public void turnTurtle (double angle) {
+        body.setRotate(body.getRotate() + angle);
     }
-    
-    public boolean isTurtlePenDown() {
-        return getPen();
+
+    public void setTurtleAngle (double angle) {
+        body.setRotate(angle);
     }
-    
-    public void turtlePenUp() {
-        putPenUp();
+
+    public void turtlePenDown () {
+        pen = true;
     }
-    
-    public void turtlePenDown() {
-        putPenDown();
+
+    public void turtlePenUp () {
+        pen = false;
     }
-    
-    public void hideTurtle()
-    {
+
+    public boolean isTurtlePenDown () {
+        return pen;
+    }
+
+    public void hideTurtle () {
         toggleVisibility(0);
     }
-    
-    public void showTurtle()
-    {
+
+    public void showTurtle () {
         toggleVisibility(1);
     }
+
+    public boolean getTurtleVisibility () {
+        return (body.getOpacity() == 1);
+    }
     
-    public boolean getTurtleVisibility()
-    {
-        return isVisible();
+    public void setTurtleCoordinates(double x, double y){
+        setCoordinates(x,y);
+        updateTurtleVisualPosition(false);
     }
 
 

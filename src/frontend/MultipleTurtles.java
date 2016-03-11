@@ -103,7 +103,7 @@ public class MultipleTurtles {
         for (Entry t : turtleManager.getEntryList()) {
             SingleTurtle turtle = (SingleTurtle) t.getSecondValue();
             if (turtle.isActive()) {
-                value = turtleCommand.executeCommand(args, null);
+                value = turtleCommand.executeCommand(args, turtle);
             }
         }
         return value;
@@ -116,7 +116,7 @@ public class MultipleTurtles {
             if (activeTurtles.contains(i)) {
                 SingleTurtle turtle =
                         (SingleTurtle) turtleManager.getEntryList().get(i).getSecondValue();
-                value = turtleCommand.executeCommand(args, null);
+                value = turtleCommand.executeCommand(args, turtle);
             }
         }
         return value;

@@ -23,17 +23,23 @@ public class CommandParser {
 	private UserDefinedCommands myUserDefinedHandler;
 	private String myLanguage;
 	private ParametersMap myParametersMap;
-	private Display myDisplay;
+	private MultipleTurtles myTurtles;
 
-	public CommandParser(Display display) {
+	public CommandParser(MultipleTurtles display) {
 		myUserDefinedHandler = new UserDefinedCommands();
 		myParametersMap = new ParametersMap();
-		myDisplay = display;
+		myTurtles = display;
 		myLanguage = "English";
 	}
 	
+<<<<<<< HEAD
 	public void parse(String command, EntryManager terminal, EntryManager commandManager, 
 			EntryManager workspace, MultipleTurtles myTurtles) {
+||||||| merged common ancestors
+	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, MultipleTurtles myTurtles) {
+=======
+	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+>>>>>>> 6e126d87d631ddc0afc298ccc6ae215bc6511a94
 		command = command.trim();
 		String commandCopy = new String();
 		commandCopy = command;
@@ -256,7 +262,7 @@ public class CommandParser {
 			double[] args = new double[0];
 			Commands commandMap = new Commands();
 			if(!root.getName().equals("")){
-				root.setValue(commandMap.callCommand(current.getName(), args, myDisplay, MyTurtles));
+				root.setValue(commandMap.callCommand(current.getName(), args, MyTurtles));
 			}
 		}
 		while(root.getChildren().size() > 0){
@@ -284,7 +290,7 @@ public class CommandParser {
 				List<ParseNode> nodeChildren = current.getChildren();
 				for(ParseNode node: nodeChildren){
 					if(!node.getName().equals("")){
-						node.setValue(commandMap.callCommand(node.getName(), new double[0], myDisplay, myTurtles));
+						node.setValue(commandMap.callCommand(node.getName(), new double[0], myTurtles));
 					}
 				}
 				double[] args = new double[nodeChildren.size()];
@@ -294,7 +300,7 @@ public class CommandParser {
 					i++;
 				}
 				
-				current.setValue(commandMap.callCommand(current.getName(), args, myDisplay, myTurtles));
+				current.setValue(commandMap.callCommand(current.getName(), args, myTurtles));
 				current.setName("");
 				current.removeChildren();
 			}

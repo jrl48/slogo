@@ -29,8 +29,8 @@ public class Display {
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);
     private Pane myPane;
     private Group root;
-    private static final double WIDTH = 500;
-    private static final double HEIGHT = 450;
+    public static final double WIDTH = 500;
+    public static final double HEIGHT = 450;
     private MultipleTurtles myTurtle;
 
 
