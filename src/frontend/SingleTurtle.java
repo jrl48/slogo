@@ -23,7 +23,9 @@ public class SingleTurtle implements Turtle {
     private Pane myPane;
 
     private static final double WIDTH = 30;
-    private static final double HEIGHT = 30;
+    private static final double HEIGHT = 30;  
+    private static final double DISPLAY_WIDTH = Display.WIDTH;
+    private static final double DISPLAY_HEIGHT = Display.HEIGHT;
     private final double DEFAULT_TURTLE_SIZE = 30;
     private boolean isActive;
     
@@ -140,34 +142,34 @@ public class SingleTurtle implements Turtle {
                 
                 for ( int multiplier : new int[] {-1, 1} )
                 {
-                        if ( multiplier * (getX() + deltaX) > WIDTH/2 )
+                        if ( multiplier * (getX() + deltaX) > DISPLAY_WIDTH/2 )
                         {
-                                double amountWalked = multiplier * WIDTH/2 - getX();
+                                double amountWalked = multiplier * DISPLAY_WIDTH/2 - getX();
                                 double deltaPrime = amountWalked / Math.tan(getAngle() * Math.PI / 180);
 
-                                setCoordinates(multiplier * WIDTH/2, getY() + deltaPrime);
+                                setCoordinates(multiplier * DISPLAY_WIDTH/2, getY() + deltaPrime);
                                 updateTurtleVisualPosition(false);
                                 deltaX -= amountWalked;
                                 deltaY -= deltaPrime;
 
-                                setCoordinates(-multiplier * WIDTH/2, getY() + deltaPrime);
+                                setCoordinates(-multiplier * DISPLAY_WIDTH/2, getY() + deltaPrime);
 
                                 updateTurtleVisualPosition(true);
                                 
                                 flag = true;
                         }
 
-                        if ( multiplier * (getY() + deltaY) > HEIGHT/2 )
+                        if ( multiplier * (getY() + deltaY) > DISPLAY_HEIGHT/2 )
                         {
-                                double amountWalked = multiplier * HEIGHT/2 - getY();
+                                double amountWalked = multiplier * DISPLAY_HEIGHT/2 - getY();
                                 double deltaPrime = amountWalked * Math.tan(getAngle() * Math.PI / 180);
 
-                                setCoordinates( getX() + deltaPrime, multiplier * HEIGHT/2);
+                                setCoordinates( getX() + deltaPrime, multiplier * DISPLAY_HEIGHT/2);
                                 updateTurtleVisualPosition(false);
                                 deltaY -= amountWalked;
                                 deltaX -= deltaPrime;
 
-                                setCoordinates(getX() + deltaPrime, -multiplier * HEIGHT/2);
+                                setCoordinates(getX() + deltaPrime, -multiplier * DISPLAY_HEIGHT/2);
                                 updateTurtleVisualPosition(true);
                                 
                                 flag = true;
@@ -182,8 +184,8 @@ public class SingleTurtle implements Turtle {
     // Takes current Turtle's Logo's (x,y) position and update the ImageView's javafx (x,y)
     public void updateTurtleVisualPosition(boolean overridePen)
     {
-        double newX = WIDTH/2 + getX();
-        double newY = HEIGHT/2 - getY();
+        double newX = DISPLAY_WIDTH/2 + getX();
+        double newY = DISPLAY_HEIGHT/2 - getY();
         
         if ( penIsDown() && !overridePen)
         {

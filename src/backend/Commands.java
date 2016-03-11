@@ -44,12 +44,12 @@ public class Commands{
 	}
 
 	
-	public double callCommand(String s, double[] args, Display display, MultipleTurtles myTurtles){
+	public double callCommand(String s, double[] args, MultipleTurtles myTurtles){
 		if ( instructions.containsKey(s)) {
 			MathInterface command = instructions.get(s);
 			return command.executeCommand(args);
 		} else {
-			return myTurtles.executeCommand(s, args, display);
+			return myTurtles.executeCommand(s, args);
 			
 			//TurtleInterface turtleCommand = turtleInstructions.get(s);
 			//return turtleCommand.executeCommand(args, display);
