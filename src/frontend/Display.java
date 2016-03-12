@@ -33,16 +33,8 @@ public class Display {
     }
 
     /**
-<<<<<<< HEAD
-<<<<<<< HEAD
      * Initialize method, redirected from the constructor.
-=======
      * Initializes Display Pane to desired Height and Width and setsBinding for background fill
->>>>>>> master
-=======
-     * Initializes Display Pane to desired Height and Width and setsBinding for background fill
->>>>>>> master
-     * 
      * @param dispPref
      */
     private void initPane (DisplayPreferences dispPref) {
@@ -70,7 +62,8 @@ public class Display {
     }
 
     /**
-     * updates
+     * updates background color of display pane
+     * 
      * @param col
      */
     public void setBackgroundColor (Color col) {
@@ -81,5 +74,7 @@ public class Display {
     public Pane getPane () {
         return myPane;
     }
+    
+    
 
 }

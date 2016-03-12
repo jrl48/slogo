@@ -7,7 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -23,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
@@ -36,9 +39,9 @@ import javafx.stage.Stage;
  */
 public class SingleTurtle implements Turtle {
     private ImageView body;
-    private double x;
-    private double y;
-    private boolean pen;
+    private double x = 0.0;
+    private double y = 0.0;
+    private BooleanProperty pen = new SimpleBooleanProperty(false);
     private Pane myPane;
     private static final double WIDTH = 30;
     private static final double HEIGHT = 30;
@@ -62,9 +65,7 @@ public class SingleTurtle implements Turtle {
         Bindings.bindBidirectional(this.body.imageProperty(), myPreferences.getImageProperty());
         body.setFitWidth(WIDTH);
         body.setFitHeight(HEIGHT);
-        x = 0;
-        y = 0;
-        pen = false;
+        pen.bindBidirectional(myPreferences.isPenActive());
         isActive = true;
         this.animationController = animationController;
         
@@ -194,10 +195,10 @@ public class SingleTurtle implements Turtle {
 
 
 
-        if ( pen )
+        if ( pen.get() )
         {
         	Line newLine = new Line();
-        	//setLineStyle(newLine);
+        	setLineStyle(newLine);
         	myPane.getChildren().add(newLine);       
         	
         	newLine.setStartX(getVisualX());
@@ -233,7 +234,9 @@ public class SingleTurtle implements Turtle {
     private void setLineStyle(Line line){
         line.setStroke(myPreferences.getPenColor());
         line.setStrokeWidth(myPreferences.getPenWidth());
-        line.getStrokeDashArray().add(myPreferences.getDashLength());
+        if(myPreferences.isDashed()){
+            line.getStrokeDashArray().add(25.0);//TODO magic number
+        }
     }
     public void clearDisplay () {
         // Deletes all lines
@@ -282,15 +285,15 @@ public class SingleTurtle implements Turtle {
     }
 
     public void turtlePenDown () {
-        pen = true;
+        pen.set(true);
     }
 
     public void turtlePenUp () {
-        pen = false;
+        pen.set(false);
     }
 
     public boolean isTurtlePenDown () {
-        return pen;
+        return pen.get();
     }
 
     public void hideTurtle () {
@@ -313,7 +316,7 @@ public class SingleTurtle implements Turtle {
     /**
      * Get the coordinates as list, instead of one by one.
      */
-    public List getCoordinates() 
+    public List<Double> getCoordinates() 
     {
     	return new ArrayList<Double>(Arrays.asList(x, y));
     }
@@ -330,13 +333,12 @@ public class SingleTurtle implements Turtle {
 
     @Override
     public void stamp () {
-        // TODO Auto-generated method stub
-        
+        System.out.println("STAMP");
     }
 
     @Override
     public int clearStamps () {
-        // TODO Auto-generated method stub
+        System.out.println("CLEARSTAMP");
         return 0;
     }
 

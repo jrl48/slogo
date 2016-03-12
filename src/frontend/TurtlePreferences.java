@@ -4,125 +4,139 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
-import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Modality;
-import javafx.stage.Popup;
-import javafx.stage.Stage;
+
+
 
 /**
- * This class contains the pane that opens up when the person wants to view and tweak any
- * of the turtles' parameters. 
+ * This class contains all of the controls that allows the user to interactively alter properties of
+ * the turtle. It extends the Preferences superclass
  * 
- * @author Alan
+ * @author JoeLilien
  *
  */
-public class TurtlePreferences {
+public class TurtlePreferences extends Preferences {
+    private double penWidth = 1.0;
     private ResourceBundle prefResources =
-            ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + "Pref");     
-    private Button myDisplayButton;
+            ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + "Pref");
     private ColorPicker penColor = new ColorPicker(Color.BLACK);
     private ObjectProperty<Image> imageProperty =
             new SimpleObjectProperty<Image>(new Image(getClass().getClassLoader()
                     .getResourceAsStream(UserInterface.DEFAULT_RESOURCE_PACKAGE + "turtle.png")));
-    private Button chooseImage = new Button(prefResources.getString("IMAGE_CHOICE_TITLE"));  
+    private Button chooseImage = new Button(prefResources.getString("IMAGE_CHOICE_TITLE"));
     private ContextMenu prefWindow;
-    private TextField penWidth;
+    private TextField penWidthField = new TextField("Set Pen Width");
     private CheckBox penDash = new CheckBox("Dashed Line");
     private CheckBox penActive = new CheckBox("Pen Down");
-    private List<Menu> myOptions = new ArrayList<Menu>(Arrays.asList(new Menu("Turtle Image"), new Menu("PenProperties")));
-    private ArrayList<MenuItem> turtleImage = new ArrayList<MenuItem>(Arrays.asList(new CustomMenuItem(chooseImage)));
-    private ArrayList<MenuItem> penProperties = new ArrayList<MenuItem>(Arrays.asList(new CustomMenuItem(penDash), new CustomMenuItem(penActive), new CustomMenuItem(penWidth)));
-    private List<ArrayList<MenuItem>> myControls = new ArrayList<ArrayList<MenuItem>>(Arrays.asList(turtleImage,penProperties));
-    
+
+    // List of Menu Options in ContextMenu
+    private List<Menu> myOptions =
+            new ArrayList<Menu>(Arrays.asList(new Menu("Turtle Image"), new Menu("PenProperties")));
+
+    // List of Options Specific to Turtle Image Setting
+    private ArrayList<MenuItem> turtleImageSubOptions =
+            new ArrayList<MenuItem>(Arrays.asList(new CustomMenuItem(chooseImage)));
+
+    // Lists of Options Specific to Pen Properties Settings (need both because of bug inherit in
+    // javafx.customCell)
+    private ArrayList<MenuItem> penPropertiesSubOptions =
+            new ArrayList<MenuItem>(Arrays.asList(new CustomMenuItem(penDash),
+                                                  new CustomMenuItem(penActive)));
+    private List<Node> additionalPenProperties =
+            new ArrayList<Node>(Arrays.asList(penWidthField, penColor));
+
+    // Combined List of All SubOptions Lists
+    private List<ArrayList<MenuItem>> myControls =
+            new ArrayList<ArrayList<MenuItem>>(Arrays.asList(turtleImageSubOptions,
+                                                             penPropertiesSubOptions));
+
+    /**
+     * Class Constructor, calls init method
+     * 
+     */
     public TurtlePreferences () {
         initDisplayPreferences();
     }
-    
+
     private void initDisplayPreferences () {
         prefWindow = new ContextMenu();
-        initFileChooser(new FileChooser());  
-        addPenColorPicker();
+        initFileChooser(new FileChooser());
+
+        // Need to do this separately because of bug in Java FX Custom Cells
+        super.addMoreOptions(additionalPenProperties, penPropertiesSubOptions);
+
         initPenPrefrences();
-        initOptions();
+        super.initOptions(myOptions, myControls);
         prefWindow.getItems().addAll(myOptions);
     }
-    
-    
-    
+
+    /**
+     * Sets action response for text field and initializes check boxes to unSelected
+     * 
+     */
     private void initPenPrefrences () {
-        penWidth = new TextField("Pen Width"); 
-        penWidth.setOnAction(e->updatePenThickness());
+        penWidthField.setOnAction(e -> updatePenThickness(penWidthField.getText()));
+        penDash.setSelected(false);
+        penActive.setSelected(false);
     }
 
-    private void updatePenThickness () {
-        try{
-            setPenWidth(Double.parseDouble(penWidth.getText()));
+    /**
+     * Sets Pen Width Property according to user input, if input is invalid, throws an error to the
+     * user. Method is called upon User clicking ENTER in the text field area
+     * 
+     * @param width
+     */
+    private void updatePenThickness (String width) {
+        try {
+            setPenWidth(Double.parseDouble(width));
         }
-        catch(ClassCastException e){
+        catch (NumberFormatException e) {
             ErrorMessage err = new ErrorMessage("Legit Value");
             err.showError();
-            penWidth.setText(""+1.0);
-        }
-    }
-
-    //Need to do this separately because of bug in Java FX color picker
-    private void addPenColorPicker () {
-        MenuItem cp = new MenuItem();
-        cp.setGraphic(penColor);
-        penProperties.add(cp);
-    }
-
-    private void initOptions(){
-        for(int i=0;i<myOptions.size();i++){
-            myOptions.get(i).getItems().addAll(myControls.get(i));
+            penWidthField.setText(prefResources.getString("DOUBLE_CONVERSION_ERR"));
         }
     }
 
     private void initFileChooser (FileChooser imageChoice) {
-        imageChoice.setTitle(prefResources.getString("IMAGE_CHOICE_TITLE")); 
-        imageChoice.getExtensionFilters().add(new ExtensionFilter("Image Files","*.png","*.jpg","*.gif"));
-        chooseImage.setOnAction(e->openImageChoice(imageChoice));
+        imageChoice.setTitle(prefResources.getString("IMAGE_CHOICE_TITLE"));
+        imageChoice.getExtensionFilters()
+                .add(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
+        chooseImage.setOnAction(e -> openImageChoice(imageChoice));
     }
+
     /**
      * Open the window.
+     * 
      * @param owner
      * @param x
      * @param y
      */
-    public void openPreferences(Node owner, double x, double y){
+    public void openPreferences (Node owner, double x, double y) {
         prefWindow.show(owner, x, y);
     }
 
     /**
      * Lets the user pick an image to show as turtle.
      * Throws exception if not found.
+     * 
      * @param imageChoice
      */
     private void openImageChoice (FileChooser imageChoice) {
@@ -133,45 +147,43 @@ public class TurtlePreferences {
                 imageProperty.setValue(new Image(fileName));
             }
             catch (MalformedURLException e) {
-                System.err.println(e.getMessage());
+                ErrorMessage err = new ErrorMessage(prefResources.getString("BAD_URL_ERROR"));
+                err.showError();
             }
 
         }
     }
 
-    public double getPenWidth(){
-        return 0;
+    public double getPenWidth () {
+        return this.penWidth;
     }
-    public double getDashLength(){
-        if(penDash.isSelected()){
-            return 10;
-        }
-        return 0;
+
+    public boolean isDashed () {
+        return this.penDash.isSelected();
     }
-    public BooleanProperty isPenActive(){
+
+    public BooleanProperty isPenActive () {
         return penActive.selectedProperty();
     }
-    public void setPenWidth(double width){
-        penWidth.setText(""+width);
-        updatePenThickness();
+
+    public void setPenWidth (double width) {
+        this.penWidth = width;
     }
 
     public Color getPenColor () {
         return penColor.getValue();
     }
-    public void setPenColor(Color col){
+
+    public void setPenColor (Color col) {
         this.penColor.setValue(col);
     }
 
     public ObjectProperty<Image> getImageProperty () {
         return imageProperty;
-    }   
-    
-    public void setImageProperty(ImageView image){
+    }
+
+    public void setImageProperty (ImageView image) {
         imageProperty.setValue(image.getImage());
     }
 
-    public Button getButton () {
-        return myDisplayButton;
-    }
 }

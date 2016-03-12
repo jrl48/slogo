@@ -5,7 +5,12 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-
+/**
+ * Manages Observable List of strings to be used in Language Preference's combobox object
+ * 
+ * @author JoeLilien
+ *
+ */
 public class LanguageManager {
 
     private List<String> myChoices;

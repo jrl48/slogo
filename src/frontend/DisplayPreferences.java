@@ -1,70 +1,79 @@
 package frontend;
 
-import java.io.File;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Stage;
+
 
 /**
- * The Display preferences class consists of the Pane that gives control to the user over
- * some of the Display's tweaks.
+ * The Display preferences class consists of the Menu that gives control to the user over
+ * some of the Display's tweaks. Extends Preferences.
  * 
  * @author JoeLilien
  *
  */
-public class DisplayPreferences {   
+public class DisplayPreferences extends Preferences {
     private ResourceBundle prefResources =
-            ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + "Pref");   
+            ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + "Pref");
     private ResourceBundle sceneResources =
-            ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);      
-    private ColorPicker dispColor = new ColorPicker(Color.WHITE);   
-    private Menu prefMenu;
-    private MenuBar myMenuBar;
-    
+            ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);
+    private ColorPicker dispColor = new ColorPicker(Color.WHITE);
+    private Menu prefMenu = new Menu(prefResources.getString("PREFERENCES_TITLE"));
+    private MenuBar myMenuBar = new MenuBar(prefMenu);
+
+    // List of Menu Options in Menu
+    private List<Menu> myOptions =
+            new ArrayList<Menu>(Arrays
+                    .asList(new Menu(prefResources.getString("DISPLAY_CHOICE_LABEL"))));
+
+    // Lists of Options Specific to Pen Properties Settings (need both because of bug inherit in
+    // javafx.customCell)
+    private ArrayList<MenuItem> displaySubOptions = new ArrayList<MenuItem>(Arrays.asList());
+    private List<Node> displayOptionNodes = new ArrayList<Node>(Arrays.asList(dispColor));
+
+    // Combined List of All SubOptions Lists
+    private List<ArrayList<MenuItem>> myControls =
+            new ArrayList<ArrayList<MenuItem>>(Arrays.asList(displaySubOptions));
+
     public DisplayPreferences () {
         initDisplayPreferences();
-    }
-    
-    public void setDisplayColor(Color col){
-    	if(col != null){
-            dispColor.setValue(col);	
-    	}
-    }
-    
-    private void initDisplayPreferences () { 
-       prefMenu = new Menu("Preferences");       
-       Menu item = new Menu("Set Display Color");
-       MenuItem cpItem = new MenuItem();
-       cpItem.setGraphic(dispColor);
-       item.getItems().add(cpItem);
-       prefMenu.getItems().add(item);
-       myMenuBar = new MenuBar();
-       myMenuBar.getStyleClass().add(sceneResources.getString("BUTTONID"));
+        super.addMoreOptions(displayOptionNodes, displaySubOptions);
+        super.initOptions(myOptions, myControls);
     }
 
-    public MenuBar getMenu(){
+    /**
+     * Sets Background color of display to that chosen by user, throws an error if the user tries to
+     * enter and undefined palette index
+     * 
+     * @param col
+     */
+    public void setDisplayColor (Color col) {
+        if (col != null) {
+            dispColor.setValue(col);
+        }
+        else {
+            ErrorMessage err = new ErrorMessage(prefResources.getString("UNDEFINED_PALETTE_ERR"));
+            err.showError();
+        }
+    }
+    
+    private void initDisplayPreferences () {
+        prefMenu.getItems().addAll(myOptions);
+        myMenuBar = new MenuBar(prefMenu);
+        myMenuBar.getStyleClass().add(sceneResources.getString("BUTTONID"));
+    }
+
+    public MenuBar getMenu () {
         return this.myMenuBar;
     }
+
     public ColorPicker getDispColorPicker () {
         return dispColor;
     }
