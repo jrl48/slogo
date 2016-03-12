@@ -40,19 +40,27 @@ import methodInterfaces.TurtleYCor;
 public class MultipleTurtles {
     private EntryManager turtleManager;
     private Pane myDisplayPane;
+    private Display myDisplay;
+    private DisplayPreferences myDisplayPreferences;
     private Map<String, TurtleInterface> turtleInstructions =
             new HashMap<String, TurtleInterface>();
     private Map<String, DisplayInterface> displayInstructions = new HashMap<String, DisplayInterface>();
     private ObjectProperty<Image> defaultTurtleImage;
     private AnimationController animationController;
+    private EntryManager colorManager;
+    private EntryManager shapeManager;
 
     public MultipleTurtles (EntryManager turtleManager,
-                            Pane displayPane, EntryManager colorManager, EntryManager shapeManager,
+                            Pane displayPane, EntryManager colorManager, EntryManager shapeManager, Display myDisplay, DisplayPreferences myDisplayPreferences,
                             AnimationController animationController) {
-
+    	
+    	this.myDisplay = myDisplay;
         this.turtleManager = turtleManager;
         this.myDisplayPane = displayPane;
         this.animationController = animationController;
+        this.myDisplayPreferences = myDisplayPreferences;
+        this.colorManager = colorManager;
+        this.shapeManager = shapeManager;
 
         addTurtle();
         createTurtleMap();
@@ -60,7 +68,7 @@ public class MultipleTurtles {
 
     public void addTurtle () {       
         Turtle turtle = new SingleTurtle(myDisplayPane, animationController);
-        turtleManager.addEntry(new StringObjectEntry("Turtle 1", turtle), false);
+        turtleManager.addEntry(new StringObjectEntry("Turtle " + turtleManager.getEntryList().size(), turtle), false);
         myDisplayPane.getChildren().add(turtle.getBody());
     }
 
@@ -89,7 +97,7 @@ public class MultipleTurtles {
         displayInstructions.put("SetPenSize", new DisplaySetPenSize());
         displayInstructions.put("SetShape", new DisplaySetShape());
         displayInstructions.put("SetPalette", new DisplaySetPalette());
-        displayInstructions.put("PenColor", new DisplayPenColor());
+        displayInstructions.put("GetPenColor", new DisplayPenColor());
         displayInstructions.put("Shape", new DisplayShape());
         displayInstructions.put("Stamp", new DisplayStamp());
         // turtleInstructions.put("Id", new TurtleID());
@@ -109,8 +117,9 @@ public class MultipleTurtles {
     		    		value = turtleCommand.executeCommand(args, turtle);
     		    	}
     		    	else{
+    		    		System.out.println("??");
     		    		DisplayInterface displayCommand = displayInstructions.get(s);
-    		    		//value = displayCommand.executeCommand(args, t, display, displayPreferences, colorManager, ShapeManager);
+    		    		value = displayCommand.executeCommand(args, turtle, myDisplay, myDisplayPreferences, colorManager, shapeManager);
     		    	}
     			}
     		}
