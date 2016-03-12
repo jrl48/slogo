@@ -7,6 +7,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import methodInterfaces.DisplayInterface;
 import methodInterfaces.DisplayPenColor;
 import methodInterfaces.DisplaySetBackground;
 import methodInterfaces.DisplaySetPalette;
@@ -41,6 +42,7 @@ public class MultipleTurtles {
     private Pane myDisplayPane;
     private Map<String, TurtleInterface> turtleInstructions =
             new HashMap<String, TurtleInterface>();
+    private Map<String, DisplayInterface> displayInstructions = new HashMap<String, DisplayInterface>();
     private ObjectProperty<Image> defaultTurtleImage;
 
     public MultipleTurtles (EntryManager turtleManager,
@@ -77,14 +79,14 @@ public class MultipleTurtles {
         turtleInstructions.put("Heading", new TurtleHeading());
         turtleInstructions.put("IsPenDown", new TurtleIsPenDown());
         turtleInstructions.put("IsShowing", new TurtleIsShowing());
-        turtleInstructions.put("SetBackground", new DisplaySetBackground());
-        turtleInstructions.put("SetPenColor", new DisplaySetPenColor());
-        turtleInstructions.put("SetPenSize", new DisplaySetPenSize());
-        turtleInstructions.put("SetShape", new DisplaySetShape());
-        turtleInstructions.put("SetPalette", new DisplaySetPalette());
-        turtleInstructions.put("PenColor", new DisplayPenColor());
-        turtleInstructions.put("Shape", new DisplayShape());
-        turtleInstructions.put("Stamp", new DisplayStamp());
+        displayInstructions.put("SetBackground", new DisplaySetBackground());
+        displayInstructions.put("SetPenColor", new DisplaySetPenColor());
+        displayInstructions.put("SetPenSize", new DisplaySetPenSize());
+        displayInstructions.put("SetShape", new DisplaySetShape());
+        displayInstructions.put("SetPalette", new DisplaySetPalette());
+        displayInstructions.put("PenColor", new DisplayPenColor());
+        displayInstructions.put("Shape", new DisplayShape());
+        displayInstructions.put("Stamp", new DisplayStamp());
         // turtleInstructions.put("Id", new TurtleID());
         // turtleInstructions.put("Turtles", new TurtleTurtles());
         // turtleInstructions.put("Tell", new TurtleTell());

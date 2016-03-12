@@ -12,7 +12,8 @@ public class UserDefinedMakeUserInstruction implements UserDefinedInterface {
 
 	@Override
 	public void executeCommand(String command, CommandParser parser, List<String> userDefinedCommands,
-			EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+			EntryManager terminal, EntryManager commandManager, 
+			EntryManager workspace, EntryManager colorManager, EntryManager shapeManager) {
 		String substring1 = new String();
 		String substring2 = new String();
 		int breakpoint = command.indexOf(']');
