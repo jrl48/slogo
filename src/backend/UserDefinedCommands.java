@@ -32,14 +32,13 @@ public class UserDefinedCommands {
 	}
 	
 	public void callCommand(String command, String instruction, CommandParser parser, 
-			EntryManager terminal, EntryManager commandManager, EntryManager workspace, 
-			EntryManager colorManager, EntryManager shapeManager, boolean read){
+			EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean read){
 		if ( myUserDefinedCommands.containsKey(instruction)) {
 			UserDefinedInterface userDefinedCommand = myUserDefinedCommands.get(instruction);
 			ArrayList<String> commands = new ArrayList<String>();
 			commands.addAll(myUserDefinedCommands.keySet());
 			userDefinedCommand.executeCommand(command,parser,commands,terminal,
-					commandManager,workspace, colorManager, shapeManager, read);
+					commandManager,workspace, read);
 		}
 	}
 
