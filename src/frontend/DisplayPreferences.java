@@ -53,7 +53,7 @@ public class DisplayPreferences {
        cpItem.setGraphic(dispColor);
        item.getItems().add(cpItem);
        prefMenu.getItems().add(item);
-       myMenuBar = new MenuBar(prefMenu);
+       myMenuBar = new MenuBar();
        myMenuBar.getStyleClass().add(sceneResources.getString("BUTTONID"));
     }
 
