@@ -273,8 +273,7 @@ public class SingleTurtle implements Turtle {
 
     @Override
     public TurtlePreferences getPreferences () {
-        // TODO Auto-generated method stub
-        return null;
+        return myPreferences;
     }
  
 }
