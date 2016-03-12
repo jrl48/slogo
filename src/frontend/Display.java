@@ -33,7 +33,15 @@ public class Display {
     }
 
     /**
+<<<<<<< HEAD
+<<<<<<< HEAD
+     * Initialize method, redirected from the constructor.
+=======
      * Initializes Display Pane to desired Height and Width and setsBinding for background fill
+>>>>>>> master
+=======
+     * Initializes Display Pane to desired Height and Width and setsBinding for background fill
+>>>>>>> master
      * 
      * @param dispPref
      */

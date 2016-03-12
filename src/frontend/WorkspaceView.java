@@ -56,7 +56,12 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.NumberStringConverter;
 
-
+/**
+ * Shows the workspace for all the open views.
+ * 
+ * @author JoeLilien
+ *
+ */
 public class WorkspaceView extends ModuleView {
     private static final double WIDTH = 250;
     private static final double HEIGHT = 150;

@@ -4,6 +4,11 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * Implementation of the entry interface, contains two values as an entry.
+ * @author Alan
+ *
+ */
 public class StringObjectEntry implements Entry{
     private SimpleStringProperty firstValue = new SimpleStringProperty();
     private SimpleObjectProperty<Object> secondValue;

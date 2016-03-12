@@ -2,6 +2,11 @@ package frontend;
 
 import javafx.scene.control.TextInputDialog;
 
+/**
+ * Prompt for a short text.
+ * @author JoeLilien
+ *
+ */
 public class TextPrompt{
     private TextInputDialog myPrompt;
     public TextPrompt(String defaultVal, String message){

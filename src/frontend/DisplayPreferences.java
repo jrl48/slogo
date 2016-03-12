@@ -25,7 +25,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
-
+/**
+ * The Display preferences class consists of the Pane that gives control to the user over
+ * some of the Display's tweaks.
+ * 
+ * @author JoeLilien
+ *
+ */
 public class DisplayPreferences {   
     private ResourceBundle prefResources =
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + "Pref");   
@@ -42,7 +48,8 @@ public class DisplayPreferences {
     public void setDisplayColor(Color col){
         dispColor.setValue(col);
     }
-    private void initDisplayPreferences () {// potential issue with Stage s in future 
+    
+    private void initDisplayPreferences () { 
        prefMenu = new Menu("Preferences");       
        Menu item = new Menu("Set Display Color");
        MenuItem cpItem = new MenuItem();
