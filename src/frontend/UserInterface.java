@@ -118,7 +118,7 @@ public class UserInterface {
         myLanguageManager = new LanguageManager();
         myAnimationController = new AnimationController();
         myDisplay = new Display(myDisplayPreferences,myTurtleManager);
-        myTurtles = new MultipleTurtles(myTurtleManager, myDisplay.getPane(),myColorManager, myShapeManager, myAnimationController);
+        myTurtles = new MultipleTurtles(myTurtleManager, myDisplay.getPane(), myColorManager, myShapeManager, myDisplay, myDisplayPreferences, myAnimationController);
     	myCommandParser = new CommandParser(myTurtles,myDisplay);
         myCommandLine = new CommandLine(myCommandParser, myTerminalManager, myCommandManager, myWorkspaceManager);
         myTerminal = new TerminalView(myCommandLine, myTerminalManager, sceneResources.getString("TERMINAL"), new String[]{sceneResources.getString("TERMINAL_1"),sceneResources.getString("TERMINAL_2")});
