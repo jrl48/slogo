@@ -21,20 +21,21 @@ import frontend.*;
 public class CommandParser {
 	
 	private UserDefinedCommands myUserDefinedHandler;
+	private Display myDisplay;
 	private String myLanguage;
 	private ParametersMap myParametersMap;
 	private String originalCommand;
-
 	private MultipleTurtles myTurtles;
 
-	public CommandParser(MultipleTurtles display) {
+	public CommandParser(MultipleTurtles turtles, Display display) {
 		myUserDefinedHandler = new UserDefinedCommands();
 		myParametersMap = new ParametersMap();
-		myTurtles = display;
+		myTurtles = turtles;
 		myLanguage = "English";
+		myDisplay = display;
 	}
 	
-	public Object parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean updateString, boolean read) {
+	public Object parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, EntryManager colorManager, EntryManager shapeManager, boolean updateString, boolean read) {
 		command = command.trim();
 		if(updateString){
 			originalCommand = command;
@@ -52,12 +53,13 @@ public class CommandParser {
 			Pattern p = Pattern.compile("\\((.*?)\\)");
 			Matcher m = p.matcher(command);
 			if(m.find()) {
-				handleGrouping(command,terminal,commandManager,workspace,myTurtles);
-				return null;
+				handleGrouping(command,terminal,commandManager,workspace,colorManager,shapeManager,myTurtles);
+				return 0; //check this
 			}
 		}
 		if (myUserDefinedHandler.isLoopCommand(instruction)) {
-			myUserDefinedHandler.callCommand(command, instruction, this, terminal, commandManager, workspace, read);
+			myUserDefinedHandler.callCommand(command, instruction, this, terminal, 
+					commandManager, workspace, colorManager, shapeManager, read);
 		} 
 		else {
 			String newCommand = methodLoop(command, commandManager);
@@ -65,7 +67,7 @@ public class CommandParser {
 				return null;
 			}
 			if(!command.equals(newCommand)){
-				parse(newCommand, terminal, commandManager, workspace, false, read);
+				parse(newCommand, terminal, commandManager, workspace,colorManager, shapeManager, false, read);
 				return 0;
 			}
 			
@@ -89,7 +91,7 @@ public class CommandParser {
 	}
 	
 	private void handleGrouping(String command, EntryManager terminal, EntryManager commandManager,
-			EntryManager workspace, MultipleTurtles myTurtles) {
+			EntryManager workspace, EntryManager colorManager, EntryManager shapeManager, MultipleTurtles myTurtles) {
 		Pattern p = Pattern.compile("\\((.*?)\\)");
 		Matcher m = p.matcher(command);
 		String commandInParen = "";
@@ -117,7 +119,7 @@ public class CommandParser {
 		if (originalCommandPieces[0] != "\\(") {
 			newCommand = originalCommandPieces[0] + " " + newCommand;
 		}
-		parse(newCommand,terminal,commandManager,workspace, false, true);
+		parse(newCommand,terminal,commandManager,workspace, colorManager, shapeManager, false, true);
 		
 	}
 	

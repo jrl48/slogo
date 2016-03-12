@@ -11,8 +11,7 @@ public class UserDefinedMakeUserInstruction implements UserDefinedInterface {
 
 	@Override
 	public void executeCommand(String command, CommandParser parser, List<String> userDefinedCommands,
-			EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean read) {
-		System.out.println("USERDEFINEDPLACE");
+			EntryManager terminal, EntryManager commandManager, EntryManager workspace, EntryManager colorManager, EntryManager shapeManager, boolean read) {
 		String substring1 = new String();
 		String substring2 = new String();
 		int breakpoint = command.indexOf(']');
@@ -45,7 +44,7 @@ public class UserDefinedMakeUserInstruction implements UserDefinedInterface {
 //		if(parser.makeTree(instructions, workspace, commandManager) == null){
 //			terminal.addEntry(new StringNumEntry(command,0.0), false);
 //		}
-		if(parser.parse(tempCommand.trim(), terminal, commandManager, workspace, false, false) == null){
+		if(parser.parse(tempCommand.trim(), terminal, commandManager, workspace, colorManager, shapeManager, false, false) == null){
 			terminal.addEntry(new StringNumEntry(command,0.0), false);
 			//commandManager.removeEntry(); //figure out how to remove the entry
 		}

@@ -78,7 +78,7 @@ public class UserInterface {
     }
 
     private void initModules (Stage primaryStage) {
-        myDisplayPreferences = new DisplayPreferences(primaryStage);
+        myDisplayPreferences = new DisplayPreferences();
         myTerminalManager = new EntryManager();
         myCommandManager = new EntryManager();
         myWorkspaceManager = new EntryManager();
@@ -87,14 +87,14 @@ public class UserInterface {
         myShapeManager = new EntryManager();
         myLanguageManager = new LanguageManager();
         myDisplay = new Display(myDisplayPreferences,myTurtleManager);
-        myTurtles = new MultipleTurtles(myDisplayPreferences.getImageProperty(), myTurtleManager, myDisplay.getPane());
-    	myCommandParser = new CommandParser(myTurtles);
-        myCommandLine = new CommandLine(myCommandParser, myTerminalManager, myCommandManager, myWorkspaceManager);
+        myTurtles = new MultipleTurtles(myTurtleManager, myDisplay.getPane());
+    	myCommandParser = new CommandParser(myTurtles,myDisplay);
+        myCommandLine = new CommandLine(myCommandParser, myTerminalManager, myCommandManager, myWorkspaceManager,myColorManager, myShapeManager);
         myTerminal = new TerminalView(myCommandLine, myTerminalManager, sceneResources.getString("TERMINAL"), new String[]{sceneResources.getString("TERMINAL_1"),sceneResources.getString("TERMINAL_2")});
         myWorkspace = new WorkspaceView(myWorkspaceManager, sceneResources.getString("WORKSPACE"), new String[]{sceneResources.getString("WORKSPACE_1"),sceneResources.getString("WORKSPACE_2")});
         myTurtleManagerView = new TurtleManagerView(myTurtleManager, "Active Turtles", new String[]{"ID","Turtle"});
         myUserDefined = new UserDefinedView(myCommandLine,myCommandManager, sceneResources.getString("USERCOMMANDS"), new String[]{sceneResources.getString("USERCOMMANDS_1"), sceneResources.getString("USERCOMMANDS_2")});
-        myColorView = new ColorPaletteView(myColorManager, "Color Palette", new String[]{"Index","Color"});
+        myColorView = new ColorPaletteView(myColorManager, "Color Palette", new String[]{"Index","Color"},myDisplayPreferences);
         myShapeView = new ShapePaletteView(myShapeManager, "Palettes", new String[]{"Index","Shape"});
         myLanguagePreferences = new LanguagePreferences(myLanguageManager,myCommandParser);
         myHTMLopener = new HTMLopener();
@@ -113,7 +113,7 @@ public class UserInterface {
     }
     
     private void initComponentLists () {        
-        myButtonsList = new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getButton(),myLanguagePreferences.getComboBox(),myHTMLopener.getButton()));
+        myButtonsList = new ArrayList<Node>(Arrays.asList(myCommandLine.getButton(),myDisplayPreferences.getMenu(),myLanguagePreferences.getComboBox(),myHTMLopener.getButton()));
         myFirstColList = new ArrayList<Node>(Arrays.asList(makePane(myTerminal.getTitle(),myTerminal.getMyTableView(),true),
                                                            makePane(myWorkspace.getTitle(),myWorkspace.getMyTableView(),true),
                                                            makePane(myUserDefined.getTitle(),myUserDefined.getMyTableView(),false),

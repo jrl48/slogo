@@ -1,13 +1,17 @@
 package methodInterfaces;
 
+import frontend.Display;
+import frontend.DisplayPreferences;
+import frontend.EntryManager;
 import frontend.SingleTurtle;
+import javafx.scene.paint.Color;
 
-public class DisplayPenColor implements TurtleInterface {
+public class DisplayPenColor implements DisplayInterface {
 
 	@Override
-	public double executeCommand(double[] args, SingleTurtle display) {
-		return 0;
-		//return 0;
+	public double executeCommand(double[] args, SingleTurtle turtle, Display display,
+			DisplayPreferences displayPreferences, EntryManager colorManager, EntryManager shapeManager) {
+		return Double.toString(colorManager.getString(turtle.getPreferences().getPenColor()));
 	}
 
 }
