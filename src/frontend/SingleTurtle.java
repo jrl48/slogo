@@ -179,7 +179,9 @@ public class SingleTurtle implements Turtle {
         if ( pen )
         {
         	Line newLine = new Line();
-        	myPane.getChildren().add(newLine);
+        	//setLineStyle(newLine);
+        	myPane.getChildren().add(newLine);       
+        	
         	newLine.setStartX(getVisualX());
         	newLine.setStartY(getVisualY());
         	animationController.addTurtleToMove(this, getTurtleX(), getTurtleY(), 
@@ -315,8 +317,7 @@ public class SingleTurtle implements Turtle {
 
     @Override
     public TurtlePreferences getPreferences () {
-        // TODO Auto-generated method stub
-        return null;
+        return myPreferences;
     }
     
     public void updateLine(Line line)
