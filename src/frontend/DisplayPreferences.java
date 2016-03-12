@@ -33,7 +33,7 @@ public class DisplayPreferences extends Preferences {
         initDisplayPreferences();
     }
     
-    public void setDisplayColor(Color col){
+    public void setDisplayColor(Color col){     
         dispColor.setValue(col);
     }
     
