@@ -172,7 +172,7 @@ public class SingleTurtle implements Turtle {
 
         if (isTurtlePenDown() && !overridePen) {
             Line newLine = new Line(getVisualX(), getVisualY(), newX, newY);
-            newLine.setStroke(myPreferences.getPenColor());
+            setLineStyle(newLine);
             lines.add(newLine);
             myPane.getChildren().add(newLine);
         }
@@ -181,7 +181,12 @@ public class SingleTurtle implements Turtle {
         // image, not the center
         setVisualCoordinates(newX, newY);
     }
-
+    
+    private void setLineStyle(Line line){
+        line.setStroke(myPreferences.getPenColor());
+        line.setStrokeWidth(myPreferences.getPenWidth());
+        line.getStrokeDashArray().add(myPreferences.getDashLength());
+    }
     public void clearDisplay () {
         // Deletes all lines
         for (Line toBeDeleted : lines) {

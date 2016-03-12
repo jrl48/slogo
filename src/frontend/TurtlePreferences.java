@@ -94,7 +94,12 @@ public class TurtlePreferences {
         }
     }
 
-
+    public double getPenWidth(){
+        return 0;
+    }
+    public double getDashLength(){
+        return 0;
+    }
     public Color getPenColor () {
         return penColor.getValue();
     }
