@@ -88,8 +88,8 @@ public class UserInterface {
         myLanguageManager = new LanguageManager();
         myDisplay = new Display(myDisplayPreferences,myTurtleManager);
         myTurtles = new MultipleTurtles(myTurtleManager, myDisplay.getPane());
-    	myCommandParser = new CommandParser(myTurtles);
-        myCommandLine = new CommandLine(myCommandParser, myTerminalManager, myCommandManager, myWorkspaceManager);
+    	myCommandParser = new CommandParser(myTurtles,myDisplay);
+        myCommandLine = new CommandLine(myCommandParser, myTerminalManager, myCommandManager, myWorkspaceManager,myColorManager, myShapeManager);
         myTerminal = new TerminalView(myCommandLine, myTerminalManager, sceneResources.getString("TERMINAL"), new String[]{sceneResources.getString("TERMINAL_1"),sceneResources.getString("TERMINAL_2")});
         myWorkspace = new WorkspaceView(myWorkspaceManager, sceneResources.getString("WORKSPACE"), new String[]{sceneResources.getString("WORKSPACE_1"),sceneResources.getString("WORKSPACE_2")});
         myTurtleManagerView = new TurtleManagerView(myTurtleManager, "Active Turtles", new String[]{"ID","Turtle"});

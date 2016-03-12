@@ -45,6 +45,14 @@ public class EntryManager {
         }
         return null;
     }
+    public String getString(Object value){
+        for(Entry e:myObservableEntries){
+            if (e.getSecondValue().equals(value)){
+                return e.getFirstValue().toString();
+            }
+        }
+        return null;
+    }
     public Object contains(String value){
         for(Entry e:myObservableEntries){
         	String stringValue = (String) e.getFirstValue();
