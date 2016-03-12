@@ -44,7 +44,7 @@ public abstract class ModuleView {
     protected void defineListener(CommandLine command){
         getMyTableView().getSelectionModel().selectedItemProperty().addListener((observableValue,oldValue,newValue)-> setCommand(command, newValue));
     }
-    
+
     private void setCommand(CommandLine command, Entry newValue){
         if(getMyTableView().getSelectionModel().getSelectedItem()!=null){
             command.getTextField().setText(getClickableString(newValue));

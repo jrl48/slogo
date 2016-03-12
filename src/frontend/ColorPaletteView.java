@@ -8,11 +8,23 @@ import javafx.scene.shape.Rectangle;
 
 public class ColorPaletteView extends ModuleView{
     private List<Entry> myDefaults = new ArrayList<Entry>();
-    public ColorPaletteView (EntryManager manager, String title, String[] colTitles) {
+    public ColorPaletteView (EntryManager manager, String title, String[] colTitles, DisplayPreferences display) {
         super(manager, title, colTitles);        
         initDefaults(manager);
         setCellDisplay();
         getMyTableView().setMaxWidth(120);//TODO magic value
+        defineListener(display);
+    }
+    
+    private void defineListener(DisplayPreferences display){
+        getMyTableView().getSelectionModel().selectedItemProperty().addListener((observableValue,oldValue,newValue)->updateColor(display,newValue));
+    }
+    
+    private void updateColor (DisplayPreferences display, Entry newValue) {
+        if(getMyTableView().getSelectionModel().getSelectedItem()!=null){
+            Color col = (Color) newValue.getSecondValue();
+            display.setDisplayColor(col);
+        }
 
     }
 

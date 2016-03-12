@@ -43,21 +43,16 @@ public class MultipleTurtles {
             new HashMap<String, TurtleInterface>();
     private ObjectProperty<Image> defaultTurtleImage;
 
-    public MultipleTurtles (ObjectProperty<Image> imageProperty,
-                            EntryManager turtleManager,
+    public MultipleTurtles (EntryManager turtleManager,
                             Pane displayPane) {
         this.turtleManager = turtleManager;
         this.myDisplayPane = displayPane;
-        this.defaultTurtleImage = imageProperty;
-        addTurtle(imageProperty);
+        addTurtle();
         createTurtleMap();
     }
 
-    public void addTurtle (ObjectProperty<Image> imageProperty) {
-        if (imageProperty == null) {
-            imageProperty = this.defaultTurtleImage;
-        }
-        Turtle turtle = new SingleTurtle(imageProperty, myDisplayPane);
+    public void addTurtle () {       
+        Turtle turtle = new SingleTurtle(myDisplayPane);
         turtleManager.addEntry(new StringObjectEntry("Turtle 1", turtle), false);
         myDisplayPane.getChildren().add(turtle.getBody());
     }

@@ -7,26 +7,33 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class ImageDisplayCell extends TableCell<Entry,Object>{
-    public ImageDisplayCell(){
+
+public class ImageDisplayCell extends TableCell<Entry, Object> {
+    private static final double WIDTH = 30;
+    private static final double HEIGHT = 30;
+
+    public ImageDisplayCell () {
         super();
     }
 
     @Override
-    protected void updateItem(Object obj, boolean empty){
+    protected void updateItem (Object obj, boolean empty) {
         super.updateItem(obj, empty);
         if (empty || obj == null) {
             setText(null);
             setGraphic(null);
             return;
         }
-        if (obj instanceof Turtle){
-            ImageView turtle = new ImageView(((Turtle) obj).getBody().getImage());
-            setGraphic(turtle);
+        ImageView turtle = new ImageView();
+        if (obj instanceof Turtle) {
+            turtle.imageProperty().bind(((Turtle) obj).getBody().imageProperty());
         }
-        else{
-            setGraphic((ImageView) obj);
+        else {
+            turtle = (ImageView) obj;
         }
+        turtle.setFitWidth(WIDTH);
+        turtle.setFitHeight(HEIGHT);
+        setGraphic(turtle);
     }
 
 }

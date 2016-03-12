@@ -31,7 +31,6 @@ public class Display {
     private Group root;
     public static final double WIDTH = 500;
     public static final double HEIGHT = 450;
-    private MultipleTurtles myTurtle;
 
 
     public Display (DisplayPreferences dispPref, EntryManager turtleManager) {
@@ -44,9 +43,6 @@ public class Display {
         myPane.getStyleClass().add(sceneResources.getString("DISPLAYID"));
         myPane.setPrefSize(WIDTH, HEIGHT);
         setPaneBinding(myPane, dispPref.getDispColorPicker());
-
-        // Build turtle and initialize it at Logo's (0,0)
-
     }
 
     private void setPaneBinding (Pane pane, ColorPicker cp) {
@@ -58,6 +54,9 @@ public class Display {
         } , cp.valueProperty()));
     }
 
+    public void setBackgroundColor(Color col){
+        myPane.setBackground(new Background(new BackgroundFill(col,CornerRadii.EMPTY,Insets.EMPTY)));
+    }
     public Pane getPane () {
         return myPane;
     }
