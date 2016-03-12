@@ -1,14 +1,21 @@
 package frontend;
 
+import java.util.List;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
+
+import javafx.scene.image.ImageView;
 
 public interface Turtle {
 
     public ImageView getBody ();
 
     public void setTurtleCoordinates (double x, double y);
+    
+    public void setTurtleCoordinates (List newCoordinates);
+    
+    public List getCoordinates();
 
     public double getTurtleX ();
 

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import backend.CommandParser;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -29,6 +31,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 
 public class UserInterface {
@@ -64,8 +67,12 @@ public class UserInterface {
     private DisplayPreferences myDisplayPreferences;
     private HTMLopener myHTMLopener;   
     private MultipleTurtles myTurtles;
+	private AnimationController myAnimationController;
     
-
+	// Animation Parameters
+	private static final int FRAMES_PER_SECOND = 60;
+    private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
+	
     public UserInterface (Stage s) {
         init(s);
        
@@ -86,8 +93,9 @@ public class UserInterface {
         myColorManager = new EntryManager();
         myShapeManager = new EntryManager();
         myLanguageManager = new LanguageManager();
+        myAnimationController = new AnimationController();
         myDisplay = new Display(myDisplayPreferences,myTurtleManager);
-        myTurtles = new MultipleTurtles(myTurtleManager, myDisplay.getPane());
+        myTurtles = new MultipleTurtles(myTurtleManager, myDisplay.getPane(), myAnimationController);
     	myCommandParser = new CommandParser(myTurtles,myDisplay);
         myCommandLine = new CommandLine(myCommandParser, myTerminalManager, myCommandManager, myWorkspaceManager,myColorManager, myShapeManager);
         myTerminal = new TerminalView(myCommandLine, myTerminalManager, sceneResources.getString("TERMINAL"), new String[]{sceneResources.getString("TERMINAL_1"),sceneResources.getString("TERMINAL_2")});
@@ -98,6 +106,15 @@ public class UserInterface {
         myShapeView = new ShapePaletteView(myShapeManager, "Palettes", new String[]{"Index","Shape"});
         myLanguagePreferences = new LanguagePreferences(myLanguageManager,myCommandParser);
         myHTMLopener = new HTMLopener();
+        
+        /* Animation Initialization */
+        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
+                e -> myAnimationController.step());
+        Timeline animation = new Timeline();
+        animation.setCycleCount(Timeline.INDEFINITE);
+        animation.getKeyFrames().add(frame);
+        animation.play();
+      
     }
 
     private GridPane makeGridPane () {

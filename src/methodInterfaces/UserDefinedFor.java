@@ -15,7 +15,7 @@ public class UserDefinedFor implements UserDefinedInterface {
 	@Override
 	public void executeCommand(String command, CommandParser parser, List<String> userDefinedCommands,
 			EntryManager terminal, EntryManager commandManager, EntryManager workspace, 
-			EntryManager colorManager, EntryManager shapeManager) {
+			EntryManager colorManager, EntryManager shapeManager, boolean read) {
 		Pattern p = Pattern.compile("\\[(.*?)\\]");
 		Matcher m = p.matcher(command);
 		String loopInfo = "";
@@ -51,7 +51,7 @@ public class UserDefinedFor implements UserDefinedInterface {
 				repcount.setSecondValue((double)i);
 				workspace.addEntry(repcount, true);
 				String currIter = i.toString();
-				parser.parse(newCommand, terminal, commandManager, workspace, colorManager, shapeManager, false);
+				parser.parse(newCommand, terminal, commandManager, workspace, colorManager, shapeManager, false, read);
 			}
 		} catch (NumberFormatException e) {
 			parser.throwError("Not a Valid Command!");

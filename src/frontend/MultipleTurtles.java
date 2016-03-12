@@ -7,6 +7,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import methodInterfaces.DisplayInterface;
 import methodInterfaces.DisplayPenColor;
 import methodInterfaces.DisplaySetBackground;
 import methodInterfaces.DisplaySetPalette;
@@ -41,17 +42,24 @@ public class MultipleTurtles {
     private Pane myDisplayPane;
     private Map<String, TurtleInterface> turtleInstructions =
             new HashMap<String, TurtleInterface>();
+    private Map<String, DisplayInterface> displayInstructions = new HashMap<String, DisplayInterface>();
+    private ObjectProperty<Image> defaultTurtleImage;
+    private AnimationController animationController;
 
     public MultipleTurtles (EntryManager turtleManager,
-                            Pane displayPane) {
+                            Pane displayPane,
+                            AnimationController animationController) {
+
         this.turtleManager = turtleManager;
         this.myDisplayPane = displayPane;
+        this.animationController = animationController;
+
         addTurtle();
         createTurtleMap();
     }
 
     public void addTurtle () {       
-        Turtle turtle = new SingleTurtle(myDisplayPane);
+        Turtle turtle = new SingleTurtle(myDisplayPane, animationController);
         turtleManager.addEntry(new StringObjectEntry("Turtle 1", turtle), false);
         myDisplayPane.getChildren().add(turtle.getBody());
     }

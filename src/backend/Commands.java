@@ -8,12 +8,9 @@ import frontend.MultipleTurtles;
 public class Commands{
 
 	private Map<String, MathInterface> instructions = new HashMap<String, MathInterface>();
-	//private Map<String UserDefinedInterface> userDefinedInstructions = new HashMap<String, UserDefinedInterface>();
 	
 	public Commands(){
 		createInstructionMap();
-
-		//instructions.put(, value)
 	}
 	
 	private void createInstructionMap() {
@@ -40,17 +37,12 @@ public class Commands{
 		instructions.put("Not", new BooleanNot());
 	}
 
-	
 	public double callCommand(String s, double[] args, MultipleTurtles myTurtles){
 		if (instructions.containsKey(s)) {
-			System.out.println("I should get here though");
 			MathInterface command = instructions.get(s);
 			return command.executeCommand(args);
 		} else {
 			return myTurtles.executeCommand(s, args);
-			
-			//TurtleInterface turtleCommand = turtleInstructions.get(s);
-			//return turtleCommand.executeCommand(args, display);
 		}	
 	}
 	

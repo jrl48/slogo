@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import backend.CommandParser;
-import javafx.event.ActionEvent;
 import javafx.scene.control.ComboBox;
 
 
