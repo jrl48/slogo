@@ -1,7 +1,9 @@
 package frontend;
 
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
+import javafx.scene.paint.Color;
 
 public class TurtleManagerView extends ModuleView{
     private static final double WIDTH = 250;
@@ -9,12 +11,12 @@ public class TurtleManagerView extends ModuleView{
     
     public TurtleManagerView (EntryManager manager, String labelTitle, String[] colTitles) {
         super(manager, labelTitle, colTitles);
-       // getMyTitledPane().setExpanded(false);
+        setCustomCells();
     }
     
-
-    private void openOptions () {
-       
+    @SuppressWarnings("unchecked")
+    private void setCustomCells () {
+        ((TableColumn<Entry,Object>) getMyTableView().getColumns().get(1)).setCellFactory(c->new ImageDisplayCell());
     }
 
     @Override

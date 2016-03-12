@@ -55,5 +55,11 @@ public class EntryManager {
         return null;
     }
     
+    public void addAll(List<Entry> list, Boolean overwrite){
+        for(Entry e:list){
+            addEntry(e,overwrite);
+        }
+    }
+    
 
 }
