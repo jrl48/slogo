@@ -21,20 +21,22 @@ import frontend.*;
 public class CommandParser {
 	
 	private UserDefinedCommands myUserDefinedHandler;
+	private Display myDisplay;
 	private String myLanguage;
 	private ParametersMap myParametersMap;
 	private String originalCommand;
-
 	private MultipleTurtles myTurtles;
 
-	public CommandParser(MultipleTurtles display) {
+	public CommandParser(MultipleTurtles turtles, Display display) {
 		myUserDefinedHandler = new UserDefinedCommands();
 		myParametersMap = new ParametersMap();
-		myTurtles = display;
+		myTurtles = turtles;
 		myLanguage = "English";
+		myDisplay = display;
 	}
 	
-	public void parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean updateString) {
+	public void parse(String command, EntryManager terminal, EntryManager commandManager, 
+			EntryManager workspace, EntryManager colorManager, EntryManager shapeManager, boolean updateString) {
 		command = command.trim();
 		System.out.println("command: "+ command);
 		if(updateString){
@@ -52,12 +54,13 @@ public class CommandParser {
 			Pattern p = Pattern.compile("\\((.*?)\\)");
 			Matcher m = p.matcher(command);
 			if(m.find()) {
-				handleGrouping(command,terminal,commandManager,workspace,myTurtles);
+				handleGrouping(command,terminal,commandManager,workspace,colorManager,shapeManager,myTurtles);
 				return;
 			}
 		}
 		if (myUserDefinedHandler.isLoopCommand(instruction)) {
-			myUserDefinedHandler.callCommand(command, instruction, this, terminal, commandManager, workspace);
+			myUserDefinedHandler.callCommand(command, instruction, this, terminal, 
+					commandManager, workspace, colorManager, shapeManager);
 		} 
 		else {
 			if(commandManager.contains(commandPieces[0]) != null){
@@ -84,7 +87,7 @@ public class CommandParser {
 	}
 	
 	private void handleGrouping(String command, EntryManager terminal, EntryManager commandManager,
-			EntryManager workspace, MultipleTurtles myTurtles) {
+			EntryManager workspace, EntryManager colorManager, EntryManager shapeManager, MultipleTurtles myTurtles) {
 		Pattern p = Pattern.compile("\\((.*?)\\)");
 		Matcher m = p.matcher(command);
 		String commandInParen = "";
@@ -113,7 +116,7 @@ public class CommandParser {
 			System.out.println(originalCommandPieces[0]);
 			newCommand = originalCommandPieces[0] + " " + newCommand;
 		}
-		parse(newCommand,terminal,commandManager,workspace, false);
+		parse(newCommand,terminal,commandManager,workspace, colorManager, shapeManager, false);
 		
 	}
 	private String[] methodDealer(EntryManager commandManager, String[] commandPieces, String command){

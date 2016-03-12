@@ -1,13 +1,17 @@
 package methodInterfaces;
 
+import frontend.Display;
+import frontend.DisplayPreferences;
+import frontend.EntryManager;
 import frontend.SingleTurtle;
 
-public class DisplayShape implements TurtleInterface {
+public class DisplayShape implements DisplayInterface {
 
 	@Override
-	public double executeCommand(double[] args, SingleTurtle display) {
-		//return display.getTurtleShape();
-		return 0;
+	public double executeCommand(double[] args, SingleTurtle turtle, Display display,
+			DisplayPreferences displayPreferences, EntryManager colorManager, EntryManager shapeManager) {
+		// TODO Auto-generated method stub
+		return Double.toString(colorManager.getString(turtle.getBody()));
 	}
 
 }
