@@ -30,10 +30,8 @@ public class CommandLine {
     public CommandLine (CommandParser parser,
                         EntryManager terminal,
                         EntryManager command,
-                        EntryManager workspace,
-                        EntryManager color,
-                        EntryManager shape) {
-        initCommandLine(parser, terminal, command, workspace, color, shape);
+                        EntryManager workspace) {
+        initCommandLine(parser, terminal, command, workspace);
 
     }
 
@@ -51,19 +49,17 @@ public class CommandLine {
     private void initCommandLine (CommandParser parser,
                                   EntryManager terminal,
                                   EntryManager command,
-                                  EntryManager workspace,
-                                  EntryManager color,
-                                  EntryManager shape) {
+                                  EntryManager workspace) {
         myTextField = new TextArea();
         myTextField.getStyleClass().add(sceneResources.getString("COMMANDLINEID"));
         myTextField.setPrefSize(WIDTH, HEIGHT);
         myGoButton = new Button(sceneResources.getString("GOBUTTON"));
         myGoButton.getStyleClass().add(sceneResources.getString("BUTTONID"));
-        myGoButton.setOnAction(e -> enterCommand(parser, terminal, command, workspace, color, shape));
+        myGoButton.setOnAction(e -> enterCommand(parser, terminal, command, workspace));
         myTextField.setOnKeyPressed(e -> keyPressed(e.getCode(), parser, terminal, command,
-                                                    workspace, color, shape, true));
+                                                    workspace, true));
         myTextField.setOnKeyReleased(e -> keyPressed(e.getCode(), parser, terminal, command,
-                                                     workspace, color, shape, false));
+                                                     workspace, false));
     }
 
     /**
@@ -79,15 +75,12 @@ public class CommandLine {
     private void enterCommand (CommandParser parser,
                                EntryManager terminal,
                                EntryManager command,
-                               EntryManager workspace,
-                               EntryManager color,
-                               EntryManager shape) {
+                               EntryManager workspace) {
         shiftPressed = false;
         enterPressed = false;
 
         if (!myTextField.getText().isEmpty()) {
-            parser.parse(myTextField.getText(), terminal, command, workspace, color, shape, true,
-                         true);
+            parser.parse(myTextField.getText(), terminal, command, workspace, true, true);
             myTextField.clear();
         }
 
@@ -109,9 +102,7 @@ public class CommandLine {
                              CommandParser parser,
                              EntryManager terminal,
                              EntryManager command,
-                             EntryManager workspace,
-                             EntryManager color,
-                             EntryManager shape,
+                             EntryManager workspace,                         
                              boolean beingPressed)
 
     {
@@ -122,7 +113,7 @@ public class CommandLine {
             enterPressed = beingPressed;
 
         if (enterPressed && shiftPressed)
-            enterCommand(parser, terminal, command, workspace, color, shape);
+            enterCommand(parser, terminal, command, workspace);
 
     }
 
