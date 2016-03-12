@@ -46,7 +46,9 @@ public class DisplayPreferences {
     }
     
     public void setDisplayColor(Color col){
-        dispColor.setValue(col);
+    	if(col != null){
+            dispColor.setValue(col);	
+    	}
     }
     
     private void initDisplayPreferences () { 

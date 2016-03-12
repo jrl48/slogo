@@ -72,6 +72,7 @@ public class CommandParser {
 			}
 			
 			commandPieces = newCommand.split("\\s");
+			System.out.println(newCommand);
 			List<ParseNode> commandTree = makeTree(commandPieces,workspace, commandManager);
 			if(commandTree == null){
 				throwError("Not a Valid Command!");
@@ -240,6 +241,7 @@ public class CommandParser {
 		if(parseCommand(commands[0]).equals("")){
 			return null;
 		}
+		System.out.println(parseCommand(commands[0]));
 		List<ParseNode> instructions = new ArrayList<ParseNode>();
 		instructions.add(root);
 		for(int i = 1;i< commands.length; i++){
@@ -247,6 +249,9 @@ public class CommandParser {
 			String parsedCommand = parseCommand(commands[i]);   
 			ParseNode currentNode = new ParseNode(parsedCommand);
 			instructions = createNode(commands, i ,parsedCommand, instructions, currentNode, workspace);
+			if(instructions == null){
+				return null;
+			}
 			
 			ParseNode parent = parentNodeLoop(size, instructions);
 			if(parent == null){
