@@ -52,7 +52,7 @@ public class UserDefinedMakeUserInstruction implements UserDefinedInterface {
 //		if(parser.makeTree(instructions, workspace, commandManager) == null){
 //			terminal.addEntry(new StringNumEntry(command,0.0), false);
 //		}
-		if(parser.parse(tempCommand.trim(), terminal, commandManager, workspace, colorManager, shapeManager, false, false) == null){
+		if(parser.parse(tempCommand.trim(), terminal, commandManager, workspace, false, false) == null){
 			terminal.addEntry(new StringNumEntry(command,0.0), false);
 			//commandManager.removeEntry(); //figure out how to remove the entry
 		}

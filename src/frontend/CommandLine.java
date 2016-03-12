@@ -3,12 +3,9 @@ package frontend;
 import java.util.ResourceBundle;
 
 import backend.CommandParser;
-import javafx.geometry.Pos;
-//import backend.CommandParser;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 
 public class CommandLine {    
@@ -44,7 +41,7 @@ public class CommandLine {
     {
     	shiftPressed = false;
     	enterPressed = false;
-    	
+
     	if ( !myTextField.getText().isEmpty() )
         {
                 parser.parse(myTextField.getText(), terminal, command, workspace, color, shape, true, true);
@@ -54,25 +51,26 @@ public class CommandLine {
     }
     
     private void keyPressed(KeyCode code, CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace, EntryManager color, EntryManager shape, boolean beingPressed)
+
     {
-        if ( code == KeyCode.SHIFT )
-                shiftPressed = beingPressed;
-        
-        else if ( code ==  KeyCode.ENTER)
-                enterPressed = beingPressed;
+    	if ( code == KeyCode.SHIFT )
+    		shiftPressed = beingPressed;
+
+    	else if ( code ==  KeyCode.ENTER)
+    		enterPressed = beingPressed;
 
         if ( enterPressed && shiftPressed )
                 enterCommand(parser, terminal, command, workspace,color,shape);
         
     }
-    
-  
-    
+
+
+
     public TextArea getTextField(){
-        return myTextField;
+    	return myTextField;
     }
     public Node getButton(){
-        return myGoButton;
+    	return myGoButton;
     }    
 
 }
