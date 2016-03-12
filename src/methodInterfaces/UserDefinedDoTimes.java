@@ -15,7 +15,7 @@ public class UserDefinedDoTimes implements UserDefinedInterface {
 	@Override
 	public void executeCommand(String command, CommandParser parser, List<String> userDefinedCommands,
 			EntryManager terminal, EntryManager commandManager, 
-			EntryManager workspace, EntryManager colorManager, EntryManager shapeManager, boolean read) {
+			EntryManager workspace, boolean read) {
 		Pattern p = Pattern.compile("\\[(.*?)\\]");
 		Matcher m = p.matcher(command);
 		String varLimit = "";
