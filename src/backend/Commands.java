@@ -37,7 +37,6 @@ public class Commands{
 		instructions.put("Not", new BooleanNot());
 	}
 
-	
 	public double callCommand(String s, double[] args, MultipleTurtles myTurtles){
 		if (instructions.containsKey(s)) {
 			MathInterface command = instructions.get(s);

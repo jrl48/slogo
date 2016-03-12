@@ -1,12 +1,6 @@
 package frontend;
 
-
-import java.util.List;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TitledPane;
 
 public class UserDefinedView extends ModuleView{
     private static final double WIDTH = 250;
@@ -34,5 +28,4 @@ public class UserDefinedView extends ModuleView{
         table.getColumns().get(commandColInd).setPrefWidth(COMMAND_WIDTH);
         table.getColumns().get(valueColInd).setPrefWidth(VAL_WIDTH);
     }
-
 }

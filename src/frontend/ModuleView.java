@@ -3,11 +3,8 @@ package frontend;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 
@@ -17,7 +14,6 @@ public abstract class ModuleView {
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);   
     private static final String[] entryValues = new String[] { "FirstValue", "SecondValue" };
     private TableView<Entry> myTableView;
-    private TitledPane myTitledPane;
     private String title;
 
 
