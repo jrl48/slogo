@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import javafx.scene.shape.Line;
-import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
 
 // This class will be called to segment and control the movement of turtles.
 public class AnimationController 

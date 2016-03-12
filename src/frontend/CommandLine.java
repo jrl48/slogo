@@ -44,7 +44,7 @@ public class CommandLine {
 
     	if ( !myTextField.getText().isEmpty() )
         {
-                parser.parse(myTextField.getText(), terminal, command, workspace, color, shape, true);
+                parser.parse(myTextField.getText(), terminal, command, workspace, color, shape, true, true);
                 myTextField.clear();
         }
 
