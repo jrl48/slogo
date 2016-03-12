@@ -18,6 +18,11 @@ public class UserDefinedMakeUserInstruction implements UserDefinedInterface {
 		substring1 = command.substring(2, breakpoint + 1);
 		System.out.println("SUB1" + substring1);
 		substring2 = command.substring(breakpoint + 2 + 2, command.length() - 1);
+		if(substring2.equals("")){
+			terminal.addEntry(new StringNumEntry(command,1.0), false);
+			commandManager.addEntry(new StringStringEntry(substring1, " "), true);
+			return;
+		}
 		System.out.println("SUB2" + substring2);
 		substring1 = substring1.trim();
 		substring2 = substring2.trim();
@@ -30,6 +35,9 @@ public class UserDefinedMakeUserInstruction implements UserDefinedInterface {
 		for(int i = 0; i < instructions.length; i++){
 			String s = instructions[i];
 			if(parser.parseCommand(s).equals("")){
+				if(s.equals(substring1.split("\\s+")[0])){
+					
+				}
 				if(parameters.contains(s)){
 					instructions[i] = "0";
 				}
