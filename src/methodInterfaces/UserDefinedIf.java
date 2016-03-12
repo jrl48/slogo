@@ -13,7 +13,8 @@ public class UserDefinedIf implements UserDefinedInterface {
 
 	@Override
 	public void executeCommand(String command, CommandParser parser, List<String> userDefinedCommands,
-			EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+			EntryManager terminal, EntryManager commandManager, 
+			EntryManager workspace, EntryManager colorManager, EntryManager shapeManager) {
 		String[] commandPieces = command.split("\\s+");
 		try {
 			int expr = Integer.parseInt(commandPieces[1]);
@@ -30,7 +31,7 @@ public class UserDefinedIf implements UserDefinedInterface {
 				return;
 			}
 			if ( expr != 0 )
-				parser.parse(newCommand, terminal, commandManager, workspace, false);
+				parser.parse(newCommand, terminal, commandManager, workspace, colorManager, shapeManager, false);
 			else
 				terminal.addEntry(new StringNumEntry(command,0.0), false);
 		} catch (NumberFormatException e) {

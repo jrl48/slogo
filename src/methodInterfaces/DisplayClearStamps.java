@@ -1,13 +1,16 @@
 package methodInterfaces;
 
+import frontend.Display;
+import frontend.DisplayPreferences;
+import frontend.EntryManager;
 import frontend.SingleTurtle;
 
-public class DisplayClearStamps implements TurtleInterface {
+public class DisplayClearStamps implements DisplayInterface {
 
 	@Override
-	public double executeCommand(double[] args, SingleTurtle display) {
-		//clear stamps from display
-		return 0;
+	public double executeCommand(double[] args, SingleTurtle turtle, Display display,
+			DisplayPreferences displayPreferences, EntryManager colorManager, EntryManager shapeManager) {
+		return turtle.clearStamps();
 	}
 
 }
