@@ -2,51 +2,83 @@ package frontend;
 
 import javafx.scene.control.TableColumn;
 import java.util.*;
-import javafx.scene.control.TableView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
-public class ColorPaletteView extends ModuleView{
-    private List<Entry> myDefaults = new ArrayList<Entry>();
-    public ColorPaletteView (EntryManager manager, String title, String[] colTitles, DisplayPreferences display) {
-        super(manager, title, colTitles);        
-        initDefaults(manager);
-        setCellDisplay();
-        getMyTableView().setMaxWidth(120);//TODO magic value
+
+/**
+ * Bottom Level of ModuleView hierarchy, ColorPaletteView provides additional specifications for
+ * tableView and displays all possible Colors that can be set using the Display commands
+ * 
+ * @author JoeLilien
+ *
+ */
+public class ColorPaletteView extends PaletteView {
+
+    private int colorColInd = 1;
+    private List<Entry> myDefaults =
+            new ArrayList<Entry>(Arrays.asList(new StringObjectEntry("1", Color.WHITE),
+                                               new StringObjectEntry("2", Color.RED),
+                                               new StringObjectEntry("3", Color.ORANGE),
+                                               new StringObjectEntry("4", Color.YELLOW),
+                                               new StringObjectEntry("5", Color.GREEN),
+                                               new StringObjectEntry("6", Color.BLUE),
+                                               new StringObjectEntry("7", Color.MAGENTA),
+                                               new StringObjectEntry("8", Color.BLACK)));
+
+    /**
+     * Constructor extends functionality of PaletteView constructor and initializes default values
+     * to myDefaults list property, also calls on setCustomCells method that was overriden from
+     * superclass and sets action response of table
+     * 
+     * @param manager
+     * @param title
+     * @param colTitles
+     */
+    public ColorPaletteView (EntryManager manager,
+                             String title,
+                             String[] colTitles,
+                             DisplayPreferences display) {
+        super(manager, title, colTitles);
+        initDefaults(myDefaults, manager);
+        setCustomCells();
         defineListener(display);
     }
-    
-    private void defineListener(DisplayPreferences display){
-        getMyTableView().getSelectionModel().selectedItemProperty().addListener((observableValue,oldValue,newValue)->updateColor(display,newValue));
+
+    /**
+     * Sets action response of table to update color of display based on selected row
+     * 
+     * @param display
+     */
+    private void defineListener (DisplayPreferences display) {
+        getMyTableView().getSelectionModel().selectedItemProperty()
+                .addListener( (observableValue, oldValue, newValue) -> updateColor(display,
+                                                                                   newValue));
     }
-    
+
+    /**
+     * Updates value of color picker that is bound to the fill property of the Display Pane so that
+     * it updates automatically when a new color is selected by user input
+     * 
+     * @param display
+     * @param newValue
+     */
     private void updateColor (DisplayPreferences display, Entry newValue) {
-        if(getMyTableView().getSelectionModel().getSelectedItem()!=null){
+        if (getMyTableView().getSelectionModel().getSelectedItem() != null) {
             Color col = (Color) newValue.getSecondValue();
             display.setDisplayColor(col);
         }
 
     }
 
-    private void initDefaults (EntryManager manager) {//TODO fix this
-        manager.addEntry(new StringObjectEntry((""+(manager.getEntryList().size()+1)),Color.WHITE), true);
-        manager.addEntry(new StringObjectEntry((""+(manager.getEntryList().size()+1)),Color.RED), true);
-        manager.addEntry(new StringObjectEntry((""+(manager.getEntryList().size()+1)),Color.ORANGE), true);
-        manager.addEntry(new StringObjectEntry((""+(manager.getEntryList().size()+1)),Color.YELLOW), true);
-        manager.addEntry(new StringObjectEntry((""+(manager.getEntryList().size()+1)),Color.GREEN), true);
-        manager.addEntry(new StringObjectEntry((""+(manager.getEntryList().size()+1)),Color.BLUE), true);
-        manager.addEntry(new StringObjectEntry((""+(manager.getEntryList().size()+1)),Color.MAGENTA), true);
-        manager.addEntry(new StringObjectEntry((""+(manager.getEntryList().size()+1)),Color.BLACK), true);
-    }
-    
-    @SuppressWarnings("unchecked")  //TODO figure out how to check
-    private void setCellDisplay(){    
-        ((TableColumn<Entry,Color>) getMyTableView().getColumns().get(1)).setCellFactory(c-> new ColorDisplayCell());        
-    }
-
+    /**
+     * Sets CellFactory of Shape Column to ColorDisplayCells which will display a visual
+     * representation of the Color they hold
+     */
     @Override
-    protected void setSizing (TableView<Entry> table) {
-        table.setPrefHeight(200);//TODO magic number
+    @SuppressWarnings("unchecked")
+    protected void setCustomCells () {
+        ((TableColumn<Entry, Color>) getMyTableView().getColumns().get(colorColInd))
+                .setCellFactory(c -> new ColorDisplayCell());
     }
 
 }

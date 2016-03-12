@@ -66,11 +66,6 @@ public abstract class ModuleView {
         return colList;
     }
 
-//    private void initTitledPane (String title) {
-//        myTitledPane = new TitledPane(title,getMyTableView());
-//        myTitledPane.getStyleClass().add(sceneResources.getString("LABELID"));
-//    }
-
     public String getTitle(){
         return title;
     }
