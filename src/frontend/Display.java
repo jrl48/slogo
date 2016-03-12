@@ -12,15 +12,10 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
-<<<<<<< HEAD
-/**
- * Display pane contains the background, where the lines and turtles will be visible.
-=======
 
 /**
  * Display Pane that acts as environment in which turtle moves around. The background fill property
  * of the display Pane is bound to the color picker that can be found in preferences
->>>>>>> master
  * 
  * @author JoeLilien
  *
@@ -39,7 +34,11 @@ public class Display {
 
     /**
 <<<<<<< HEAD
+<<<<<<< HEAD
      * Initialize method, redirected from the constructor.
+=======
+     * Initializes Display Pane to desired Height and Width and setsBinding for background fill
+>>>>>>> master
 =======
      * Initializes Display Pane to desired Height and Width and setsBinding for background fill
 >>>>>>> master
@@ -55,12 +54,8 @@ public class Display {
     }
 
     /**
-<<<<<<< HEAD
-     * Binds pane with color picker
-=======
      * Binds Background fill property of display pane to colorpicker value in preferences, so it can
      * be easily updated by the user
->>>>>>> master
      * 
      * @param pane
      * @param cp
