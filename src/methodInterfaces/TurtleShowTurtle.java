@@ -1,10 +1,10 @@
 package methodInterfaces;
-import frontend.Display;
+import frontend.SingleTurtle;
 
 public class TurtleShowTurtle implements TurtleInterface {
 	
 	@Override
-	public double executeCommand(double[] args, Display display) {
+	public double executeCommand(double[] args, SingleTurtle display) {
 		display.showTurtle();
 		return 1;
 	}

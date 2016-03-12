@@ -1,13 +1,13 @@
 package methodInterfaces;
 
-import frontend.Display;
+import frontend.SingleTurtle;
 
 public class DisplayPenColor implements TurtleInterface {
 
 	@Override
-	public double executeCommand(double[] args, Display display) {
-		//return display.getPenColor();
+	public double executeCommand(double[] args, SingleTurtle display) {
 		return 0;
+		//return 0;
 	}
 
 }

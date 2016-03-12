@@ -6,7 +6,7 @@
 //GridPane settings
 .myGridPane {
 	//-fx-grid-lines-visible: true;
-	-fx-padding: 0 10 10 10;
+	-fx-padding: 10 10 10 10;
 	-fx-hgap: 20;
 	-fx-vgap: 20;
 }
@@ -30,10 +30,11 @@
 
 //VBox settings
 .myUserVBox{
-	-fx-alignment: top-center;	
+	-fx-alignment: top-center;
+	//-fx-spacing: 10;	
 }
 .myLabel{
-	-fx-text-fill: black;
+	-fx-text-fill: white;
 	-fx-font-weight: bold;
 }
 
@@ -60,6 +61,8 @@
 	-fx-background-color: white;
 	-fx-text-fill: black;
 	-fx-cursor: hand;
+	-fx-stroke: black;
+	-fx-stroke-width: 3;
 }
 .buttons:hover{
 	-fx-background-color: gray;

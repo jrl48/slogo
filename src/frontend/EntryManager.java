@@ -13,8 +13,23 @@ public class EntryManager {
         myEntries = new ArrayList<Entry>();
         myObservableEntries= FXCollections.observableList(myEntries);
     }
-    public void addEntry(Entry entry){
-        myObservableEntries.add(entry);
+    public void addEntry(Entry entry, Boolean overwrite){   
+        if(overwrite){
+            int count = 0;
+            for(Entry e: myObservableEntries){
+                if(entry.getFirstValue().equals(e.getFirstValue())){
+                    myObservableEntries.set(count, entry);
+                    return;
+                }
+                count++;
+            }
+            myObservableEntries.add(entry);
+            
+        }
+        else{
+            myObservableEntries.add(entry);
+        }
+
     }
     public void removeEntry(Entry entry){
         myObservableEntries.remove(entry);
@@ -30,5 +45,15 @@ public class EntryManager {
         }
         return null;
     }
+    public Object contains(String value){
+        for(Entry e:myObservableEntries){
+        	String stringValue = (String) e.getFirstValue();
+            if (stringValue.startsWith(value)){
+                return e.getFirstValue();
+            }
+        }
+        return null;
+    }
+    
 
 }

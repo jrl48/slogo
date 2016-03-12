@@ -3,8 +3,6 @@ package frontend;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -15,12 +13,14 @@ public abstract class ModuleView {
     private ResourceBundle sceneResources =
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);   
     private static final String[] entryValues = new String[] { "FirstValue", "SecondValue" };
-    private Label myLabel;
     private TableView<Entry> myTableView;
+    private String title;
 
-    public ModuleView (EntryManager manager, String labelTitle, String[] colTitles) {
+
+    public ModuleView (EntryManager manager, String title, String[] colTitles) {
         initTable(manager, colTitles);
-        initLabel(labelTitle);
+        this.title = title;
+//        initTitledPane(title);
     }
 
     private void initTable (EntryManager manager, String[] colTitles) {
@@ -28,11 +28,12 @@ public abstract class ModuleView {
         List<TableColumn<Entry, Object>> columns = makeColumns(colTitles, entryValues);
         myTableView.getColumns().addAll(columns);
         myTableView.setItems(manager.getEntryList());
+        myTableView.setPrefWidth(300);//TODO magic vallue
         myTableView.getStyleClass().add(sceneResources.getString("TABLEVIEWID")); 
-        setSizing();
+        setSizing(myTableView);
     }
 
-    protected abstract void setSizing (); 
+    protected abstract void setSizing (TableView<Entry> table); 
                                                                                   
     
 
@@ -61,18 +62,18 @@ public abstract class ModuleView {
         return colList;
     }
 
-    private void initLabel (String labelTitle) {
-        myLabel = new Label(labelTitle);
-        myLabel.getStyleClass().add(sceneResources.getString("LABELID"));
-    }
+//    private void initTitledPane (String title) {
+//        myTitledPane = new TitledPane(title,getMyTableView());
+//        myTitledPane.getStyleClass().add(sceneResources.getString("LABELID"));
+//    }
 
-    public Label getMyLabel () {
-        return myLabel;
+    public String getTitle(){
+        return title;
     }
 
     public TableView<Entry> getMyTableView () {
         return myTableView;
     }
-    
+
 
 }

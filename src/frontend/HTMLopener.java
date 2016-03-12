@@ -1,10 +1,7 @@
 package frontend;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.web.WebView;
@@ -13,7 +10,6 @@ import javafx.stage.Stage;
 public class HTMLopener 
 {
 	private Stage stage;
-	private Group root;
 	private Button openButton;
 	private boolean isOpen;
 	private ResourceBundle sceneResources =

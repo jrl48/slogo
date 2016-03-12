@@ -1,29 +1,38 @@
 package frontend;
 
-public class StringObjectEntry implements Entry{
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 
+public class StringObjectEntry implements Entry{
+    private SimpleStringProperty firstValue = new SimpleStringProperty();
+    private SimpleObjectProperty<Object> secondValue;
+    
+    public StringObjectEntry(String firstVal, Object secondVal){
+        this.firstValue = new SimpleStringProperty(firstVal);
+        this.secondValue = new SimpleObjectProperty<Object>(secondVal);
+    }
+    public SimpleStringProperty getFirstValueProperty(){
+        return firstValue;
+    }
     @Override
-    public Object getFirstValue () {
-        // TODO Auto-generated method stub
-        return null;
+    public String getFirstValue () {
+        return firstValue.get();
     }
 
     @Override
     public void setFirstValue (Object command) {
-        // TODO Auto-generated method stub
-        
+        firstValue.set((String) command);
     }
 
     @Override
     public Object getSecondValue () {
-        // TODO Auto-generated method stub
-        return null;
+        return secondValue.get();
     }
 
     @Override
     public void setSecondValue (Object result) {
-        // TODO Auto-generated method stub
-        
+        secondValue.set(result);
     }
 
 }
