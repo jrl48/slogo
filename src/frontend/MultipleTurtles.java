@@ -92,11 +92,11 @@ public class MultipleTurtles {
 //        turtleInstructions.put("PenColor", new DisplayPenColor());
 //        turtleInstructions.put("Shape", new DisplayShape());
 //        turtleInstructions.put("Stamp", new DisplayStamp());
-        // turtleInstructions.put("Id", new TurtleID());
-        // turtleInstructions.put("Turtles", new TurtleTurtles());
-        // turtleInstructions.put("Tell", new TurtleTell());
-        // turtleInstructions.put("Ask", new TurtleAsk());
-        // turtleInstructions.put("AskWith", new TurtleAskWith());
+//         turtleInstructions.put("Id", new TurtleID());
+//         turtleInstructions.put("Turtles", new TurtleTurtles());
+//         turtleInstructions.put("Tell", new TurtleTell());
+//         turtleInstructions.put("Ask", new TurtleAsk());
+//         turtleInstructions.put("AskWith", new TurtleAskWith());
     }
 
     public double executeCommand (String s, double[] args) {

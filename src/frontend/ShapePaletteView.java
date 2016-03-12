@@ -47,8 +47,7 @@ public class ShapePaletteView extends PaletteView {
      * @return
      */
     private Image getImage (String filename) {
-        return new Image(getClass().getClassLoader()
-                .getResourceAsStream(UserInterface.DEFAULT_RESOURCE_PACKAGE + filename));
+        return new Image(getClass().getClassLoader().getResourceAsStream(UserInterface.DEFAULT_RESOURCE_PACKAGE + filename));
     }
 
     /**
