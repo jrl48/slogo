@@ -83,8 +83,7 @@ public class MultipleTurtles {
         turtleInstructions.put("YCoordinate", new TurtleYCor());
         turtleInstructions.put("Heading", new TurtleHeading());
         turtleInstructions.put("IsPenDown", new TurtleIsPenDown());
-        turtleInstructions.put("IsShowing", new TurtleIsShowing());
-        
+        turtleInstructions.put("IsShowing", new TurtleIsShowing());        
         displayInstructions.put("SetBackground", new DisplaySetBackground());
         displayInstructions.put("SetPenColor", new DisplaySetPenColor());
         displayInstructions.put("SetPenSize", new DisplaySetPenSize());
