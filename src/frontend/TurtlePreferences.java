@@ -43,7 +43,7 @@ import javafx.stage.Stage;
  * @author Alan
  *
  */
-public class TurtlePreferences {
+public class TurtlePreferences extends Preferences{
     private ResourceBundle prefResources =
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + "Pref");     
     private Button myDisplayButton;
@@ -69,7 +69,7 @@ public class TurtlePreferences {
     private void initDisplayPreferences () {
         prefWindow = new ContextMenu();
         initFileChooser(new FileChooser());  
-        addMorePenOptions(additionalPenProperties);
+        addMorePenOptions(additionalPenProperties, penProperties);     //Need to do this separately because of bug in Java FX Custom Cells
         initPenPrefrences();
         initOptions();
         prefWindow.getItems().addAll(myOptions);
@@ -92,14 +92,7 @@ public class TurtlePreferences {
         }
     }
 
-    //Need to do this separately because of bug in Java FX Custom Cells
-    private void addMorePenOptions (List<Node> list) {
-        for(Node n : list){
-            MenuItem item = new MenuItem();
-            item.setGraphic(n);
-            penProperties.add(item);
-        }
-    }
+
 
     private void initOptions(){
         for(int i=0;i<myOptions.size();i++){

@@ -1,6 +1,10 @@
 package frontend;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.scene.Node;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -14,14 +18,16 @@ import javafx.scene.paint.Color;
  * @author JoeLilien
  *
  */
-public class DisplayPreferences {   
+public class DisplayPreferences extends Preferences {   
     private ResourceBundle prefResources =
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + "Pref");   
     private ResourceBundle sceneResources =
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);      
     private ColorPicker dispColor = new ColorPicker(Color.WHITE);   
-    private Menu prefMenu;
-    private MenuBar myMenuBar;
+    private Menu prefMenu = new Menu(prefResources.getString("PREFERENCES_TITLE"));
+    private List<MenuItem> items = new ArrayList<MenuItem>(Arrays.asList(new Menu(prefResources.getString("DISPLAY_CHOICE_LABEL"))));
+    private List<Node> choices = new ArrayList<Node>(Arrays.asList(dispColor));
+    private MenuBar myMenuBar = new MenuBar(prefMenu);
     
     public DisplayPreferences () {
         initDisplayPreferences();
@@ -32,7 +38,6 @@ public class DisplayPreferences {
     }
     
     private void initDisplayPreferences () { 
-       prefMenu = new Menu("Preferences");       
        Menu item = new Menu("Set Display Color");
        MenuItem cpItem = new MenuItem();
        cpItem.setGraphic(dispColor);
