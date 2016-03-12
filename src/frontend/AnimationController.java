@@ -2,7 +2,9 @@ package frontend;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
+import javafx.scene.shape.Line;
 import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
 
 // This class will be called to segment and control the movement of turtles.
@@ -12,6 +14,7 @@ public class AnimationController
 	ArrayList<ArrayList<Double>> initialPosition;	//This position is the SLogo position, not the JavaFX position
 	ArrayList<ArrayList<Double>> endPosition;
 	ArrayList<ArrayList<Double>> steps;
+	HashMap<Turtle, Line> lines;
 	
 	ArrayList<SingleTurtle> turtlesToTurn;
 	ArrayList<Double> initialAngle;
@@ -27,6 +30,7 @@ public class AnimationController
 		initialPosition = new ArrayList<ArrayList<Double>>();
 		endPosition = new ArrayList<ArrayList<Double>>();
 		steps = new ArrayList<ArrayList<Double>>();
+		lines = new HashMap<Turtle, Line>();
 		
 		turtlesToTurn = new ArrayList<SingleTurtle>();
 		initialAngle = new ArrayList<Double>();
@@ -77,10 +81,18 @@ public class AnimationController
 				steps.remove(i);
 			}
 			else
+			{
+				Line line = lines.get(currentTurtle);
+				
 				currentTurtle.setTurtleCoordinates(currentStep);
-		
+				if ( line != null )
+				{
+					currentTurtle.updateLine(line);
+				}
+			}
+
 			currentStep.clear();
-			currentTurtle.updateTurtleVisualPosition(false);
+			currentTurtle.updateTurtleVisualPosition(true);
 		}
 		
 		
@@ -122,6 +134,12 @@ public class AnimationController
 				);
 	}
 	
+	public void addTurtleToMove(SingleTurtle turtle, double initX, double initY, double endX, double endY, Line line)
+	{
+		addTurtleToMove(turtle, initX, initY, endX, endY);
+		lines.put(turtle, line);
+	}
+	
 	public void addTurtleToTurn(SingleTurtle turtle, double initAngle, double endAngle, boolean isRight )
 	{
 		turtlesToTurn.add(turtle);
@@ -132,4 +150,7 @@ public class AnimationController
 		else
 			this.isRight.add(-1);
 	}
+	
+	
+	
 }

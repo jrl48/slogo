@@ -10,6 +10,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -23,6 +24,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
+import javafx.stage.Stage;
 
 
 public class SingleTurtle implements Turtle {
@@ -38,21 +40,19 @@ public class SingleTurtle implements Turtle {
     private static final double DISPLAY_HEIGHT = Display.HEIGHT;
     private static final String DEGREE = "\u00b0";
     private boolean isActive;
-    private SimpleStringProperty turtStatsProp = new SimpleStringProperty();
-    private ContextMenu prefMenu;
-
-    private ColorPicker penCol;
+    private StringProperty turtStatsProp = new SimpleStringProperty();
+    private TurtlePreferences myPreferences = new TurtlePreferences();
 
     // Animation!!
     private AnimationController animationController;
     
     // List of Lines that are being drawn by the turtle
-    private List<Line> lines = new ArrayList<Line>();
+    private List<Line> lines = new ArrayList<Line>();    
 
-    public SingleTurtle (ObjectProperty<Image> imageProperty, Pane myPane, AnimationController animationController) {
+    public SingleTurtle (Pane myPane, AnimationController animationController) {
         this.myPane = myPane;
         this.body = new ImageView();
-        Bindings.bindBidirectional(this.body.imageProperty(), imageProperty);
+        Bindings.bindBidirectional(this.body.imageProperty(), myPreferences.getImageProperty());
         body.setFitWidth(WIDTH);
         body.setFitHeight(HEIGHT);
         x = 0;
@@ -67,20 +67,13 @@ public class SingleTurtle implements Turtle {
     
     private void setMouseActions () {
         initStatsTooltip();
-        initContextMenu();
         body.setOnMouseClicked(e->handleClick(e));
         body.setCursor(Cursor.HAND);
-    }
-    
-    private void initContextMenu () {
-        MenuItem prefs = new MenuItem("Preferences");//TODO resource
-        prefs.setOnAction(e->System.out.println("Open Pref"));
-        prefMenu = new ContextMenu(prefs);
     }
 
     private void handleClick (MouseEvent e) {
         if(e.getButton().equals(MouseButton.SECONDARY)){
-            prefMenu.show(body,e.getScreenX(),e.getScreenY());
+            myPreferences.openPreferences(body, e.getScreenX(), e.getScreenY());
         }
         else{
             setActive(!isActive());
@@ -180,21 +173,34 @@ public class SingleTurtle implements Turtle {
         } while (flag);
          */
         // setCoordinates(getTurtleX() + deltaX, getTurtleY() + deltaY);
-        animationController.addTurtleToMove(this, getTurtleX(), getTurtleY(), 
-        		getTurtleX() + deltaX, 
-        		getTurtleY() + deltaY);
-        
+
+
+
+        if ( pen )
+        {
+        	Line newLine = new Line();
+        	myPane.getChildren().add(newLine);
+        	newLine.setStartX(getVisualX());
+        	newLine.setStartY(getVisualY());
+        	animationController.addTurtleToMove(this, getTurtleX(), getTurtleY(), 
+        			getTurtleX() + deltaX, 
+        			getTurtleY() + deltaY, newLine);
+        }
+        else
+        	animationController.addTurtleToMove(this, getTurtleX(), getTurtleY(), 
+        			getTurtleX() + deltaX, 
+        			getTurtleY() + deltaY);
         // updateTurtleVisualPosition(false);
     }
 
     // Takes current Turtle's Logo's (x,y) position and update the ImageView's javafx (x,y)
     public void updateTurtleVisualPosition (boolean overridePen) {
-        double newX = DISPLAY_WIDTH / 2 + getTurtleX();
-        double newY = DISPLAY_HEIGHT / 2 - getTurtleY();
+    	double newX = DISPLAY_WIDTH / 2 + getTurtleX();
+    	double newY = DISPLAY_HEIGHT / 2 - getTurtleY();
 
-        if (isTurtlePenDown() && !overridePen) {
+    	if (isTurtlePenDown() && !overridePen) {
             Line newLine = new Line(getVisualX(), getVisualY(), newX, newY);
-            // newLine.setStroke(penCol.getValue());
+            setLineStyle(newLine);
             lines.add(newLine);
             myPane.getChildren().add(newLine);
         }
@@ -203,7 +209,12 @@ public class SingleTurtle implements Turtle {
         // image, not the center
         setVisualCoordinates(newX, newY);
     }
-
+    
+    private void setLineStyle(Line line){
+        line.setStroke(myPreferences.getPenColor());
+        line.setStrokeWidth(myPreferences.getPenWidth());
+        line.getStrokeDashArray().add(myPreferences.getDashLength());
+    }
     public void clearDisplay () {
         // Deletes all lines
         for (Line toBeDeleted : lines) {
@@ -289,4 +300,28 @@ public class SingleTurtle implements Turtle {
 		x = (double) newCoordinates.get(0);
 		y = (double) newCoordinates.get(1);
 	}
+
+    @Override
+    public void stamp () {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public int clearStamps () {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public TurtlePreferences getPreferences () {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    public void updateLine(Line line)
+    {
+        line.setEndX(DISPLAY_WIDTH / 2 + getTurtleX());
+        line.setEndY(DISPLAY_HEIGHT / 2 - getTurtleY());
+    }
 }

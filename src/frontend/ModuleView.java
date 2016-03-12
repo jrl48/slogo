@@ -40,7 +40,7 @@ public abstract class ModuleView {
     protected void defineListener(CommandLine command){
         getMyTableView().getSelectionModel().selectedItemProperty().addListener((observableValue,oldValue,newValue)-> setCommand(command, newValue));
     }
-    
+
     private void setCommand(CommandLine command, Entry newValue){
         if(getMyTableView().getSelectionModel().getSelectedItem()!=null){
             command.getTextField().setText(getClickableString(newValue));
@@ -61,11 +61,6 @@ public abstract class ModuleView {
         }
         return colList;
     }
-
-//    private void initTitledPane (String title) {
-//        myTitledPane = new TitledPane(title,getMyTableView());
-//        myTitledPane.getStyleClass().add(sceneResources.getString("LABELID"));
-//    }
 
     public String getTitle(){
         return title;

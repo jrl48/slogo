@@ -12,7 +12,8 @@ public class UserDefinedIfElse implements UserDefinedInterface {
 
 	@Override
 	public void executeCommand(String command, CommandParser parser, List<String> userDefinedCommands,
-			EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+			EntryManager terminal, EntryManager commandManager, 
+			EntryManager workspace, EntryManager colorManager, EntryManager shapeManager) {
 		String[] commandPieces = command.split("\\s+");
 		try {
 			int expr = Integer.parseInt(commandPieces[1]);
@@ -39,9 +40,9 @@ public class UserDefinedIfElse implements UserDefinedInterface {
 				return;
 			}
 			if ( expr != 0 )
-				parser.parse(newTrueCommand, terminal, commandManager, workspace, false);
+				parser.parse(newTrueCommand, terminal, commandManager, workspace, colorManager, shapeManager, false);
 			else
-				parser.parse(newFalseCommand, terminal, commandManager, workspace, false);
+				parser.parse(newFalseCommand, terminal, commandManager, workspace, colorManager, shapeManager, false);
 		} catch (NumberFormatException e) {
 			parser.throwError("Not a Valid Command!");
 		}

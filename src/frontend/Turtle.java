@@ -1,6 +1,9 @@
 package frontend;
 
 import java.util.List;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+
 
 import javafx.scene.image.ImageView;
 
@@ -39,5 +42,11 @@ public interface Turtle {
     public boolean isActive();
     
     public void setActive(boolean isActive);
+    
+    public void stamp();
+    
+    public int clearStamps();
+    
+    public TurtlePreferences getPreferences();    
 
 }
