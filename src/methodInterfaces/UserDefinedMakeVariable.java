@@ -11,7 +11,7 @@ public class UserDefinedMakeVariable implements UserDefinedInterface {
 
 	@Override
 	public void executeCommand(String command, CommandParser parser, List<String> userDefinedCommands,
-			EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+			EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean read) {
 		System.out.println(command);
 		String[] commandPieces = command.split("\\s+");
 		if (commandPieces.length != 3) {

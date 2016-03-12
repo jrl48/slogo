@@ -14,7 +14,7 @@ public class UserDefinedDoTimes implements UserDefinedInterface {
 
 	@Override
 	public void executeCommand(String command, CommandParser parser, List<String> userDefinedCommands,
-			EntryManager terminal, EntryManager commandManager, EntryManager workspace) {
+			EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean read) {
 		Pattern p = Pattern.compile("\\[(.*?)\\]");
 		Matcher m = p.matcher(command);
 		String varLimit = "";
@@ -48,7 +48,7 @@ public class UserDefinedDoTimes implements UserDefinedInterface {
 				repcount.setSecondValue((double)i);
 				workspace.addEntry(repcount, true);
 				String currIter = i.toString();
-				parser.parse(newCommand, terminal, commandManager, workspace, false);
+				parser.parse(newCommand, terminal, commandManager, workspace, false, read);
 			}
 		} catch (NumberFormatException e) {
 			parser.throwError("Not a Valid Command!");
