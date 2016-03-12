@@ -14,6 +14,12 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
+/**
+ * Display pane contains the background, where the lines and turtles will be visible.
+ * 
+ * @author JoeLilien
+ *
+ */
 public class Display {
     private ResourceBundle sceneResources =
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);
@@ -26,6 +32,11 @@ public class Display {
         initPane(dispPref);
     }
 
+    /**
+     * Initialize method, redirected from the constructor.
+     * 
+     * @param dispPref
+     */
     private void initPane (DisplayPreferences dispPref) {
         root = new Group();
         myPane = new Pane(root);
@@ -34,6 +45,12 @@ public class Display {
         setPaneBinding(myPane, dispPref.getDispColorPicker());
     }
 
+    /**
+     * Binds pane with color picker
+     * 
+     * @param pane
+     * @param cp
+     */
     private void setPaneBinding (Pane pane, ColorPicker cp) {
         ObjectProperty<Background> back = pane.backgroundProperty();
         back.bind(Bindings.createObjectBinding( () -> {
