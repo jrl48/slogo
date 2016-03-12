@@ -73,7 +73,7 @@ public class CommandLine {
      * @param shape
      */
     private void enterCommand (CommandParser parser,
-                               EntryManager terminal,
+                               EntryManager terminal, 
                                EntryManager command,
                                EntryManager workspace) {
         shiftPressed = false;

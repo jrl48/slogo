@@ -62,7 +62,8 @@ public class Display {
     }
 
     /**
-     * updates
+     * updates background color of display pane
+     * 
      * @param col
      */
     public void setBackgroundColor (Color col) {

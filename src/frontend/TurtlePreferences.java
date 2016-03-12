@@ -47,12 +47,13 @@ public class TurtlePreferences {
                     .getResourceAsStream(UserInterface.DEFAULT_RESOURCE_PACKAGE + "turtle.png")));
     private Button chooseImage = new Button(prefResources.getString("IMAGE_CHOICE_TITLE"));  
     private ContextMenu prefWindow;
-    private TextField penWidth;
+    private TextField penWidth = new TextField("PenWidth");
     private CheckBox penDash = new CheckBox("Dashed Line");
     private CheckBox penActive = new CheckBox("Pen Down");
     private List<Menu> myOptions = new ArrayList<Menu>(Arrays.asList(new Menu("Turtle Image"), new Menu("PenProperties")));
     private ArrayList<MenuItem> turtleImage = new ArrayList<MenuItem>(Arrays.asList(new CustomMenuItem(chooseImage)));
-    private ArrayList<MenuItem> penProperties = new ArrayList<MenuItem>(Arrays.asList(new CustomMenuItem(penDash), new CustomMenuItem(penActive), new CustomMenuItem(penWidth)));
+    private ArrayList<MenuItem> penProperties = new ArrayList<MenuItem>(Arrays.asList(new CustomMenuItem(penDash), new CustomMenuItem(penActive)));
+    private List<Node> additionalPenProperties = new ArrayList<Node>(Arrays.asList(penWidth,penColor));
     private List<ArrayList<MenuItem>> myControls = new ArrayList<ArrayList<MenuItem>>(Arrays.asList(turtleImage,penProperties));
     
     public TurtlePreferences () {
@@ -62,7 +63,7 @@ public class TurtlePreferences {
     private void initDisplayPreferences () {// potential issue with Stage s in future
         prefWindow = new ContextMenu();
         initFileChooser(new FileChooser());  
-        addPenColorPicker();
+        addMorePenOptions(additionalPenProperties);
         initPenPrefrences();
         initOptions();
         prefWindow.getItems().addAll(myOptions);
@@ -71,7 +72,6 @@ public class TurtlePreferences {
     
     
     private void initPenPrefrences () {
-        penWidth = new TextField("Pen Width"); 
         penWidth.setOnAction(e->updatePenThickness());
     }
 
@@ -86,11 +86,13 @@ public class TurtlePreferences {
         }
     }
 
-    //Need to do this separately because of bug in Java FX color picker
-    private void addPenColorPicker () {
-        MenuItem cp = new MenuItem();
-        cp.setGraphic(penColor);
-        penProperties.add(cp);
+    //Need to do this separately because of bug in Java FX Custom Cells
+    private void addMorePenOptions (List<Node> list) {
+        for(Node n : list){
+            MenuItem item = new MenuItem();
+            item.setGraphic(n);
+            penProperties.add(item);
+        }
     }
 
     private void initOptions(){

@@ -67,7 +67,7 @@ public class UserInterface {
     private DisplayPreferences myDisplayPreferences;
     private HTMLopener myHTMLopener;   
     private MultipleTurtles myTurtles;
-	private AnimationController myAnimationController;
+    private AnimationController myAnimationController;
     
 	// Animation Parameters
 	private static final int FRAMES_PER_SECOND = 60;
@@ -79,9 +79,20 @@ public class UserInterface {
     }
 
     public void init (Stage s) {
-        initModules(s);               
+        initModules(s);  
+        initAnimation();
         Tab tab1 = new Tab();
         tab1.setContent(makeGridPane());
+    }
+
+    private void initAnimation () {
+        /* Animation Initialization */
+        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
+                e -> myAnimationController.step());
+        Timeline animation = new Timeline();
+        animation.setCycleCount(Timeline.INDEFINITE);
+        animation.getKeyFrames().add(frame);
+        animation.play();        
     }
 
     private void initModules (Stage primaryStage) {
@@ -105,16 +116,7 @@ public class UserInterface {
         myColorView = new ColorPaletteView(myColorManager, "Color Palette", new String[]{"Index","Color"},myDisplayPreferences);
         myShapeView = new ShapePaletteView(myShapeManager, "Palettes", new String[]{"Index","Shape"});
         myLanguagePreferences = new LanguagePreferences(myLanguageManager,myCommandParser);
-        myHTMLopener = new HTMLopener();
-        
-        /* Animation Initialization */
-        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
-                e -> myAnimationController.step());
-        Timeline animation = new Timeline();
-        animation.setCycleCount(Timeline.INDEFINITE);
-        animation.getKeyFrames().add(frame);
-        animation.play();
-      
+        myHTMLopener = new HTMLopener();               
     }
 
     private GridPane makeGridPane () {
@@ -125,7 +127,6 @@ public class UserInterface {
         initComponentLists();
         myGridPane.add(makeBox(new HBox(), sceneResources.getString("HBOXID"),myButtonsList,false), 2, 6,3,6);
         myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),myFirstColList,true), 2, 1,2,5);
-       // myGridPane.add(makeBox(new VBox(), sceneResources.getString("VBOXID"),mySecondColList), 4, 1,4,5);
         return myGridPane;
     }
     
