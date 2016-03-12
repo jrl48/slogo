@@ -258,5 +258,23 @@ public class SingleTurtle implements Turtle {
         setCoordinates(x,y);
         updateTurtleVisualPosition(false);
     }
+
+    @Override
+    public void stamp () {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public int clearStamps () {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public TurtlePreferences getPreferences () {
+        // TODO Auto-generated method stub
+        return null;
+    }
  
 }

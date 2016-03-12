@@ -24,36 +24,36 @@ public class CommandLine {
     private boolean enterPressed = false;
     
 
-    public CommandLine(CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace ){
-        initCommandLine(parser, terminal, command, workspace);
+    public CommandLine(CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace, EntryManager color, EntryManager shape ){
+        initCommandLine(parser, terminal, command, workspace, color, shape);
         
     }
     
-    private void initCommandLine(CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace){
+    private void initCommandLine(CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace, EntryManager color, EntryManager shape){
         myTextField = new TextArea();       
         myTextField.getStyleClass().add(sceneResources.getString("COMMANDLINEID"));
         myTextField.setPrefSize(WIDTH, HEIGHT);
         myGoButton = new Button(sceneResources.getString("GOBUTTON")); 
         myGoButton.getStyleClass().add(sceneResources.getString("BUTTONID"));
-        myGoButton.setOnAction(e -> enterCommand(parser, terminal, command, workspace));           
-        myTextField.setOnKeyPressed(e -> keyPressed(e.getCode(), parser, terminal, command, workspace, true));
-        myTextField.setOnKeyReleased(e -> keyPressed(e.getCode(), parser, terminal, command, workspace, false));
+        myGoButton.setOnAction(e -> enterCommand(parser, terminal, command, workspace, color, shape));           
+        myTextField.setOnKeyPressed(e -> keyPressed(e.getCode(), parser, terminal, command, workspace, color, shape, true));
+        myTextField.setOnKeyReleased(e -> keyPressed(e.getCode(), parser, terminal, command, workspace, color, shape, false));
     }
     
-    private void enterCommand(CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace)
+    private void enterCommand(CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace, EntryManager color, EntryManager shape)
     {
     	shiftPressed = false;
     	enterPressed = false;
     	
     	if ( !myTextField.getText().isEmpty() )
         {
-                parser.parse(myTextField.getText(), terminal, command, workspace, true);
+                parser.parse(myTextField.getText(), terminal, command, workspace, color, shape, true);
                 myTextField.clear();
         }
 
     }
     
-    private void keyPressed(KeyCode code, CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace, boolean beingPressed)
+    private void keyPressed(KeyCode code, CommandParser parser, EntryManager terminal, EntryManager command, EntryManager workspace, EntryManager color, EntryManager shape, boolean beingPressed)
     {
         if ( code == KeyCode.SHIFT )
                 shiftPressed = beingPressed;
@@ -62,7 +62,7 @@ public class CommandLine {
                 enterPressed = beingPressed;
 
         if ( enterPressed && shiftPressed )
-                enterCommand(parser, terminal, command, workspace);
+                enterCommand(parser, terminal, command, workspace,color,shape);
         
     }
     
