@@ -123,7 +123,7 @@ public class EntryManager {
      * @param index
      * @param value
      */
-    public void set (double index, Object value) {
+    public void set (int index, Object value) {
         try {
             addEntry(new StringObjectEntry("" + index, value), true);
         }

@@ -316,7 +316,7 @@ public class SingleTurtle implements Turtle {
     /**
      * Get the coordinates as list, instead of one by one.
      */
-    public List getCoordinates() 
+    public List<Double> getCoordinates() 
     {
     	return new ArrayList<Double>(Arrays.asList(x, y));
     }
@@ -333,13 +333,12 @@ public class SingleTurtle implements Turtle {
 
     @Override
     public void stamp () {
-        // TODO Implement this method
-        
+        System.out.println("STAMP");
     }
 
     @Override
     public int clearStamps () {
-        // TODO Implement this method
+        System.out.println("CLEARSTAMP");
         return 0;
     }
 

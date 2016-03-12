@@ -83,7 +83,7 @@ public class SLOGOScreen {
         mySavedWorkspaces.setPromptText(sceneResources.getString("SAVEBOX"));
         mySavedWorkspaces.getStyleClass().add(sceneResources.getString("BUTTONID"));
         mySavedWorkspaces.setConverter(new ModifiedStringConverter());
-        mySavedWorkspaces.setCellFactory(c -> new StringDisplayCell(this, s));
+        mySavedWorkspaces.setCellFactory(c -> new StringDisplayCell());
         mySavedWorkspaces
                 .setOnAction(e -> openSavedWorkspace(s,
                                                      (String) mySavedWorkspaces.getSelectionModel()

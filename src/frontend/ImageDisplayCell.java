@@ -6,8 +6,7 @@ import javafx.scene.image.ImageView;
 
 /**
  * Custom cell set to display a visual representation of the ImageView object that is its value, to
- * be
- * used in ShapePaletteView's TableView
+ * be used in ShapePaletteView's TableView
  * 
  * @author JoeLilien
  *

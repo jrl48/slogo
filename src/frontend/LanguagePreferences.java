@@ -7,7 +7,12 @@ import java.util.ResourceBundle;
 import backend.CommandParser;
 import javafx.scene.control.ComboBox;
 
-
+/**
+ * Controls combobox that allows user to select the language recognized by the program
+ * 
+ * @author JoeLilien
+ *
+ */
 public class LanguagePreferences {
     private ComboBox<String> myComboBox;
     private ResourceBundle sceneResources =
