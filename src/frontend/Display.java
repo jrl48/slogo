@@ -1,9 +1,7 @@
 package frontend;
 
 import javafx.scene.layout.Pane;
-
 import java.util.ResourceBundle;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Insets;
@@ -14,8 +12,15 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
+<<<<<<< HEAD
 /**
  * Display pane contains the background, where the lines and turtles will be visible.
+=======
+
+/**
+ * Display Pane that acts as environment in which turtle moves around. The background fill property
+ * of the display Pane is bound to the color picker that can be found in preferences
+>>>>>>> master
  * 
  * @author JoeLilien
  *
@@ -33,7 +38,11 @@ public class Display {
     }
 
     /**
+<<<<<<< HEAD
      * Initialize method, redirected from the constructor.
+=======
+     * Initializes Display Pane to desired Height and Width and setsBinding for background fill
+>>>>>>> master
      * 
      * @param dispPref
      */
@@ -46,7 +55,12 @@ public class Display {
     }
 
     /**
+<<<<<<< HEAD
      * Binds pane with color picker
+=======
+     * Binds Background fill property of display pane to colorpicker value in preferences, so it can
+     * be easily updated by the user
+>>>>>>> master
      * 
      * @param pane
      * @param cp
@@ -60,12 +74,17 @@ public class Display {
         } , cp.valueProperty()));
     }
 
-    public void setBackgroundColor(Color col){
-        myPane.setBackground(new Background(new BackgroundFill(col,CornerRadii.EMPTY,Insets.EMPTY)));
+    /**
+     * updates
+     * @param col
+     */
+    public void setBackgroundColor (Color col) {
+        myPane.setBackground(new Background(new BackgroundFill(col, CornerRadii.EMPTY,
+                                                               Insets.EMPTY)));
     }
+
     public Pane getPane () {
         return myPane;
     }
-
 
 }

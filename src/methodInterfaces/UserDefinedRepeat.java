@@ -14,7 +14,7 @@ public class UserDefinedRepeat implements UserDefinedInterface  {
 
 	@Override
 	public void executeCommand(String command, CommandParser parser, List<String> userDefinedCommands, EntryManager terminal, EntryManager commandManager,
-			EntryManager workspace, EntryManager colorManager, EntryManager shapeManager, boolean read) {
+			EntryManager workspace, boolean read) {
 		String[] commandPieces = command.split("\\s+");
 		try {
 			int expr = Integer.parseInt(commandPieces[1]);
@@ -36,7 +36,7 @@ public class UserDefinedRepeat implements UserDefinedInterface  {
 				workspace.removeEntry(repcount);
 				repcount.setSecondValue((double)i);
 				workspace.addEntry(repcount, true);
-				parser.parse(newCommand, terminal, commandManager, workspace, colorManager, shapeManager, false, read);
+				parser.parse(newCommand, terminal, commandManager, workspace, false, read);
 			}
 		} catch (NumberFormatException e) {
 			parser.throwError("Not a Valid Command!");

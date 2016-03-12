@@ -75,5 +75,9 @@ public class EntryManager {
         }
     }
     
+    public void set(double index, Object value){
+        
+    }
+    
 
 }

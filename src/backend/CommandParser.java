@@ -35,13 +35,13 @@ public class CommandParser {
 		myDisplay = display;
 	}
 	
-	public Object parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, EntryManager colorManager, EntryManager shapeManager, boolean updateString, boolean read) {
+	public Object parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean updateString, boolean read) {
 		command = command.trim();
 		if(updateString){
 			originalCommand = command;
 		}
 		if (command.equals("")){
-			return null;
+			return 0;
 		}
 		String[] commandPieces = command.split("\\s+");
 		if ( commandPieces.length == 0) {
@@ -53,13 +53,13 @@ public class CommandParser {
 			Pattern p = Pattern.compile("\\((.*?)\\)");
 			Matcher m = p.matcher(command);
 			if(m.find()) {
-				handleGrouping(command,terminal,commandManager,workspace,colorManager,shapeManager,myTurtles);
+				handleGrouping(command,terminal,commandManager,workspace,myTurtles);
 				return 0; //check this
 			}
 		}
 		if (myUserDefinedHandler.isLoopCommand(instruction)) {
 			myUserDefinedHandler.callCommand(command, instruction, this, terminal, 
-					commandManager, workspace, colorManager, shapeManager, read);
+					commandManager, workspace, read);
 		} 
 		else {
 			String newCommand = methodLoop(command, commandManager);
@@ -67,7 +67,7 @@ public class CommandParser {
 				return null;
 			}
 			if(!command.equals(newCommand)){
-				parse(newCommand, terminal, commandManager, workspace,colorManager, shapeManager, false, read);
+				parse(newCommand, terminal, commandManager, workspace, false, read);
 				return 0;
 			}
 			
@@ -80,18 +80,17 @@ public class CommandParser {
 			if(!read){
 				return 0;
 			}
-			
+			double result = 0.0;
 			for(ParseNode node: commandTree){
-				double result = readTree(node, myTurtles);
-				terminal.addEntry(new StringNumEntry(originalCommand,result),false);
-
+				result = readTree(node, myTurtles);
 			}
+			terminal.addEntry(new StringNumEntry(originalCommand,result),false);
 		}	
 		return 0;	
 	}
 	
 	private void handleGrouping(String command, EntryManager terminal, EntryManager commandManager,
-			EntryManager workspace, EntryManager colorManager, EntryManager shapeManager, MultipleTurtles myTurtles) {
+			EntryManager workspace, MultipleTurtles myTurtles) {
 		Pattern p = Pattern.compile("\\((.*?)\\)");
 		Matcher m = p.matcher(command);
 		String commandInParen = "";
@@ -119,7 +118,7 @@ public class CommandParser {
 		if (originalCommandPieces[0] != "\\(") {
 			newCommand = originalCommandPieces[0] + " " + newCommand;
 		}
-		parse(newCommand,terminal,commandManager,workspace, colorManager, shapeManager, false, true);
+		parse(newCommand,terminal,commandManager,workspace, false, true);
 		
 	}
 	
@@ -293,7 +292,6 @@ public class CommandParser {
 					String variable = commands[i].substring(1);
 					if(workspace.getValue(variable) == null){
 						workspace.addEntry(new StringNumEntry(variable,0.0),true);
-
 					}
 					else{
 						currentNode.setValue((double) workspace.getValue(variable));
