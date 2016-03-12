@@ -61,6 +61,10 @@ public class Display {
         } , cp.valueProperty()));
     }
 
+    /**
+     * updates
+     * @param col
+     */
     public void setBackgroundColor (Color col) {
         myPane.setBackground(new Background(new BackgroundFill(col, CornerRadii.EMPTY,
                                                                Insets.EMPTY)));

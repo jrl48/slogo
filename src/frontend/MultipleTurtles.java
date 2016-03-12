@@ -47,7 +47,7 @@ public class MultipleTurtles {
     private AnimationController animationController;
 
     public MultipleTurtles (EntryManager turtleManager,
-                            Pane displayPane,
+                            Pane displayPane, EntryManager colorManager, EntryManager shapeManager,
                             AnimationController animationController) {
 
         this.turtleManager = turtleManager;
@@ -83,35 +83,42 @@ public class MultipleTurtles {
         turtleInstructions.put("YCoordinate", new TurtleYCor());
         turtleInstructions.put("Heading", new TurtleHeading());
         turtleInstructions.put("IsPenDown", new TurtleIsPenDown());
-        turtleInstructions.put("IsShowing", new TurtleIsShowing());
-//        turtleInstructions.put("SetBackground", new DisplaySetBackground());
-//        turtleInstructions.put("SetPenColor", new DisplaySetPenColor());
-//        turtleInstructions.put("SetPenSize", new DisplaySetPenSize());
-//        turtleInstructions.put("SetShape", new DisplaySetShape());
-//        turtleInstructions.put("SetPalette", new DisplaySetPalette());
-//        turtleInstructions.put("PenColor", new DisplayPenColor());
-//        turtleInstructions.put("Shape", new DisplayShape());
-//        turtleInstructions.put("Stamp", new DisplayStamp());
-//         turtleInstructions.put("Id", new TurtleID());
-//         turtleInstructions.put("Turtles", new TurtleTurtles());
-//         turtleInstructions.put("Tell", new TurtleTell());
-//         turtleInstructions.put("Ask", new TurtleAsk());
-//         turtleInstructions.put("AskWith", new TurtleAskWith());
+        turtleInstructions.put("IsShowing", new TurtleIsShowing());        
+        displayInstructions.put("SetBackground", new DisplaySetBackground());
+        displayInstructions.put("SetPenColor", new DisplaySetPenColor());
+        displayInstructions.put("SetPenSize", new DisplaySetPenSize());
+        displayInstructions.put("SetShape", new DisplaySetShape());
+        displayInstructions.put("SetPalette", new DisplaySetPalette());
+        displayInstructions.put("PenColor", new DisplayPenColor());
+        displayInstructions.put("Shape", new DisplayShape());
+        displayInstructions.put("Stamp", new DisplayStamp());
+        // turtleInstructions.put("Id", new TurtleID());
+        // turtleInstructions.put("Turtles", new TurtleTurtles());
+        // turtleInstructions.put("Tell", new TurtleTell());
+        // turtleInstructions.put("Ask", new TurtleAsk());
+        // turtleInstructions.put("AskWith", new TurtleAskWith());
     }
 
     public double executeCommand (String s, double[] args) {
-        TurtleInterface turtleCommand = turtleInstructions.get(s);
-        double value = 0.0;
-        for (Entry t : turtleManager.getEntryList()) {
-            SingleTurtle turtle = (SingleTurtle) t.getSecondValue();
-            if (turtle.isActive()) {
-                value = turtleCommand.executeCommand(args, turtle);
-            }
-        }
-        return value;
+    		double value = 0.0;
+    		for (Entry t : turtleManager.getEntryList()) {
+    			SingleTurtle turtle = (SingleTurtle) t.getSecondValue();
+    			if (turtle.isActive()) {
+    		    	if(turtleInstructions.containsKey(s)){
+    		    		TurtleInterface turtleCommand = turtleInstructions.get(s);
+    		    		value = turtleCommand.executeCommand(args, turtle);
+    		    	}
+    		    	else{
+    		    		DisplayInterface displayCommand = displayInstructions.get(s);
+    		    		//value = displayCommand.executeCommand(args, t, display, displayPreferences, colorManager, ShapeManager);
+    		    	}
+    			}
+    		}
+    		return value;
     }
 
     public double executeCommand (String s, double[] args, List<Integer> activeTurtles) {
+  
         TurtleInterface turtleCommand = turtleInstructions.get(s);
         double value = 0.0;
         for (int i = 0; i < turtleManager.getEntryList().size(); i++) {

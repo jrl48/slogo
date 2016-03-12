@@ -180,7 +180,8 @@ public class SingleTurtle implements Turtle {
         {
         	Line newLine = new Line();
         	//setLineStyle(newLine);
-        	myPane.getChildren().add(newLine);        	
+        	myPane.getChildren().add(newLine);       
+        	
         	newLine.setStartX(getVisualX());
         	newLine.setStartY(getVisualY());
         	animationController.addTurtleToMove(this, getTurtleX(), getTurtleY(), 
