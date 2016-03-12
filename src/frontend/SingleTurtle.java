@@ -39,8 +39,8 @@ import javafx.stage.Stage;
  */
 public class SingleTurtle implements Turtle {
     private ImageView body;
-    private double x;
-    private double y;
+    private double x = 0.0;
+    private double y = 0.0;
     private BooleanProperty pen = new SimpleBooleanProperty(false);
     private Pane myPane;
     private static final double WIDTH = 30;
@@ -65,8 +65,6 @@ public class SingleTurtle implements Turtle {
         Bindings.bindBidirectional(this.body.imageProperty(), myPreferences.getImageProperty());
         body.setFitWidth(WIDTH);
         body.setFitHeight(HEIGHT);
-        x = 0;
-        y = 0;
         pen.bindBidirectional(myPreferences.isPenActive());
         isActive = true;
         this.animationController = animationController;
@@ -335,13 +333,13 @@ public class SingleTurtle implements Turtle {
 
     @Override
     public void stamp () {
-        // TODO Auto-generated method stub
+        // TODO Implement this method
         
     }
 
     @Override
     public int clearStamps () {
-        // TODO Auto-generated method stub
+        // TODO Implement this method
         return 0;
     }
 
