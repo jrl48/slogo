@@ -2,6 +2,11 @@ package frontend;
 
 import javafx.scene.control.TableView;
 
+/**
+ * This class contains the View for the user-defined functions to be used in Slogo
+ * @author JoeLilien
+ *
+ */
 public class UserDefinedView extends ModuleView{
     private static final double WIDTH = 250;
     private static final double HEIGHT = 350;

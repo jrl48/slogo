@@ -30,7 +30,13 @@ import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
-
+/**
+ * This class contains the pane that opens up when the person wants to view and tweak any
+ * of the turtles' parameters. 
+ * 
+ * @author Alan
+ *
+ */
 public class TurtlePreferences {
     private ResourceBundle prefResources =
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + "Pref");     
@@ -50,7 +56,7 @@ public class TurtlePreferences {
         initDisplayPreferences();
     }
     
-    private void initDisplayPreferences () {// potential issue with Stage s in future
+    private void initDisplayPreferences () {
         prefWindow = new ContextMenu();
         initFileChooser(new FileChooser());  
         addPenColorPicker();
@@ -76,10 +82,21 @@ public class TurtlePreferences {
         imageChoice.getExtensionFilters().add(new ExtensionFilter("Image Files","*.png","*.jpg","*.gif"));
         chooseImage.setOnAction(e->openImageChoice(imageChoice));
     }
+    /**
+     * Open the window.
+     * @param owner
+     * @param x
+     * @param y
+     */
     public void openPreferences(Node owner, double x, double y){
         prefWindow.show(owner, x, y);
     }
 
+    /**
+     * Lets the user pick an image to show as turtle.
+     * Throws exception if not found.
+     * @param imageChoice
+     */
     private void openImageChoice (FileChooser imageChoice) {
         File file = imageChoice.showOpenDialog(prefWindow.getOwnerWindow());
         if (file != null) {

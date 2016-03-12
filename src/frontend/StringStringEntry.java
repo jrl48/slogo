@@ -3,6 +3,11 @@ package frontend;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * One of the types of entries is simply a string. Contains the methods of the interface being implemented.
+ * @author JoeLilien
+ *
+ */
 public class StringStringEntry implements Entry{
     private SimpleStringProperty firstValue;
     private SimpleStringProperty secondValue;   

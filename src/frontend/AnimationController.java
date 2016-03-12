@@ -26,11 +26,13 @@ public class AnimationController
 	ArrayList<ArrayList<Double>> endPosition;
 	ArrayList<ArrayList<Double>> steps;
 	HashMap<Turtle, Line> lines;
+	ArrayList<Turtle> moveWaitList;
 	
 	ArrayList<SingleTurtle> turtlesToTurn;
 	ArrayList<Double> initialAngle;
 	ArrayList<Double> endAngle;
 	ArrayList<Integer> isRight;
+	ArrayList<Turtle> turnWaitList;
 	
 	private double turtleMoveSpeed;
 	private double turtleTurnSpeed;
@@ -42,11 +44,13 @@ public class AnimationController
 		endPosition = new ArrayList<ArrayList<Double>>();
 		steps = new ArrayList<ArrayList<Double>>();
 		lines = new HashMap<Turtle, Line>();
+		moveWaitList = new ArrayList<Turtle>();
 		
 		turtlesToTurn = new ArrayList<SingleTurtle>();
 		initialAngle = new ArrayList<Double>();
 		endAngle = new ArrayList<Double>();	
 		isRight = new ArrayList<Integer>();
+		turnWaitList = new ArrayList<Turtle>();
 		
 		// DEFAULT
 		turtleMoveSpeed = 2; 	// pixels per step proc
@@ -67,6 +71,10 @@ public class AnimationController
 		for ( int i = 0; i < turtlesToMove.size(); i++ )
 		{
 			SingleTurtle currentTurtle = turtlesToMove.get(i);
+			
+			if ( moveWaitList.contains(currentTurtle) )
+				continue;
+			
 			ArrayList<Double> currentPos = (ArrayList<Double>) turtlesToMove.get(i).getCoordinates();
 			ended = false;
 			
@@ -94,6 +102,9 @@ public class AnimationController
 				initialPosition.remove(i);
 				endPosition.remove(i);
 				steps.remove(i);
+				lines.remove(currentTurtle);
+				if ( turnWaitList.contains(currentTurtle) )
+					turnWaitList.remove(currentTurtle);
 			}
 			else
 			{
@@ -114,6 +125,10 @@ public class AnimationController
 		for ( int i = 0; i < turtlesToTurn.size(); i++ )
 		{	
 			Turtle currentTurtle = turtlesToTurn.get(i);
+			
+			if ( turnWaitList.contains(currentTurtle) )
+				continue;
+			
 			double currentAngle = currentTurtle.getTurtleAngle() + turtleTurnSpeed * isRight.get(i);
 
 			// Ended the turning
@@ -124,6 +139,8 @@ public class AnimationController
 				initialAngle.remove(i);
 				endAngle.remove(i);
 				isRight.remove(i);
+				if ( moveWaitList.contains(currentTurtle) )
+					moveWaitList.remove(currentTurtle);
 			}
 			else
 				currentTurtle.setTurtleAngle(currentAngle);
@@ -156,6 +173,9 @@ public class AnimationController
 						)
 					)
 				);
+		
+		if ( turtlesToTurn.contains(turtle))
+			moveWaitList.add(turtle);
 	}
 	
 	/**
@@ -192,8 +212,10 @@ public class AnimationController
 			this.isRight.add(1);
 		else
 			this.isRight.add(-1);
+		
+		if ( turtlesToMove.contains(turtle))
+			turnWaitList.add(turtle);
+			
 	}
-	
-	
 	
 }
