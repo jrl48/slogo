@@ -5,6 +5,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.paint.Color;
 
+/**
+ * View of the pane that will manage all active and non-active turtles in the simulation.
+ * @author JoeLilien
+ *
+ */
 public class TurtleManagerView extends ModuleView{
     private static final double WIDTH = 250;
     private static final double HEIGHT = 150;

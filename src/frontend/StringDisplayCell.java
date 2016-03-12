@@ -3,7 +3,11 @@ package frontend;
 import javafx.scene.control.ListCell;
 import javafx.stage.Stage;
 
-
+/**
+ * Table cell, that holds an entry
+ * @author JoeLilien
+ *
+ */
 public class StringDisplayCell extends ListCell<Entry> {
     public StringDisplayCell (SLOGOScreen screen, Stage s) {
         //TODO fix constructor

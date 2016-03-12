@@ -5,6 +5,12 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * 
+ * 
+ * @author JoeLilien
+ *
+ */
 public class EntryManager {
     private List<Entry> myEntries;
     private ObservableList<Entry> myObservableEntries;

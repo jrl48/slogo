@@ -27,6 +27,13 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 
+/**
+ * One implementation of the Turtles.
+ * Turtle will be talking to the Backend, and maintaining its own crucial information.
+ * 
+ * @author JoeLilien
+ *
+ */
 public class SingleTurtle implements Turtle {
     private ImageView body;
     private double x;
@@ -65,6 +72,9 @@ public class SingleTurtle implements Turtle {
         setMouseActions();
     }
     
+    /**
+     * Mouse handler, to treat selection
+     */
     private void setMouseActions () {
         initStatsTooltip();
         body.setOnMouseClicked(e->handleClick(e));
@@ -91,6 +101,10 @@ public class SingleTurtle implements Turtle {
         turtStatsProp.setValue(turtStats);
     }
     
+    /** 
+     * Gives out a string of the turtle's stats
+     * @return
+     */
     private String turtleStats(){
         StringBuilder turtStats = new StringBuilder();
         turtStats.append(String.format("Position = [%.2f, %.2f]\n",getTurtleX(),getTurtleY()));
@@ -126,6 +140,10 @@ public class SingleTurtle implements Turtle {
         this.y = y;
     }
 
+    /**
+     * Move turtle is passed to the Animation Controller, that will mediate how the turtle moves.
+     * @param length
+     */
     public void moveTurtleForward (double length) {
         double deltaX = Math.sin(getTurtleAngle() * Math.PI / 180) * length;
         double deltaY = Math.cos(getTurtleAngle() * Math.PI / 180) * length;
@@ -286,17 +304,24 @@ public class SingleTurtle implements Turtle {
     public boolean getTurtleVisibility () {
         return (body.getOpacity() == 1);
     }
-    
+
     public void setTurtleCoordinates(double x, double y){
-        setCoordinates(x,y);
-        updateTurtleVisualPosition(false);
+    	setCoordinates(x,y);
+    	updateTurtleVisualPosition(false);
     }
 
-	public List getCoordinates() 
-	{
-		return new ArrayList<Double>(Arrays.asList(x, y));
-	}
-	
+    /**
+     * Get the coordinates as list, instead of one by one.
+     */
+    public List getCoordinates() 
+    {
+    	return new ArrayList<Double>(Arrays.asList(x, y));
+    }
+
+    /**
+     * Override of one of the methods in Turtle Class, allows for a less-dimensional bounded
+     * set for the coordinates.
+	 */
 	public void setTurtleCoordinates(List newCoordinates) 
 	{
 		x = (double) newCoordinates.get(0);
@@ -320,6 +345,10 @@ public class SingleTurtle implements Turtle {
         return myPreferences;
     }
     
+    /**
+     * Updates an existing Line (used for animation)
+     * @param line
+     */
     public void updateLine(Line line)
     {
         line.setEndX(DISPLAY_WIDTH / 2 + getTurtleX());

@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
 
-
 /**
  * Holds text area object that allows for users to input commands and sends the input to the command
  * parser of the backend upon user prompt, to be placed in the UserInterface

@@ -19,6 +19,11 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
+/**
+ * 
+ * @author JoeLilien
+ *
+ */
 public class SLOGOScreen {   
     public static final double WIDTH = 880;
     public static final double HEIGHT = 640;

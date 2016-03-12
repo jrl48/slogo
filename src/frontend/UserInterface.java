@@ -33,6 +33,13 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * Conglomerate of all Panes that are used to interact with the user.
+ * Expressed as Panes, they can used to use Slogo.
+ * 
+ * @author JoeLilien + AlanCavalcanti
+ *
+ */
 
 public class UserInterface {
     public static final String DEFAULT_RESOURCE_PACKAGE = "resources/frontendResources/";
@@ -95,6 +102,11 @@ public class UserInterface {
         animation.play();        
     }
 
+    /**
+     * Initiates all modules that the UI will interact with
+     * 
+     * @param primaryStage
+     */
     private void initModules (Stage primaryStage) {
         myDisplayPreferences = new DisplayPreferences();
         myTerminalManager = new EntryManager();
@@ -119,6 +131,10 @@ public class UserInterface {
         myHTMLopener = new HTMLopener();               
     }
 
+    /**
+     * Sets the Pane alignment
+     * @return
+     */
     private GridPane makeGridPane () {
         myGridPane = new GridPane();
         myGridPane.getStyleClass().add(sceneResources.getString("GRIDPANEID"));

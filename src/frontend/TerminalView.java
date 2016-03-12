@@ -2,6 +2,12 @@ package frontend;
 
 import javafx.scene.control.TableView;
 
+/**
+ * View for the terminal Pane, where most of the numeric output will be displayed.
+ * 
+ * @author JoeLilien
+ *
+ */
 public class TerminalView extends ModuleView {
     private static final double WIDTH = 250;
     private static final double HEIGHT = 230;

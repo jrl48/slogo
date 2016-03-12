@@ -33,8 +33,8 @@ public class Display {
     }
 
     /**
+     * Initialize method, redirected from the constructor.
      * Initializes Display Pane to desired Height and Width and setsBinding for background fill
-     * 
      * @param dispPref
      */
     private void initPane (DisplayPreferences dispPref) {
