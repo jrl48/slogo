@@ -7,7 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -23,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
@@ -38,7 +41,7 @@ public class SingleTurtle implements Turtle {
     private ImageView body;
     private double x;
     private double y;
-    private boolean pen;
+    private BooleanProperty pen = new SimpleBooleanProperty(false);
     private Pane myPane;
     private static final double WIDTH = 30;
     private static final double HEIGHT = 30;
@@ -64,7 +67,7 @@ public class SingleTurtle implements Turtle {
         body.setFitHeight(HEIGHT);
         x = 0;
         y = 0;
-        pen = false;
+        pen.bindBidirectional(myPreferences.isPenActive());
         isActive = true;
         this.animationController = animationController;
         
@@ -194,10 +197,10 @@ public class SingleTurtle implements Turtle {
 
 
 
-        if ( pen )
+        if ( pen.get() )
         {
         	Line newLine = new Line();
-        	//setLineStyle(newLine);
+        	setLineStyle(newLine);
         	myPane.getChildren().add(newLine);       
         	
         	newLine.setStartX(getVisualX());
@@ -233,7 +236,9 @@ public class SingleTurtle implements Turtle {
     private void setLineStyle(Line line){
         line.setStroke(myPreferences.getPenColor());
         line.setStrokeWidth(myPreferences.getPenWidth());
-        line.getStrokeDashArray().add(myPreferences.getDashLength());
+        if(myPreferences.isDashed()){
+            line.getStrokeDashArray().add(25.0);//TODO magic number
+        }
     }
     public void clearDisplay () {
         // Deletes all lines
@@ -282,15 +287,15 @@ public class SingleTurtle implements Turtle {
     }
 
     public void turtlePenDown () {
-        pen = true;
+        pen.set(true);
     }
 
     public void turtlePenUp () {
-        pen = false;
+        pen.set(false);
     }
 
     public boolean isTurtlePenDown () {
-        return pen;
+        return pen.get();
     }
 
     public void hideTurtle () {
