@@ -11,7 +11,10 @@ public class DisplayShape implements DisplayInterface {
 	public double executeCommand(double[] args, SingleTurtle turtle, Display display,
 			DisplayPreferences displayPreferences, EntryManager colorManager, EntryManager shapeManager) {
 		// TODO Auto-generated method stub
-		return Double.parseDouble(colorManager.getString(turtle.getBody()));
+		System.out.println("HERE?");
+		
+		System.out.println(turtle.getBody());
+		return Double.parseDouble(shapeManager.getString(turtle.getBody()));
 	}
 
 }

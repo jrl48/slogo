@@ -60,7 +60,7 @@ public class ParametersMap {
 		myParamMap.put("SetShape", 1);
 		myParamMap.put("SetPalette", 4);
 		myParamMap.put("PenColor", 0);
-		myParamMap.put("Shape", 0);
+		myParamMap.put("GetShape", 0);
 		myParamMap.put("Stamp", 0);
 		myParamMap.put("ClearStamps", 0);
 		
