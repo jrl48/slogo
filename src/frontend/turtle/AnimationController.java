@@ -1,4 +1,4 @@
-package frontend;
+package frontend.turtle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +37,8 @@ public class AnimationController
 	}
 	
 	/**
-	 * 	This method is called by a JavaFX timeline, and updates the turtles who need to move/turn.
+	 * 	This method is called by a JavaFX timeline, and updates the turtles who need to move/turn, in
+	 *  order of the timeline, in case multiple turtle commands are added in at once.
 	 */
 	public void step()
 	{	

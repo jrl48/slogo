@@ -3,7 +3,7 @@ package methodInterfaces;
 import frontend.Display;
 import frontend.DisplayPreferences;
 import frontend.EntryManager;
-import frontend.SingleTurtle;
+import frontend.turtle.SingleTurtle;
 
 public interface DisplayInterface {
 	public double executeCommand(double[] args, SingleTurtle turtle, 

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import frontend.turtle.AnimationController;
+import frontend.turtle.MultipleTurtles;
 import backend.CommandParser;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

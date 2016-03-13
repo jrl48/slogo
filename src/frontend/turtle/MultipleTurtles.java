@@ -1,8 +1,14 @@
-package frontend;
+package frontend.turtle;
 
 import java.util.*;
 import java.util.List;
 import java.util.Map;
+
+import frontend.Display;
+import frontend.DisplayPreferences;
+import frontend.Entry;
+import frontend.EntryManager;
+import frontend.StringObjectEntry;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

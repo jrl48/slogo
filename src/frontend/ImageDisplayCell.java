@@ -1,5 +1,6 @@
 package frontend;
 
+import frontend.turtle.Turtle;
 import javafx.scene.control.TableCell;
 import javafx.scene.image.ImageView;
 

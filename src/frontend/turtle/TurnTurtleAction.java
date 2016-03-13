@@ -1,5 +1,11 @@
-package frontend;
+package frontend.turtle;
 
+/**
+ * Action describing a turn of the turtle.
+ * 
+ * @author AlanCavalcanti
+ *
+ */
 public class TurnTurtleAction extends TurtleAction
 {
 	private double startAngle;
@@ -7,6 +13,14 @@ public class TurnTurtleAction extends TurtleAction
 	private double currentAngle;
 	private int isRight;
 
+	/**
+	 * Constructor, takes intial conditions and stores them.
+	 * 
+	 * @param turtle
+	 * @param startAngle
+	 * @param endAngle
+	 * @param isRight
+	 */
 	public TurnTurtleAction(SingleTurtle turtle, double startAngle, double endAngle, boolean isRight) 
 	{
 		super(turtle);
@@ -21,6 +35,9 @@ public class TurnTurtleAction extends TurtleAction
 			this.isRight = -1;
 	}
 
+	/**
+	 * Turns until necessary, then stops.
+	 */
 	@Override
 	public boolean takeAction(double speed) 
 	{

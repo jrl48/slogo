@@ -1,4 +1,4 @@
-package frontend;
+package frontend.turtle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +68,7 @@ public class MoveTurtleAction extends TurtleAction
 		if ( ended )
 		{
 			// Simply make the new position the position it needs to be
-			getTurtle().updateTurtleVisualPosition(true, endPosition);
+			getTurtle().updateTurtleVisualPosition(endPosition);
 			
 			return true;
 		}
@@ -76,7 +76,7 @@ public class MoveTurtleAction extends TurtleAction
 		{		
 			currentPosition.clear();
 			currentPosition.addAll(currentStep);
-			getTurtle().updateTurtleVisualPosition(true, currentStep);
+			getTurtle().updateTurtleVisualPosition(currentStep);
 			if ( line != null )
 				getTurtle().updateLine(line, startPosition, currentStep);
 			

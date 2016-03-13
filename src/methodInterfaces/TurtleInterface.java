@@ -1,5 +1,5 @@
 package methodInterfaces;
-import frontend.SingleTurtle;
+import frontend.turtle.SingleTurtle;
 
 public interface TurtleInterface {
 	public double executeCommand(double[] args, SingleTurtle display);

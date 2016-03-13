@@ -5,9 +5,8 @@ import java.util.Set;
 
 import frontend.Entry;
 import frontend.EntryManager;
-import frontend.MultipleTurtles;
-import frontend.SingleTurtle;
-
+import frontend.turtle.MultipleTurtles;
+import frontend.turtle.SingleTurtle;
 public class TurtleTellMulti implements MultiTurtleInterface{
 
 	@Override

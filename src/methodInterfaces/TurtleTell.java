@@ -5,8 +5,8 @@ import java.util.*;
 import backend.CommandParser;
 import frontend.Entry;
 import frontend.EntryManager;
-import frontend.MultipleTurtles;
-import frontend.SingleTurtle;
+import frontend.turtle.MultipleTurtles;
+import frontend.turtle.SingleTurtle;
 
 public class TurtleTell implements SpecialTurtleInterface {
 
