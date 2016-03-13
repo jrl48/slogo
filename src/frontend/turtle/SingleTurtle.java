@@ -247,14 +247,12 @@ public class SingleTurtle implements Turtle {
      */
     @Override
     public void stamp () {
-        
-    	System.out.println("STAMP");
-    	
     	ImageView newStamp = new ImageView();
     	newStamp.setImage(body.getImage());
     	newStamp.setLayoutX(DISPLAY_WIDTH / 2 + getTurtleX());
     	newStamp.setLayoutY(DISPLAY_WIDTH / 2 + getTurtleY());
     	newStamp.setRotate(angle);
+    	stamps.add(newStamp);
     	myPane.getChildren().add(newStamp);
     }
 
@@ -271,7 +269,6 @@ public class SingleTurtle implements Turtle {
     		num = 1;
     	}
     	
-        System.out.println("CLEARSTAMP");
         return num;
     }
     
