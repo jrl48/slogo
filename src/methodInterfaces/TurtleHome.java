@@ -1,4 +1,4 @@
-package methodInterfaces;
+package methodinterfaces;
 import frontend.turtle.SingleTurtle;
 
 public class TurtleHome implements TurtleInterface {

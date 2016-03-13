@@ -3,7 +3,7 @@ package backend;
 import java.util.HashMap;
 import java.util.Map;
 
-import methodInterfaces.*;
+import methodinterfaces.*;
 import frontend.turtle.MultipleTurtles;
 
 public class Commands{

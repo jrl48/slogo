@@ -1,4 +1,4 @@
-package methodInterfaces;
+package methodinterfaces;
 
 import frontend.Entry;
 import frontend.EntryManager;

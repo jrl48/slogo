@@ -1,4 +1,4 @@
-package methodInterfaces;
+package methodinterfaces;
 
 public class BooleanNotequal implements MathInterface {
 	public double executeCommand(double[] args){

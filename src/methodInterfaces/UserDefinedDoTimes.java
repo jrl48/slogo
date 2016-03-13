@@ -1,6 +1,5 @@
-package methodInterfaces;
+package methodinterfaces;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,7 +47,6 @@ public class UserDefinedDoTimes implements UserDefinedInterface {
 				workspace.removeEntry(repcount);
 				repcount.setSecondValue((double)i);
 				workspace.addEntry(repcount, true);
-				String currIter = i.toString();
 				parser.parse(newCommand, terminal, commandManager, workspace, false, read);
 			}
 		} catch (NumberFormatException e) {

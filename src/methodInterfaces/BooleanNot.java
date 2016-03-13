@@ -1,4 +1,4 @@
-package methodInterfaces;
+package methodinterfaces;
 
 public class BooleanNot implements MathInterface{
 	public double executeCommand(double[] args){
