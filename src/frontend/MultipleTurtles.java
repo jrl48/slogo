@@ -145,7 +145,9 @@ public class MultipleTurtles {
     }
 
     public double executeCommand (String s, double[] args, List<Integer> activeTurtles) {
-    	System.out.println(activeTurtles);
+    	if(!turtleInstructions.containsKey(s)){
+		    return 0.0;
+    	}
         TurtleInterface turtleCommand = turtleInstructions.get(s);
         double value = 0.0;
         Set<Integer> currentTurtles = new HashSet<Integer>();
