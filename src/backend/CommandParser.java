@@ -19,18 +19,16 @@ import frontend.turtle.MultipleTurtles;
 public class CommandParser {
 	
 	private UserDefinedCommands myUserDefinedHandler;
-	private Display myDisplay;
 	private String myLanguage;
 	private ParametersMap myParametersMap;
 	private String originalCommand;
 	private MultipleTurtles myTurtles;
 
-	public CommandParser(MultipleTurtles turtles, Display display) {
+	public CommandParser(MultipleTurtles turtles) {
 		myUserDefinedHandler = new UserDefinedCommands();
 		myParametersMap = new ParametersMap();
 		myTurtles = turtles;
 		myLanguage = "English";
-		myDisplay = display;
 	}
 	
 	public Object parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean updateString, boolean read) {
