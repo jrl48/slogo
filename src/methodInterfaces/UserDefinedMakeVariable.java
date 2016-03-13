@@ -1,6 +1,5 @@
-package methodInterfaces;
+package methodinterfaces;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import backend.CommandParser;

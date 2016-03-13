@@ -40,7 +40,7 @@ public class DisplayPreferences extends Preferences {
 
     // Combined List of All SubOptions Lists
     private List<ArrayList<MenuItem>> myControls =
-            new ArrayList<ArrayList<MenuItem>>(Arrays.asList(displaySubOptions));
+            new ArrayList<>(Arrays.asList(displaySubOptions));
 
     public DisplayPreferences () {
         initDisplayPreferences();

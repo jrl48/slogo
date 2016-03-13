@@ -60,8 +60,8 @@ public class SLOGOScreen {
         initTabPane();
         initHBox();
         initComboBox(s);
-        initButtons(s);
-        addUserInterface(sceneResources.getString("WORKSPACE"), s, false, null);
+        initButtons();
+        addUserInterface(sceneResources.getString("WORKSPACE"), false, null);
         s.setScene(myScene);
     }
 
@@ -106,7 +106,7 @@ public class SLOGOScreen {
             myTabPane.getSelectionModel().select(myUIPaneList.indexOf(UIPane));
         }
         else {
-            addUserInterface(title, s, true, UIPane);
+            addUserInterface(title, true, UIPane);
         }
     }
 
@@ -118,9 +118,9 @@ public class SLOGOScreen {
      * @param isClosable
      * @param UIPane
      */
-    private void addUserInterface (String title, Stage s, Boolean isClosable, GridPane UIPane) {
+    private void addUserInterface (String title, Boolean isClosable, GridPane UIPane) {
         if (UIPane == null) {
-            UserInterface UI = new UserInterface(s);
+            UserInterface UI = new UserInterface();
             UIPane = UI.getGridPane();
             title = title + " " + (myTabPane.getTabs().size() + 1);
         }
@@ -142,9 +142,9 @@ public class SLOGOScreen {
      * 
      * @param s
      */
-    private void initButtons (Stage s) {
+    private void initButtons () {
         newWorkspace.getStyleClass().add(sceneResources.getString(buttonID));
-        newWorkspace.setOnAction(e -> addUserInterface(sceneResources.getString("WORKSPACE"), s,
+        newWorkspace.setOnAction(e -> addUserInterface(sceneResources.getString("WORKSPACE"),
                                                        true, null));
         saveWorkspace.getStyleClass().add(sceneResources.getString(buttonID));
         saveWorkspace.setOnAction(e -> saveUserInterface((GridPane) myTabPane.getSelectionModel()

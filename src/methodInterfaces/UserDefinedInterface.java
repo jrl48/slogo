@@ -1,4 +1,4 @@
-package methodInterfaces;
+package methodinterfaces;
 
 import java.util.List;
 

@@ -1,10 +1,9 @@
-package methodInterfaces;
+package methodinterfaces;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import backend.CommandParser;
-import frontend.EntryManager;
 import frontend.turtle.MultipleTurtles;
 
 public class TurtleAsk implements SpecialTurtleInterface {

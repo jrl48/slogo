@@ -1,7 +1,6 @@
 package frontend;
 
 import javafx.scene.control.ListCell;
-import javafx.stage.Stage;
 
 /**
  * Table cell, that holds an entry

@@ -39,7 +39,7 @@ public class TurtlePreferences extends Preferences {
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + "Pref");
     private ColorPicker penColor = new ColorPicker(Color.BLACK);
     private ObjectProperty<Image> imageProperty =
-            new SimpleObjectProperty<Image>(new Image(getClass().getClassLoader()
+            new SimpleObjectProperty<>(new Image(getClass().getClassLoader()
                     .getResourceAsStream(UserInterface.DEFAULT_RESOURCE_PACKAGE + "turtle.png")));
     private Button chooseImage = new Button(prefResources.getString("IMAGE_CHOICE_TITLE"));
     private ContextMenu prefWindow;
@@ -65,7 +65,7 @@ public class TurtlePreferences extends Preferences {
 
     // Combined List of All SubOptions Lists
     private List<ArrayList<MenuItem>> myControls =
-            new ArrayList<ArrayList<MenuItem>>(Arrays.asList(turtleImageSubOptions,
+            new ArrayList<>(Arrays.asList(turtleImageSubOptions,
                                                              penPropertiesSubOptions));
 
     /**

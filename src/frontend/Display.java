@@ -29,7 +29,7 @@ public class Display {
     public static final double WIDTH = 500;
     public static final double HEIGHT = 450;
 
-    public Display (DisplayPreferences dispPref, EntryManager turtleManager) {
+    public Display (DisplayPreferences dispPref) {
         initPane(dispPref);
     }
 

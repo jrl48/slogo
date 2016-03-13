@@ -8,12 +8,12 @@ package frontend;
  *
  */
 public interface Entry {
-    
-    public Object getFirstValue ();
 
-    public void setFirstValue (Object command);
+	Object getFirstValue ();
 
-    public Object getSecondValue ();
+	void setFirstValue (Object command);
 
-    public void setSecondValue (Object result);
+	Object getSecondValue ();
+
+	void setSecondValue (Object result);
 }

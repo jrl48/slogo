@@ -1,12 +1,7 @@
-package methodInterfaces;
-
-import java.util.*;
+package methodinterfaces;
 
 import backend.CommandParser;
-import frontend.Entry;
-import frontend.EntryManager;
 import frontend.turtle.MultipleTurtles;
-import frontend.turtle.SingleTurtle;
 
 public class TurtleTell implements SpecialTurtleInterface {
 

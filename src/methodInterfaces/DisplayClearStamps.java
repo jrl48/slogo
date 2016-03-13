@@ -1,4 +1,4 @@
-package methodInterfaces;
+package methodinterfaces;
 
 import frontend.Display;
 import frontend.DisplayPreferences;
@@ -12,5 +12,6 @@ public class DisplayClearStamps implements DisplayInterface {
 			DisplayPreferences displayPreferences, EntryManager colorManager, EntryManager shapeManager) {
 		return turtle.clearStamps();
 	}
+	
 
 }

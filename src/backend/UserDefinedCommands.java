@@ -1,12 +1,10 @@
 package backend;
 
 import java.util.*;
-import java.util.HashMap;
-import java.util.Map;
 
 import frontend.EntryManager;
 import frontend.turtle.MultipleTurtles;
-import methodInterfaces.*;
+import methodinterfaces.*;
 
 public class UserDefinedCommands {
 

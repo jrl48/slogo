@@ -1,7 +1,6 @@
 package frontend.turtle;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javafx.scene.shape.Line;
@@ -20,20 +19,25 @@ public class MoveTurtleAction extends TurtleAction
 		super(turtle);
 		this.startPosition = (ArrayList<Double>) startPosition;
 		this.endPosition = (ArrayList<Double>) endPosition;
-		currentPosition = new ArrayList<Double>();
+		currentPosition = new ArrayList<>();
 		
 		currentPosition.addAll(startPosition);
-		currentStep = new ArrayList<Double>();
-		steps = new ArrayList<Double>();
+		currentStep = new ArrayList<>();
+		steps = new ArrayList<>();
 		
 		double hipothenuse = 0;
 		
 		for ( int j = 0; j < startPosition.size(); j++ )
+		{
 			hipothenuse += Math.pow(startPosition.get(j) - endPosition.get(j),2);
+		}
+		
 		hipothenuse = Math.sqrt(hipothenuse);
 		
 		for ( int i = 0; i < startPosition.size(); i++ )
+		{
 			steps.add( ( endPosition.get(i) - startPosition.get(i) ) / hipothenuse) ;
+		}
 		
 	}
 	
@@ -53,13 +57,19 @@ public class MoveTurtleAction extends TurtleAction
 
 			// Sees if the animation would make a bigger step than needed
 			if ( startPosition.get(i) < endPosition.get(i) )
+			{
 				ended = ( currentStep.get(i) > endPosition.get(i) );
+			}
 
 			else
+			{
 				ended = ( currentStep.get(i) < endPosition.get(i) );
+			}
 			
 			if ( ended )
+			{
 				break;
+			}
 		}
 		
 		
@@ -78,7 +88,9 @@ public class MoveTurtleAction extends TurtleAction
 			currentPosition.addAll(currentStep);
 			getTurtle().updateTurtleVisualPosition(currentStep);
 			if ( line != null )
+			{
 				getTurtle().updateLine(line, startPosition, currentStep);
+			}
 			
 			
 			return false;

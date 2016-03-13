@@ -1,4 +1,4 @@
-package methodInterfaces;
+package methodinterfaces;
 
 public class MathPow implements MathInterface {
 	public double executeCommand(double[] args){

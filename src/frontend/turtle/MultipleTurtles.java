@@ -1,8 +1,6 @@
 package frontend.turtle;
 
 import java.util.*;
-import java.util.List;
-import java.util.Map;
 
 import frontend.Display;
 import frontend.DisplayPreferences;
@@ -11,41 +9,40 @@ import frontend.EntryManager;
 import frontend.StringObjectEntry;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import methodInterfaces.DisplayInterface;
-import methodInterfaces.DisplayPenColor;
-import methodInterfaces.DisplaySetBackground;
-import methodInterfaces.DisplaySetPalette;
-import methodInterfaces.DisplaySetPenColor;
-import methodInterfaces.DisplaySetPenSize;
-import methodInterfaces.DisplaySetShape;
-import methodInterfaces.DisplayShape;
-import methodInterfaces.DisplayStamp;
-import methodInterfaces.MultiTurtleInterface;
-import methodInterfaces.TurtleBackward;
-import methodInterfaces.TurtleClearScreen;
-import methodInterfaces.TurtleForward;
-import methodInterfaces.TurtleHeading;
-import methodInterfaces.TurtleHideTurtle;
-import methodInterfaces.TurtleHome;
-import methodInterfaces.TurtleID;
-import methodInterfaces.TurtleInterface;
-import methodInterfaces.TurtleIsPenDown;
-import methodInterfaces.TurtleIsShowing;
-import methodInterfaces.TurtleLeft;
-import methodInterfaces.TurtlePenDown;
-import methodInterfaces.TurtlePenUp;
-import methodInterfaces.TurtleRight;
-import methodInterfaces.TurtleSetHeading;
-import methodInterfaces.TurtleSetPosition;
-import methodInterfaces.TurtleSetTowards;
-import methodInterfaces.TurtleShowTurtle;
-import methodInterfaces.TurtleTell;
-import methodInterfaces.TurtleTellMulti;
-import methodInterfaces.TurtleTurtles;
-import methodInterfaces.TurtleXCor;
-import methodInterfaces.TurtleYCor;
+import methodinterfaces.DisplayClearStamps;
+import methodinterfaces.DisplayInterface;
+import methodinterfaces.DisplayPenColor;
+import methodinterfaces.DisplaySetBackground;
+import methodinterfaces.DisplaySetPalette;
+import methodinterfaces.DisplaySetPenColor;
+import methodinterfaces.DisplaySetPenSize;
+import methodinterfaces.DisplaySetShape;
+import methodinterfaces.DisplayShape;
+import methodinterfaces.DisplayStamp;
+import methodinterfaces.MultiTurtleInterface;
+import methodinterfaces.TurtleBackward;
+import methodinterfaces.TurtleClearScreen;
+import methodinterfaces.TurtleForward;
+import methodinterfaces.TurtleHeading;
+import methodinterfaces.TurtleHideTurtle;
+import methodinterfaces.TurtleHome;
+import methodinterfaces.TurtleID;
+import methodinterfaces.TurtleInterface;
+import methodinterfaces.TurtleIsPenDown;
+import methodinterfaces.TurtleIsShowing;
+import methodinterfaces.TurtleLeft;
+import methodinterfaces.TurtlePenDown;
+import methodinterfaces.TurtlePenUp;
+import methodinterfaces.TurtleRight;
+import methodinterfaces.TurtleSetHeading;
+import methodinterfaces.TurtleSetPosition;
+import methodinterfaces.TurtleSetTowards;
+import methodinterfaces.TurtleShowTurtle;
+import methodinterfaces.TurtleTellMulti;
+import methodinterfaces.TurtleTurtles;
+import methodinterfaces.TurtleXCor;
+import methodinterfaces.TurtleYCor;
 
 
 public class MultipleTurtles {
@@ -119,6 +116,7 @@ public class MultipleTurtles {
         displayInstructions.put("GetPenColor", new DisplayPenColor());
         displayInstructions.put("GetShape", new DisplayShape());
         displayInstructions.put("Stamp", new DisplayStamp());
+        displayInstructions.put("ClearStamps", new DisplayClearStamps());
         multiTurtleInstructions.put("ID", new TurtleID());
         multiTurtleInstructions.put("Turtles", new TurtleTurtles());
         multiTurtleInstructions.put("Tell", new TurtleTellMulti());
@@ -127,6 +125,7 @@ public class MultipleTurtles {
     }
 
     public double executeCommand (String s, double[] args, MultipleTurtles myTurtles) {
+    	System.out.println(s);
     		double value = 0.0;
     		for (Entry t : turtleManager.getEntryList()) {
     			SingleTurtle turtle = (SingleTurtle) t.getSecondValue();
@@ -135,7 +134,7 @@ public class MultipleTurtles {
     		    		TurtleInterface turtleCommand = turtleInstructions.get(s);
     		    		value = turtleCommand.executeCommand(args, turtle);
     		    	}
-    		    	else if(turtleInstructions.containsKey(s)){
+    		    	else if(displayInstructions.containsKey(s)){
     		    		System.out.println("??");
     		    		DisplayInterface displayCommand = displayInstructions.get(s);
     		    		value = displayCommand.executeCommand(args, turtle, myDisplay, myDisplayPreferences, colorManager, shapeManager);

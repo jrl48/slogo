@@ -37,7 +37,9 @@ public class HTMLopener {
 
     private void openHTML () {
         if (isOpen)
-            return;
+        {
+        	return;
+        }
 
         isOpen = true;
         WebView webview = new WebView();

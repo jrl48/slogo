@@ -106,13 +106,19 @@ public class CommandLine {
 
     {
         if (code == KeyCode.SHIFT)
+        {
             shiftPressed = beingPressed;
+        }
 
         else if (code == KeyCode.ENTER)
+        {
             enterPressed = beingPressed;
+        }
 
         if (enterPressed && shiftPressed)
+        {
             enterCommand(parser, terminal, command, workspace);
+        }
 
     }
 
