@@ -2,39 +2,24 @@ package methodInterfaces;
 
 import java.util.*;
 
+import backend.CommandParser;
 import frontend.Entry;
 import frontend.EntryManager;
 import frontend.turtle.MultipleTurtles;
 import frontend.turtle.SingleTurtle;
 
-public class TurtleTell implements MultiTurtleInterface {
+public class TurtleTell implements SpecialTurtleInterface {
 
 	@Override
-	public double executeCommand(double[] args, EntryManager turtleManager, MultipleTurtles myTurtles) {
-		Set<Double> currentTurtles = new HashSet<Double>();
-		for (Entry t : turtleManager.getEntryList()) {
-			SingleTurtle turtle = (SingleTurtle) t.getSecondValue();
-			double turtleID = Double.parseDouble(((String) t.getFirstValue()).split(" ")[1]);
-			for(double x: args){
-				if(x == turtleID){
-					turtle.setActive(true);
-					currentTurtles.add(x);
-					break;
-				}
-				else{
-					turtle.setActive(false);
-				}
-				
-			}
+	public double executeCommand(String command, MultipleTurtles myTurtles, CommandParser parser) {
+		String[] params = command.substring(command.indexOf('[')+1, command.indexOf(']')).trim().split("\\s+");
+		double args[] = new double[params.length];
+		for(int i = 0; i< params.length;i++){
+			args[i] = Double.parseDouble(params[i]);
 		}
+		// TODO Auto-generated method stub
 		
-		for(double x: args){
-			if(!currentTurtles.contains(x)){
-				myTurtles.addTurtle(x);
-			}
-		}
-		
-		return args[args.length -1 ];
+		return myTurtles.executeCommand(parser.parseCommand(command.split("\\s+")[0]), args, myTurtles);
 	}
 
 }
