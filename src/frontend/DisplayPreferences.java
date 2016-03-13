@@ -26,7 +26,7 @@ public class DisplayPreferences extends Preferences {
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);
     private ColorPicker dispColor = new ColorPicker(Color.WHITE);
     private Menu prefMenu = new Menu(prefResources.getString("PREFERENCES_TITLE"));
-    private MenuBar myMenuBar = new MenuBar(prefMenu);
+    private MenuBar myMenuBar = new MenuBar();
 
     // List of Menu Options in Menu
     private List<Menu> myOptions =
@@ -66,7 +66,7 @@ public class DisplayPreferences extends Preferences {
     
     private void initDisplayPreferences () {
         prefMenu.getItems().addAll(myOptions);
-        myMenuBar = new MenuBar(prefMenu);
+        myMenuBar = new MenuBar();
         myMenuBar.getStyleClass().add(sceneResources.getString("BUTTONID"));
     }
 

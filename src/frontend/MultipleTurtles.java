@@ -98,7 +98,7 @@ public class MultipleTurtles {
         displayInstructions.put("SetShape", new DisplaySetShape());
         displayInstructions.put("SetPalette", new DisplaySetPalette());
         displayInstructions.put("GetPenColor", new DisplayPenColor());
-        displayInstructions.put("Shape", new DisplayShape());
+        displayInstructions.put("GetShape", new DisplayShape());
         displayInstructions.put("Stamp", new DisplayStamp());
         // turtleInstructions.put("Id", new TurtleID());
         // turtleInstructions.put("Turtles", new TurtleTurtles());
