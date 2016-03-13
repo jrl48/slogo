@@ -95,8 +95,8 @@ public class MultipleTurtles {
     }
 
     public double executeCommand (String s, double[] args) {
+    	double value = 0.0;
         TurtleInterface turtleCommand = turtleInstructions.get(s);
-        double value = 0.0;
         for (Entry t : turtleManager.getEntryList()) {
             SingleTurtle turtle = (SingleTurtle) t.getSecondValue();
             if (turtle.isActive()) {
@@ -107,8 +107,8 @@ public class MultipleTurtles {
     }
 
     public double executeCommand (String s, double[] args, List<Integer> activeTurtles) {
+    	double value = 0.0;
         TurtleInterface turtleCommand = turtleInstructions.get(s);
-        double value = 0.0;
         for (int i = 0; i < turtleManager.getEntryList().size(); i++) {
             if (activeTurtles.contains(i)) {
                 SingleTurtle turtle =
