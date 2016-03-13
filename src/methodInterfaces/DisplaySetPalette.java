@@ -1,12 +1,13 @@
 package methodInterfaces;
 
 import java.util.ResourceBundle;
+
 import frontend.Display;
 import frontend.DisplayPreferences;
 import frontend.EntryManager;
 import frontend.ErrorMessage;
-import frontend.SingleTurtle;
 import frontend.UserInterface;
+import frontend.turtle.SingleTurtle;
 import javafx.scene.paint.Color;
 
 public class DisplaySetPalette implements DisplayInterface {

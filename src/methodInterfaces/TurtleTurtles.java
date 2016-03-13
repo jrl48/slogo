@@ -1,7 +1,7 @@
 package methodInterfaces;
 
 import frontend.EntryManager;
-import frontend.MultipleTurtles;
+import frontend.turtle.MultipleTurtles;
 public class TurtleTurtles implements MultiTurtleInterface {
 
 

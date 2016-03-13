@@ -1,10 +1,12 @@
-package frontend;
+package frontend.turtle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import frontend.Display;
+import frontend.TurtlePreferences;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -24,7 +26,8 @@ import javafx.scene.shape.Line;
  * One implementation of the Turtles.
  * Turtle will be talking to the Backend, and maintaining its own crucial information.
  * 
- * @author JoeLilien
+ * 
+ * @author JoeLilien + AlanCavalcanti
  *
  */
 public class SingleTurtle implements Turtle {
@@ -44,12 +47,10 @@ public class SingleTurtle implements Turtle {
     private StringProperty turtStatsProp = new SimpleStringProperty();
     private TurtlePreferences myPreferences = new TurtlePreferences();
     private double angle;
+    private ArrayList<ImageView> stamps;
     
     // Animation!!
     private AnimationController animationController;
-    
-    // List of Lines that are being drawn by the turtle
-    private List<Line> lines = new ArrayList<Line>();    
 
     public SingleTurtle (Pane myPane, AnimationController animationController) {
         this.myPane = myPane;
@@ -60,10 +61,11 @@ public class SingleTurtle implements Turtle {
         pen.bindBidirectional(myPreferences.isPenActive());
         isActive = true;
         this.animationController = animationController;
+        stamps = new ArrayList<ImageView>();
         
         angle = 0;
         
-        updateTurtleVisualPosition(false);
+        updateTurtleVisualPosition();
         setMouseActions();
     }
     
@@ -76,6 +78,10 @@ public class SingleTurtle implements Turtle {
         body.setCursor(Cursor.HAND);
     }
 
+    /**
+     * Click Handler, opens up turtle preference screen
+     * @param e
+     */
     private void handleClick (MouseEvent e) {
         if(e.getButton().equals(MouseButton.SECONDARY)){
             myPreferences.openPreferences(body, e.getScreenX(), e.getScreenY());
@@ -85,6 +91,9 @@ public class SingleTurtle implements Turtle {
         }
     }
 
+    /**
+     * Binds the tooltip to the Turtle's Imageview
+     */
     private void initStatsTooltip () {
         Tooltip t = new Tooltip();
         t.textProperty().bind(turtStatsProp);
@@ -92,6 +101,10 @@ public class SingleTurtle implements Turtle {
         Tooltip.install(body, t);
     }
 
+    /**
+     * Updates the turtle's stats
+     * @param turtStats
+     */
     private void updateTurtleStatsProp(String turtStats){
         turtStatsProp.setValue(turtStats);
     }
@@ -108,35 +121,14 @@ public class SingleTurtle implements Turtle {
         return turtStats.toString();
     }
 
-    public ImageView getBody () {
-        return body;
-    }
-
-    // Both visual getters return the center of the turtle's ImageView body
-    private double getVisualX () {
-        return body.getX() + DEFAULT_TURTLE_SIZE / 2;
-    }
-
-    private double getVisualY () {
-        return body.getY() + DEFAULT_TURTLE_SIZE / 2;
-    }
-
-    private void setVisualCoordinates (double newX, double newY) {
-        body.setX(newX - DEFAULT_TURTLE_SIZE / 2);
-        body.setY(newY - DEFAULT_TURTLE_SIZE / 2);
-    }
-
-    private void toggleVisibility (double newOpacity) {
-        body.setOpacity(newOpacity);
-    }
-    
-    private void setCoordinates (double x, double y) {        
-        this.x = x;
-        this.y = y;
-    }
 
     /**
-     * Move turtle is passed to the Animation Controller, that will mediate how the turtle moves.
+     * Calculate the end of the turtle's trajectory, and pass it as an Action to the Animation Controller
+     * But, the internal values of the new positions are stored in the class, so other actions
+     * can use the updated values (even before the turtle updates its visual coordinates through animation)
+     * 
+     * Obs: Toroidal implementation (while buggy) had begun to be implemented, but was dropped.
+     * Thus the huge commentted out section
      * @param length
      */
     public void moveTurtleForward (double length) {
@@ -185,21 +177,19 @@ public class SingleTurtle implements Turtle {
             }
         } while (flag);
          */
-        // setCoordinates(getTurtleX() + deltaX, getTurtleY() + deltaY);
         
+        // If pen is down, create a new action and bind a new line
         if ( pen.get() )
         {
         	Line newLine = new Line();
         	setLineStyle(newLine);
         	myPane.getChildren().add(newLine);       
-        	// System.out.println(myPane.getChildren());
-        	newLine.setStartX(getVisualX());
-        	newLine.setStartY(getVisualY());
         	animationController.addTurtleToMove(this, 
         			new ArrayList<Double>(Arrays.asList(getTurtleX(), getTurtleY())),
         			new ArrayList<Double>(Arrays.asList(getTurtleX() + deltaX, getTurtleY() + deltaY)),
         			newLine);
         }
+        // If not, just create new action
         else
         	animationController.addTurtleToMove(this, 
         			new ArrayList<Double>(Arrays.asList(getTurtleX(), getTurtleY())),
@@ -207,32 +197,12 @@ public class SingleTurtle implements Turtle {
         
         
         setCoordinates(getTurtleX() + deltaX, getTurtleY() + deltaY);
-        // updateTurtleVisualPosition(false);
     }
     
-    public void updateTurtleVisualPosition (boolean overridePen, List<Double> newPosition) {
-    	double newX = DISPLAY_WIDTH / 2 + newPosition.get(0);
-    	double newY = DISPLAY_HEIGHT / 2 - newPosition.get(1);
-
-    	if (isTurtlePenDown() && !overridePen) {
-            Line newLine = new Line(getVisualX(), getVisualY(), newX, newY);
-            setLineStyle(newLine);
-            lines.add(newLine);
-            myPane.getChildren().add(newLine);
-        }
-
-        // When updating coordinates, compensate the X and Y because they reference the edge of the
-        // image, not the center
-        setVisualCoordinates(newX, newY);
-    }
-
-    // Takes current Turtle's Logo's (x,y) position and update the ImageView's javafx (x,y)
-    public void updateTurtleVisualPosition (boolean overridePen) 
-    {
-    	updateTurtleVisualPosition(overridePen, 
-    			new ArrayList<Double>(Arrays.asList(getTurtleX(), getTurtleY())));
-    }
-    
+    /**
+     * Set the linestyle used by the turtle
+     * @param line
+     */
     private void setLineStyle(Line line){
         line.setStroke(myPreferences.getPenColor());
         line.setStrokeWidth(myPreferences.getPenWidth());
@@ -240,6 +210,23 @@ public class SingleTurtle implements Turtle {
             line.getStrokeDashArray().add(dashLength);
         }
     }
+     
+    /**
+     * Updates an existing Line (used for animation)
+     * @param line
+     */
+    public void updateLine(Line line, List<Double> newStartCoordinates, List<Double> newEndCoordinates)
+    {
+    	line.setStartX(DISPLAY_WIDTH / 2 + newStartCoordinates.get(0));
+        line.setStartY(DISPLAY_HEIGHT / 2 - newStartCoordinates.get(1));
+        
+        line.setEndX(DISPLAY_WIDTH / 2 + newEndCoordinates.get(0));
+        line.setEndY(DISPLAY_HEIGHT / 2 - newEndCoordinates.get(1));
+    }
+    
+    /**
+     * Clears all lines in the display (not only the ones created by the turtle)
+     */
     public void clearDisplay () {
         // Deletes all lines
     	Iterator<Node> nodeIterator = myPane.getChildren().iterator();
@@ -252,9 +239,46 @@ public class SingleTurtle implements Turtle {
         		nodeIterator.remove();
 
     	}
-    	
-        lines.clear();
     }
+
+    /**
+     * Stamps an image of the turtle to the display. Simple copies a new ImageView with the turtle's
+     * current parameters
+     */
+    @Override
+    public void stamp () {
+        
+    	System.out.println("STAMP");
+    	
+    	ImageView newStamp = new ImageView();
+    	newStamp.setImage(body.getImage());
+    	newStamp.setLayoutX(DISPLAY_WIDTH / 2 + getTurtleX());
+    	newStamp.setLayoutY(DISPLAY_WIDTH / 2 + getTurtleY());
+    	newStamp.setRotate(angle);
+    	myPane.getChildren().add(newStamp);
+    }
+
+    /**
+     * Goes through the stamp array list and takes them off the root's Node children.
+     */
+    @Override
+    public int clearStamps () 
+    {
+    	for ( ImageView stamp: stamps )
+    		myPane.getChildren().remove(stamp);
+    	
+        System.out.println("CLEARSTAMP");
+        return 0;
+    }
+    
+    
+    
+    
+    /**
+     * ===================
+     * GETTERS AND SETTERS
+     * ===================
+     */
     
     public double getTurtleX () {
         return x;
@@ -325,7 +349,7 @@ public class SingleTurtle implements Turtle {
 
     public void setTurtleCoordinates(double x, double y){
     	setCoordinates(x,y);
-    	updateTurtleVisualPosition(false);
+    	updateTurtleVisualPosition();
     }
 
     /**
@@ -335,33 +359,45 @@ public class SingleTurtle implements Turtle {
     {
     	return new ArrayList<Double>(Arrays.asList(x, y));
     }
-
-    @Override
-    public void stamp () {
-        System.out.println("STAMP");
-    }
-
-    @Override
-    public int clearStamps () {
-        System.out.println("CLEARSTAMP");
-        return 0;
+    
+    /**
+     * ImageView Body Getter
+     */
+    public ImageView getBody () {
+        return body;
     }
 
     @Override
     public TurtlePreferences getPreferences () {
         return myPreferences;
     }
+
+    private void setVisualCoordinates (double newX, double newY) {
+        body.setX(newX - DEFAULT_TURTLE_SIZE / 2);
+        body.setY(newY - DEFAULT_TURTLE_SIZE / 2);
+    }
+
+    private void toggleVisibility (double newOpacity) {
+        body.setOpacity(newOpacity);
+    }
     
-    /**
-     * Updates an existing Line (used for animation)
-     * @param line
-     */
-    public void updateLine(Line line, List<Double> newStartCoordinates, List<Double> newEndCoordinates)
+    private void setCoordinates (double x, double y) {        
+        this.x = x;
+        this.y = y;
+    }
+
+    public void updateTurtleVisualPosition (List<Double> newPosition) {
+    	double newX = DISPLAY_WIDTH / 2 + newPosition.get(0);
+    	double newY = DISPLAY_HEIGHT / 2 - newPosition.get(1);
+
+        // When updating coordinates, compensate the X and Y because they reference the edge of the
+        // image, not the center
+        setVisualCoordinates(newX, newY);
+    }
+
+    // Takes current Turtle's Logo's (x,y) position and update the ImageView's javafx (x,y)
+    public void updateTurtleVisualPosition () 
     {
-    	line.setStartX(DISPLAY_WIDTH / 2 + newStartCoordinates.get(0));
-        line.setStartY(DISPLAY_HEIGHT / 2 - newStartCoordinates.get(1));
-        
-        line.setEndX(DISPLAY_WIDTH / 2 + newEndCoordinates.get(0));
-        line.setEndY(DISPLAY_HEIGHT / 2 - newEndCoordinates.get(1));
+    	updateTurtleVisualPosition(new ArrayList<Double>(Arrays.asList(getTurtleX(), getTurtleY())));
     }
 }

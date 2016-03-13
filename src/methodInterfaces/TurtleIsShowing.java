@@ -1,6 +1,6 @@
 package methodInterfaces;
 
-import frontend.SingleTurtle;
+import frontend.turtle.SingleTurtle;
 
 public class TurtleIsShowing implements TurtleInterface {
 	

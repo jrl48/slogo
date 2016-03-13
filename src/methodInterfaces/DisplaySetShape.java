@@ -6,8 +6,8 @@ import frontend.Display;
 import frontend.DisplayPreferences;
 import frontend.EntryManager;
 import frontend.ErrorMessage;
-import frontend.SingleTurtle;
 import frontend.UserInterface;
+import frontend.turtle.SingleTurtle;
 import javafx.scene.image.ImageView;
 
 public class DisplaySetShape implements DisplayInterface {
