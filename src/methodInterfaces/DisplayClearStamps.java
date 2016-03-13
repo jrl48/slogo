@@ -1,4 +1,4 @@
-package methodInterfaces;
+package methodinterfaces;
 
 import frontend.Display;
 import frontend.DisplayPreferences;

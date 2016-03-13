@@ -1,10 +1,9 @@
-package methodInterfaces;
+package methodinterfaces;
 
 import frontend.Display;
 import frontend.DisplayPreferences;
 import frontend.EntryManager;
 import frontend.turtle.SingleTurtle;
-import javafx.scene.paint.Color;
 
 public class DisplaySetPenSize implements DisplayInterface {
 

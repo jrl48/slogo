@@ -1,4 +1,4 @@
-package methodInterfaces;
+package methodinterfaces;
 
 import backend.CommandParser;
 import frontend.turtle.MultipleTurtles;

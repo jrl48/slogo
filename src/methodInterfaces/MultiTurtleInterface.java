@@ -1,4 +1,4 @@
-package methodInterfaces;
+package methodinterfaces;
 
 import frontend.EntryManager;
 import frontend.turtle.MultipleTurtles;
