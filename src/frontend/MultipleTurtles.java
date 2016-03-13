@@ -119,7 +119,6 @@ public class MultipleTurtles {
         //multiTurtleInstructions.put("AskWith", new TurtleAskWith());
     }
 
-<<<<<<< HEAD
     public double executeCommand (String s, double[] args) {
     	double value = 0.0;
         TurtleInterface turtleCommand = turtleInstructions.get(s);
@@ -130,18 +129,8 @@ public class MultipleTurtles {
             }
         }
         return value;
-||||||| merged common ancestors
-    public double executeCommand (String s, double[] args) {
-        TurtleInterface turtleCommand = turtleInstructions.get(s);
-        double value = 0.0;
-        for (Entry t : turtleManager.getEntryList()) {
-            SingleTurtle turtle = (SingleTurtle) t.getSecondValue();
-            if (turtle.isActive()) {
-                value = turtleCommand.executeCommand(args, turtle);
-            }
-        }
-        return value;
-=======
+    }
+ 
     public double executeCommand (String s, double[] args, MultipleTurtles myTurtles) {
     		double value = 0.0;
     		for (Entry t : turtleManager.getEntryList()) {
@@ -164,16 +153,10 @@ public class MultipleTurtles {
 	    		value = turtleCommand.executeCommand(args, turtleManager, myTurtles);
     		}
     		return value;
->>>>>>> 4155978e13765ec0fdf939484dbe08dc00f6b14d
     }
 
     public double executeCommand (String s, double[] args, List<Integer> activeTurtles) {
-<<<<<<< HEAD
     	double value = 0.0;
-||||||| merged common ancestors
-=======
-  
->>>>>>> 4155978e13765ec0fdf939484dbe08dc00f6b14d
         TurtleInterface turtleCommand = turtleInstructions.get(s);
         for (int i = 0; i < turtleManager.getEntryList().size(); i++) {
             if (activeTurtles.contains(i)) {

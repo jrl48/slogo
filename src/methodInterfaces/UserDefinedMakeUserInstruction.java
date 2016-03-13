@@ -31,11 +31,11 @@ public class UserDefinedMakeUserInstruction implements UserDefinedInterface {
 		String parameters = substring1.substring(substring1.indexOf('[') + 1, substring1.indexOf(']')).trim();
 		System.out.println("SUB1.5" + parameters);
 		String finalString = parser.methodLoop(substring2, commandManager);
-		String[] instructions = finalString.split("\\s+");
+		String[] instructions = finalString.trim().split("\\s+");
 		for(int i = 0; i < instructions.length; i++){
 			String s = instructions[i];
 			if(parser.parseCommand(s).equals("")){
-				if(s.equals(substring1.split("\\s+")[0])){
+				if(s.equals(substring1.trim().split("\\s+")[0])){
 					
 				}
 				if(parameters.contains(s)){

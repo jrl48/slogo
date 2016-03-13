@@ -28,14 +28,14 @@ public class UserDefinedDoTimes implements UserDefinedInterface {
 		String newCommand = "";
 		if (m.find()) {
 			newCommand = m.group(1);
-			if ( userDefinedCommands.contains(parser.parseCommand(newCommand.split("\\s+")[0])))
+			if ( userDefinedCommands.contains(parser.parseCommand(newCommand.trim().split("\\s+")[0])))
 				newCommand = newCommand + "]";
 		}
 		else {
 			parser.throwError("Not a Valid Command!");
 			return;
 		}
-		String[] variableLimit = varLimit.split("\\s+");
+		String[] variableLimit = varLimit.trim().split("\\s+");
 		if ( variableLimit.length != 2) {
 			parser.throwError("Not a Valid Command!");
 			return;

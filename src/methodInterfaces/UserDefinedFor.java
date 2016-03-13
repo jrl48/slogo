@@ -27,14 +27,14 @@ public class UserDefinedFor implements UserDefinedInterface {
 		String newCommand = "";
 		if (m.find()) {
 			newCommand = m.group(1);
-			if ( userDefinedCommands.contains(parser.parseCommand(newCommand.split("\\s+")[0])))
+			if ( userDefinedCommands.contains(parser.parseCommand(newCommand.trim().split("\\s+")[0])))
 				newCommand = newCommand + "]";
 		}
 		else {
 			parser.throwError("Not a Valid Command!");
 			return;
 		}
-		String[] loopStuff = loopInfo.split("\\s+");
+		String[] loopStuff = loopInfo.trim().split("\\s+");
 		if ( loopStuff.length != 4) {
 			parser.throwError("Not a Valid Command!");
 			return;

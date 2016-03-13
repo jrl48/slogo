@@ -14,7 +14,7 @@ public class UserDefinedMakeVariable implements UserDefinedInterface {
 			EntryManager terminal, EntryManager commandManager, 
 			EntryManager workspace, boolean read) {
 		System.out.println(command);
-		String[] commandPieces = command.split("\\s+");
+		String[] commandPieces = command.trim().split("\\s+");
 		if (commandPieces.length != 3) {
 			parser.throwError("Not a Valid Command!");
 		} 

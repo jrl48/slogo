@@ -15,7 +15,7 @@ public class UserDefinedRepeat implements UserDefinedInterface  {
 	@Override
 	public void executeCommand(String command, CommandParser parser, List<String> userDefinedCommands, EntryManager terminal, EntryManager commandManager,
 			EntryManager workspace, boolean read) {
-		String[] commandPieces = command.split("\\s+");
+		String[] commandPieces = command.trim().split("\\s+");
 		try {
 			int expr = Integer.parseInt(commandPieces[1]);
 			Pattern p = Pattern.compile("\\[(.*?)\\]");
@@ -23,7 +23,7 @@ public class UserDefinedRepeat implements UserDefinedInterface  {
 			String newCommand = "";
 			if (m.find()) {
 				newCommand = m.group(1);
-				if ( userDefinedCommands.contains(parser.parseCommand(newCommand.split("\\s+")[0])))
+				if ( userDefinedCommands.contains(parser.parseCommand(newCommand.trim().split("\\s+")[0])))
 					newCommand = newCommand + "]";
 			}
 			else {

@@ -14,7 +14,7 @@ public class UserDefinedIfElse implements UserDefinedInterface {
 	public void executeCommand(String command, CommandParser parser, List<String> userDefinedCommands,
 			EntryManager terminal, EntryManager commandManager, 
 			EntryManager workspace, boolean read) {
-		String[] commandPieces = command.split("\\s+");
+		String[] commandPieces = command.trim().split("\\s+");
 		try {
 			int expr = Integer.parseInt(commandPieces[1]);
 			Pattern p = Pattern.compile("\\[(.*?)\\]");
@@ -22,7 +22,7 @@ public class UserDefinedIfElse implements UserDefinedInterface {
 			String newTrueCommand = "";
 			if (m.find()) {
 				newTrueCommand = m.group(1);
-				if ( userDefinedCommands.contains(parser.parseCommand(newTrueCommand.split("\\s+")[0])))
+				if ( userDefinedCommands.contains(parser.parseCommand(newTrueCommand.trim().split("\\s+")[0])))
 					newTrueCommand = newTrueCommand + "]";
 			}
 			else {
@@ -32,7 +32,7 @@ public class UserDefinedIfElse implements UserDefinedInterface {
 			String newFalseCommand = "";
 			if (m.find()) {
 				newFalseCommand = m.group(1);
-				if ( userDefinedCommands.contains(parser.parseCommand(newFalseCommand.split("\\s+")[0])))
+				if ( userDefinedCommands.contains(parser.parseCommand(newFalseCommand.trim().split("\\s+")[0])))
 					newFalseCommand = newFalseCommand + "]";
 			}
 			else {
