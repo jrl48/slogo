@@ -41,8 +41,11 @@ public class CommandParser {
 		
 		String instruction = parseCommand(command.split("\\s+")[0]);
 		if (myUserDefinedHandler.isLoopCommand(instruction)) {
-			myUserDefinedHandler.callCommand(command, instruction, this, terminal, 
-					commandManager, workspace, read);
+			Double loopVal = myUserDefinedHandler.callCommand(command, instruction, this, terminal, 
+					commandManager, workspace, read, myTurtles);
+			if(loopVal != null){
+				terminal.addEntry(new StringNumEntry(originalCommand,loopVal),false);
+			}
 			return 0;
 		} 
 		else {
@@ -249,7 +252,6 @@ public class CommandParser {
 		if(parseCommand(commands[0]).equals("")){
 			return null;
 		}
-		System.out.println(parseCommand(commands[0]));
 		List<ParseNode> instructions = new ArrayList<ParseNode>();
 		instructions.add(root);
 		for(int i = 1;i< commands.length; i++){

@@ -1,6 +1,6 @@
 package frontend;
 
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
 import java.util.Map;
 import javafx.beans.property.ObjectProperty;
@@ -36,6 +36,7 @@ import methodInterfaces.TurtleSetPosition;
 import methodInterfaces.TurtleSetTowards;
 import methodInterfaces.TurtleShowTurtle;
 import methodInterfaces.TurtleTell;
+import methodInterfaces.TurtleTellMulti;
 import methodInterfaces.TurtleTurtles;
 import methodInterfaces.TurtleXCor;
 import methodInterfaces.TurtleYCor;
@@ -78,7 +79,7 @@ public class MultipleTurtles {
         myDisplayPane.getChildren().add(turtle.getBody());
     }
     
-    public void addTurtle (double id) {       
+    public void addTurtle (int id) {      
         Turtle turtle = new SingleTurtle(myDisplayPane, animationController);
         turtleManager.addEntry(new StringObjectEntry("Turtle " + id, turtle), false);
         myDisplayPane.getChildren().add(turtle.getBody());
@@ -114,7 +115,7 @@ public class MultipleTurtles {
         displayInstructions.put("Stamp", new DisplayStamp());
         multiTurtleInstructions.put("ID", new TurtleID());
         multiTurtleInstructions.put("Turtles", new TurtleTurtles());
-        multiTurtleInstructions.put("Tell", new TurtleTell());
+        multiTurtleInstructions.put("Tell", new TurtleTellMulti());
       //  multiTurtleInstructions.put("Ask", new TurtleAsk());
         //multiTurtleInstructions.put("AskWith", new TurtleAskWith());
     }
@@ -144,16 +145,28 @@ public class MultipleTurtles {
     }
 
     public double executeCommand (String s, double[] args, List<Integer> activeTurtles) {
-  
+    	System.out.println(activeTurtles);
         TurtleInterface turtleCommand = turtleInstructions.get(s);
         double value = 0.0;
+        Set<Integer> currentTurtles = new HashSet<Integer>();
+        
         for (int i = 0; i < turtleManager.getEntryList().size(); i++) {
-            if (activeTurtles.contains(i)) {
+        	int id = Integer.parseInt(((String) turtleManager.getEntryList().get(i).getFirstValue()).split("\\s+")[1]);
+        	System.out.println(id);
+            if (activeTurtles.contains(id)) {
+              	currentTurtles.add(id);
                 SingleTurtle turtle =
                         (SingleTurtle) turtleManager.getEntryList().get(i).getSecondValue();
                 value = turtleCommand.executeCommand(args, turtle);
             }
         }
+        
+        for(int x: activeTurtles){
+        	if(!currentTurtles.contains(x)){
+        		addTurtle( (int) x);
+        	}
+        }
+        
         return value;
     }
 }
