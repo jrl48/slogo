@@ -11,7 +11,7 @@ public class DisplayStamp implements DisplayInterface {
 	public double executeCommand(double[] args, SingleTurtle turtle, Display display,
 			DisplayPreferences displayPreferences, EntryManager colorManager, EntryManager shapeManager) {
 		turtle.stamp();
-		return args[0];
+		return 1;
 	}
 
 }

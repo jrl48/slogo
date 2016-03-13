@@ -263,12 +263,16 @@ public class SingleTurtle implements Turtle {
      */
     @Override
     public int clearStamps () 
-    {
-    	for ( ImageView stamp: stamps )
+    {	
+    	int num = 0;
+    	
+    	for ( ImageView stamp: stamps ){
     		myPane.getChildren().remove(stamp);
+    		num = 1;
+    	}
     	
         System.out.println("CLEARSTAMP");
-        return 0;
+        return num;
     }
     
     
