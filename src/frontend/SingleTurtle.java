@@ -2,13 +2,16 @@ package frontend;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -40,7 +43,8 @@ public class SingleTurtle implements Turtle {
     private double dashLength = 25.0;
     private StringProperty turtStatsProp = new SimpleStringProperty();
     private TurtlePreferences myPreferences = new TurtlePreferences();
-
+    private double angle;
+    
     // Animation!!
     private AnimationController animationController;
     
@@ -56,6 +60,8 @@ public class SingleTurtle implements Turtle {
         pen.bindBidirectional(myPreferences.isPenActive());
         isActive = true;
         this.animationController = animationController;
+        
+        angle = 0;
         
         updateTurtleVisualPosition(false);
         setMouseActions();
@@ -180,32 +186,33 @@ public class SingleTurtle implements Turtle {
         } while (flag);
          */
         // setCoordinates(getTurtleX() + deltaX, getTurtleY() + deltaY);
-
-
-
+        
         if ( pen.get() )
         {
         	Line newLine = new Line();
         	setLineStyle(newLine);
         	myPane.getChildren().add(newLine);       
-        	
+        	// System.out.println(myPane.getChildren());
         	newLine.setStartX(getVisualX());
         	newLine.setStartY(getVisualY());
-        	animationController.addTurtleToMove(this, getTurtleX(), getTurtleY(), 
-        			getTurtleX() + deltaX, 
-        			getTurtleY() + deltaY, newLine);
+        	animationController.addTurtleToMove(this, 
+        			new ArrayList<Double>(Arrays.asList(getTurtleX(), getTurtleY())),
+        			new ArrayList<Double>(Arrays.asList(getTurtleX() + deltaX, getTurtleY() + deltaY)),
+        			newLine);
         }
         else
-        	animationController.addTurtleToMove(this, getTurtleX(), getTurtleY(), 
-        			getTurtleX() + deltaX, 
-        			getTurtleY() + deltaY);
+        	animationController.addTurtleToMove(this, 
+        			new ArrayList<Double>(Arrays.asList(getTurtleX(), getTurtleY())),
+        			new ArrayList<Double>(Arrays.asList(getTurtleX() + deltaX, getTurtleY() + deltaY)));
+        
+        
+        setCoordinates(getTurtleX() + deltaX, getTurtleY() + deltaY);
         // updateTurtleVisualPosition(false);
     }
-
-    // Takes current Turtle's Logo's (x,y) position and update the ImageView's javafx (x,y)
-    public void updateTurtleVisualPosition (boolean overridePen) {
-    	double newX = DISPLAY_WIDTH / 2 + getTurtleX();
-    	double newY = DISPLAY_HEIGHT / 2 - getTurtleY();
+    
+    public void updateTurtleVisualPosition (boolean overridePen, List<Double> newPosition) {
+    	double newX = DISPLAY_WIDTH / 2 + newPosition.get(0);
+    	double newY = DISPLAY_HEIGHT / 2 - newPosition.get(1);
 
     	if (isTurtlePenDown() && !overridePen) {
             Line newLine = new Line(getVisualX(), getVisualY(), newX, newY);
@@ -218,6 +225,13 @@ public class SingleTurtle implements Turtle {
         // image, not the center
         setVisualCoordinates(newX, newY);
     }
+
+    // Takes current Turtle's Logo's (x,y) position and update the ImageView's javafx (x,y)
+    public void updateTurtleVisualPosition (boolean overridePen) 
+    {
+    	updateTurtleVisualPosition(overridePen, 
+    			new ArrayList<Double>(Arrays.asList(getTurtleX(), getTurtleY())));
+    }
     
     private void setLineStyle(Line line){
         line.setStroke(myPreferences.getPenColor());
@@ -228,10 +242,17 @@ public class SingleTurtle implements Turtle {
     }
     public void clearDisplay () {
         // Deletes all lines
-        for (Line toBeDeleted : lines) {
-            myPane.getChildren().remove(toBeDeleted);
-        }
+    	Iterator<Node> nodeIterator = myPane.getChildren().iterator();
+    	
+    	while ( nodeIterator.hasNext() )
+    	{
+    		Node node = nodeIterator.next();
+    		
+        	if (node.getClass() == Line.class)
+        		nodeIterator.remove();
 
+    	}
+    	
         lines.clear();
     }
     
@@ -258,18 +279,24 @@ public class SingleTurtle implements Turtle {
     }
 
     public double getTurtleAngle () {
-        return body.getRotate();
+        return angle;
     }
 
     public void turnTurtle (double angle) 
     {
-    	animationController.addTurtleToTurn(this, getTurtleAngle(), getTurtleAngle() + angle, 
-    			(angle > 0));
-        // body.setRotate(body.getRotate() + angle);
+    	animationController.addTurtleToTurn(this, this.angle, this.angle + angle, (angle > 0));
+    	this.angle += angle;
     }
 
-    public void setTurtleAngle (double angle) {
-        body.setRotate(angle);
+    public void setTurtleAngle (double angle) 
+    {
+    	animationController.addTurtleToTurn(this, this.angle, angle, (angle > 0));
+    	this.angle = angle;
+    }
+    
+    public void setVisualAngle ( double angle )
+    {
+    	body.setRotate(angle);
     }
 
     public void turtlePenDown () {
@@ -309,16 +336,6 @@ public class SingleTurtle implements Turtle {
     	return new ArrayList<Double>(Arrays.asList(x, y));
     }
 
-    /**
-     * Override of one of the methods in Turtle Class, allows for a less-dimensional bounded
-     * set for the coordinates.
-	 */
-	public void setTurtleCoordinates(List newCoordinates) 
-	{
-		x = (double) newCoordinates.get(0);
-		y = (double) newCoordinates.get(1);
-	}
-
     @Override
     public void stamp () {
         System.out.println("STAMP");
@@ -339,9 +356,12 @@ public class SingleTurtle implements Turtle {
      * Updates an existing Line (used for animation)
      * @param line
      */
-    public void updateLine(Line line)
+    public void updateLine(Line line, List<Double> newStartCoordinates, List<Double> newEndCoordinates)
     {
-        line.setEndX(DISPLAY_WIDTH / 2 + getTurtleX());
-        line.setEndY(DISPLAY_HEIGHT / 2 - getTurtleY());
+    	line.setStartX(DISPLAY_WIDTH / 2 + newStartCoordinates.get(0));
+        line.setStartY(DISPLAY_HEIGHT / 2 - newStartCoordinates.get(1));
+        
+        line.setEndX(DISPLAY_WIDTH / 2 + newEndCoordinates.get(0));
+        line.setEndY(DISPLAY_HEIGHT / 2 - newEndCoordinates.get(1));
     }
 }

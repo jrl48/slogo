@@ -19,9 +19,7 @@ public interface Turtle {
     public ImageView getBody ();
 
     public void setTurtleCoordinates (double x, double y);
-    
-    public void setTurtleCoordinates (List<Double> newCoordinates);
-    
+        
     public List<Double> getCoordinates();
 
     public double getTurtleX ();
