@@ -85,12 +85,8 @@ public class EntryManager {
      * @return
      */
     public String getString (Object value) {
-    	System.out.println("RWER");
-    	System.out.println(value);
         for (Entry e : myObservableEntries) {
-        	System.out.println(e.getSecondValue());
             if (e.getSecondValue().equals(value)) {
-            	System.out.println("WEREWRWER");
                 return e.getFirstValue().toString();
             }
         }
