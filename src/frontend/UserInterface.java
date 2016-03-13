@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import frontend.turtle.AnimationController;
 import frontend.turtle.MultipleTurtles;
 import backend.CommandParser;
@@ -20,7 +19,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
@@ -117,7 +115,7 @@ public class UserInterface {
                 new MultipleTurtles(myTurtleManager, myDisplay.getPane(), myColorManager,
                                     myShapeManager, myDisplay, myDisplayPreferences,
                                     myAnimationController);
-        myCommandParser = new CommandParser(myTurtles, myDisplay);
+        myCommandParser = new CommandParser(myTurtles);
         myCommandLine =
                 new CommandLine(myCommandParser, myTerminalManager, myCommandManager,
                                 myWorkspaceManager);

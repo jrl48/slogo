@@ -66,7 +66,7 @@ public class DisplayPreferences extends Preferences {
     
     private void initDisplayPreferences () {
         prefMenu.getItems().addAll(myOptions);
-        myMenuBar = new MenuBar();
+        myMenuBar = new MenuBar(prefMenu);
         myMenuBar.getStyleClass().add(sceneResources.getString("BUTTONID"));
     }
 
