@@ -30,13 +30,13 @@ public class DisplayPreferences extends Preferences {
 
     // List of Menu Options in Menu
     private List<Menu> myOptions =
-            new ArrayList<Menu>(Arrays
+            new ArrayList<>(Arrays
                     .asList(new Menu(prefResources.getString("DISPLAY_CHOICE_LABEL"))));
 
     // Lists of Options Specific to Pen Properties Settings (need both because of bug inherit in
     // javafx.customCell)
-    private ArrayList<MenuItem> displaySubOptions = new ArrayList<MenuItem>(Arrays.asList());
-    private List<Node> displayOptionNodes = new ArrayList<Node>(Arrays.asList(dispColor));
+    private ArrayList<MenuItem> displaySubOptions = new ArrayList<>(Arrays.asList());
+    private List<Node> displayOptionNodes = new ArrayList<>(Arrays.asList(dispColor));
 
     // Combined List of All SubOptions Lists
     private List<ArrayList<MenuItem>> myControls =

@@ -49,19 +49,19 @@ public class TurtlePreferences extends Preferences {
 
     // List of Menu Options in ContextMenu
     private List<Menu> myOptions =
-            new ArrayList<Menu>(Arrays.asList(new Menu("Turtle Image"), new Menu("PenProperties")));
+            new ArrayList<>(Arrays.asList(new Menu("Turtle Image"), new Menu("PenProperties")));
 
     // List of Options Specific to Turtle Image Setting
     private ArrayList<MenuItem> turtleImageSubOptions =
-            new ArrayList<MenuItem>(Arrays.asList(new CustomMenuItem(chooseImage)));
+            new ArrayList<>(Arrays.asList(new CustomMenuItem(chooseImage)));
 
     // Lists of Options Specific to Pen Properties Settings (need both because of bug inherit in
     // javafx.customCell)
     private ArrayList<MenuItem> penPropertiesSubOptions =
-            new ArrayList<MenuItem>(Arrays.asList(new CustomMenuItem(penDash),
+            new ArrayList<>(Arrays.asList(new CustomMenuItem(penDash),
                                                   new CustomMenuItem(penActive)));
     private List<Node> additionalPenProperties =
-            new ArrayList<Node>(Arrays.asList(penWidthField, penColor));
+            new ArrayList<>(Arrays.asList(penWidthField, penColor));
 
     // Combined List of All SubOptions Lists
     private List<ArrayList<MenuItem>> myControls =

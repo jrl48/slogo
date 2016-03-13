@@ -11,6 +11,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 
 /**
@@ -42,6 +43,7 @@ public class Display {
         myPane = new Pane(root);
         myPane.getStyleClass().add(sceneResources.getString("DISPLAYID"));
         myPane.setPrefSize(WIDTH, HEIGHT);
+        myPane.setClip(new Rectangle(WIDTH, HEIGHT));
         setPaneBinding(myPane, dispPref.getDispColorPicker());
     }
 
