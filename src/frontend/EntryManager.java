@@ -26,7 +26,7 @@ public class EntryManager {
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);
 
     public EntryManager () {
-        myEntries = new ArrayList<Entry>();
+        myEntries = new ArrayList<>();
         myObservableEntries = FXCollections.observableList(myEntries);
     }
 

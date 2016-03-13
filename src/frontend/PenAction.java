@@ -27,9 +27,13 @@ public class PenAction extends TurtleAction
 	public boolean takeAction(double speed) 
 	{
 		if ( newPenPosition )
+		{
 			getTurtle().turtlePenDown();
+		}
 		else
+		{
 			getTurtle().turtlePenUp();
+		}
 		
 		return true;
 	}

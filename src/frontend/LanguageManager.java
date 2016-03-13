@@ -17,7 +17,7 @@ public class LanguageManager {
     private ObservableList<String> myObservableChoices;
 
     public LanguageManager () {
-        myChoices = new ArrayList<String>();
+        myChoices = new ArrayList<>();
         myObservableChoices = FXCollections.observableList(myChoices);
     }
 

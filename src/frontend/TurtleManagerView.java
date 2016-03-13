@@ -2,8 +2,6 @@ package frontend;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TitledPane;
-import javafx.scene.paint.Color;
 
 
 /**

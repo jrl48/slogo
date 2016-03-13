@@ -1,8 +1,6 @@
 package frontend.turtle;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import javafx.scene.shape.Line;
@@ -26,14 +24,16 @@ public class AnimationController
 	
 	private double turtleMoveSpeed;
 	private double turtleTurnSpeed;
+	private static double INITIAL_MOVE_SPEED = 2;
+	private static double INITIAL_TURN_SPEED = 5;
 	
 	public AnimationController()
 	{	
 		timeline = new ArrayList<TurtleAction>();
 		
 		// DEFAULT
-		turtleMoveSpeed = 2; 	// pixels per step proc
-		turtleTurnSpeed = 5;	// degrees per step proc 
+		turtleMoveSpeed = INITIAL_MOVE_SPEED; 	// pixels per step proc
+		turtleTurnSpeed = INITIAL_TURN_SPEED;	// degrees per step proc 
 	}
 	
 	/**
@@ -43,19 +43,27 @@ public class AnimationController
 	public void step()
 	{	
 		if ( timeline.isEmpty() )
+		{
 			return;
-
+		}
+		
 		TurtleAction currentAction = timeline.get(0);
-		boolean ended = false;
+		boolean ended;
 		
 		if ( currentAction.getClass() == MoveTurtleAction.class )
+		{
 			ended = currentAction.takeAction(turtleMoveSpeed);
-		else 
+		}
+		else
+		{
 			// Pen action or Turn action
 			ended = currentAction.takeAction(turtleTurnSpeed);
+		}
 		
 		if ( ended )
+		{
 			timeline.remove(0);
+		}
 	}
 	
 	/**

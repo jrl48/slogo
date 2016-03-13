@@ -4,8 +4,6 @@ import java.util.List;
 
 import frontend.TurtlePreferences;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.image.ImageView;
 
 /**
  * The main "protagonist" of the program. Is in interface form because multiple turtles can be implemented, 
@@ -16,42 +14,42 @@ import javafx.scene.image.ImageView;
  */
 public interface Turtle {
 
-    public ImageView getBody ();
+	ImageView getBody ();
 
-    public void setTurtleCoordinates (double x, double y);
-        
-    public List<Double> getCoordinates();
+	void setTurtleCoordinates (double x, double y);
 
-    public double getTurtleX ();
+	List<Double> getCoordinates();
 
-    public double getTurtleY ();
+	double getTurtleX ();
 
-    public double getTurtleAngle ();
+	double getTurtleY ();
 
-    public void turnTurtle (double angle);
+	double getTurtleAngle ();
 
-    public void setTurtleAngle (double angle);
+	void turnTurtle (double angle);
 
-    public void turtlePenDown ();
+	void setTurtleAngle (double angle);
 
-    public void turtlePenUp ();
+	void turtlePenDown ();
 
-    public boolean isTurtlePenDown ();
+	void turtlePenUp ();
 
-    public boolean getTurtleVisibility ();
-    
-    public void hideTurtle();
-    
-    public void showTurtle();
-    
-    public boolean isActive();
-    
-    public void setActive(boolean isActive);
-    
-    public void stamp();
-    
-    public int clearStamps();
-    
-    public TurtlePreferences getPreferences();    
+	boolean isTurtlePenDown ();
+
+	boolean getTurtleVisibility ();
+
+	void hideTurtle();
+
+	void showTurtle();
+
+	boolean isActive();
+
+	void setActive(boolean isActive);
+
+	void stamp();
+
+	int clearStamps();
+
+	TurtlePreferences getPreferences();    
 
 }

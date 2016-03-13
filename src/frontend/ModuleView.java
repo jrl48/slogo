@@ -46,7 +46,7 @@ public abstract class ModuleView {
      * @param colTitles
      */
     private void initTable (EntryManager manager, String[] colTitles) {
-        myTableView = new TableView<Entry>();
+        myTableView = new TableView<>();
         List<TableColumn<Entry, Object>> columns = makeColumns(colTitles, entryValues);
         myTableView.getColumns().addAll(columns);
         myTableView.setItems(manager.getEntryList());
@@ -102,10 +102,10 @@ public abstract class ModuleView {
      * @return
      */
     private List<TableColumn<Entry, Object>> makeColumns (String[] colTitles, String[] values) {
-        List<TableColumn<Entry, Object>> colList = new ArrayList<TableColumn<Entry, Object>>();
+        List<TableColumn<Entry, Object>> colList = new ArrayList<>();
         for (int i = 0; i < colTitles.length; i++) {
             TableColumn<Entry, Object> col =
-                    new TableColumn<Entry, Object>(colTitles[i]); 
+                    new TableColumn<>(colTitles[i]); 
             col.setCellValueFactory(new PropertyValueFactory<Entry, Object>(values[i]));
             colList.add(col);
         }

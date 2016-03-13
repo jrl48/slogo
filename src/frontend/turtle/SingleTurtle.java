@@ -43,7 +43,9 @@ public class SingleTurtle implements Turtle {
     private static final double DISPLAY_HEIGHT = Display.HEIGHT;
     private static final String DEGREE = "\u00b0";
     private boolean isActive;
-    private double dashLength = 25.0;
+    private static final double DASH_LENGTH = 25.0; 
+    private static final double TRANSPARENT = 0.5;
+    
     private StringProperty turtStatsProp = new SimpleStringProperty();
     private TurtlePreferences myPreferences = new TurtlePreferences();
     private double angle;
@@ -61,7 +63,7 @@ public class SingleTurtle implements Turtle {
         pen.bindBidirectional(myPreferences.isPenActive());
         isActive = true;
         this.animationController = animationController;
-        stamps = new ArrayList<ImageView>();
+        stamps = new ArrayList<>();
         
         angle = 0;
         
@@ -115,7 +117,7 @@ public class SingleTurtle implements Turtle {
      */
     private String turtleStats(){
         StringBuilder turtStats = new StringBuilder();
-        turtStats.append(String.format("Position = [%.2f, %.2f]\n",getTurtleX(),getTurtleY()));
+        turtStats.append(String.format("Position = [%.2f, %.2f]%n",getTurtleX(),getTurtleY()));
         turtStats.append(String.format("Heading = %.2f",getTurtleAngle())+DEGREE+"\n");
         turtStats.append("PenDown = "+isTurtlePenDown()+"\n");
         return turtStats.toString();
@@ -134,49 +136,6 @@ public class SingleTurtle implements Turtle {
     public void moveTurtleForward (double length) {
         double deltaX = Math.sin(getTurtleAngle() * Math.PI / 180) * length;
         double deltaY = Math.cos(getTurtleAngle() * Math.PI / 180) * length;
-
-        // TODO:BUG: Large inputs crash program
-        /*
-         * TOROIDAL BEHAVIOR: Works but buggy, and won't work with animation for now.
-        boolean flag = false;
-        
-        do {
-            flag = false;
-
-            for (int multiplier : new int[] { -1, 1 }) {
-                if (multiplier * (getTurtleX() + deltaX) > DISPLAY_WIDTH / 2) {
-                    double amountWalked = multiplier * DISPLAY_WIDTH / 2 - getTurtleX();
-                    double deltaPrime = amountWalked / Math.tan(getTurtleAngle() * Math.PI / 180);
-
-                    setCoordinates(multiplier * DISPLAY_WIDTH / 2, getTurtleY() + deltaPrime);
-                    updateTurtleVisualPosition(false);
-                    deltaX -= amountWalked;
-                    deltaY -= deltaPrime;
-
-                    setCoordinates(-multiplier * DISPLAY_WIDTH / 2, getTurtleY() + deltaPrime);
-
-                    updateTurtleVisualPosition(true);
-
-                    flag = true;
-                }
-
-                if (multiplier * (getTurtleY() + deltaY) > DISPLAY_HEIGHT / 2) {
-                    double amountWalked = multiplier * DISPLAY_HEIGHT / 2 - getTurtleY();
-                    double deltaPrime = amountWalked * Math.tan(getTurtleAngle() * Math.PI / 180);
-
-                    setCoordinates(getTurtleX() + deltaPrime, multiplier * DISPLAY_HEIGHT / 2);
-                    updateTurtleVisualPosition(false);
-                    deltaY -= amountWalked;
-                    deltaX -= deltaPrime;
-
-                    setCoordinates(getTurtleX() + deltaPrime, -multiplier * DISPLAY_HEIGHT / 2);
-                    updateTurtleVisualPosition(true);
-
-                    flag = true;
-                }
-            }
-        } while (flag);
-         */
         
         // If pen is down, create a new action and bind a new line
         if ( pen.get() )
@@ -207,7 +166,7 @@ public class SingleTurtle implements Turtle {
         line.setStroke(myPreferences.getPenColor());
         line.setStrokeWidth(myPreferences.getPenWidth());
         if(myPreferences.isDashed()){
-            line.getStrokeDashArray().add(dashLength);
+            line.getStrokeDashArray().add(DASH_LENGTH);
         }
     }
      
@@ -236,7 +195,9 @@ public class SingleTurtle implements Turtle {
     		Node node = nodeIterator.next();
     		
         	if (node.getClass() == Line.class)
+        	{
         		nodeIterator.remove();
+        	}
 
     	}
     }
@@ -299,7 +260,7 @@ public class SingleTurtle implements Turtle {
             toggleVisibility(1);
         }
         else{
-            toggleVisibility(.5);
+            toggleVisibility(TRANSPARENT);
         }
     }
 
@@ -358,7 +319,7 @@ public class SingleTurtle implements Turtle {
      */
     public List<Double> getCoordinates() 
     {
-    	return new ArrayList<Double>(Arrays.asList(x, y));
+    	return new ArrayList<>(Arrays.asList(x, y));
     }
     
     /**

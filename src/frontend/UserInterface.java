@@ -75,13 +75,13 @@ public class UserInterface {
     private static final int FRAMES_PER_SECOND = 60;
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 
-    public UserInterface (Stage s) {
-        init(s);
+    public UserInterface () {
+        init();
 
     }
 
-    public void init (Stage s) {
-        initModules(s);
+    public void init () {
+        initModules();
         initAnimation();
         Tab tab1 = new Tab();
         tab1.setContent(makeGridPane());
@@ -102,7 +102,7 @@ public class UserInterface {
      * 
      * @param primaryStage
      */
-    private void initModules (Stage primaryStage) {
+    private void initModules () {
         myDisplayPreferences = new DisplayPreferences();
         myTerminalManager = new EntryManager();
         myCommandManager = new EntryManager();
@@ -112,7 +112,7 @@ public class UserInterface {
         myShapeManager = new EntryManager();
         myLanguageManager = new LanguageManager();
         myAnimationController = new AnimationController();
-        myDisplay = new Display(myDisplayPreferences, myTurtleManager);
+        myDisplay = new Display(myDisplayPreferences);
         myTurtles =
                 new MultipleTurtles(myTurtleManager, myDisplay.getPane(), myColorManager,
                                     myShapeManager, myDisplay, myDisplayPreferences,
@@ -173,11 +173,11 @@ public class UserInterface {
      */
     private void initComponentLists () {
         myButtonsList =
-                new ArrayList<Node>(Arrays
+                new ArrayList<>(Arrays
                         .asList(myCommandLine.getButton(), myDisplayPreferences.getMenu(),
                                 myLanguagePreferences.getComboBox(), myHTMLopener.getButton()));
         myFirstColList =
-                new ArrayList<Node>(Arrays
+                new ArrayList<>(Arrays
                         .asList(makePane(myTerminal.getTitle(), myTerminal.getMyTableView(), true),
                                 makePane(myWorkspace.getTitle(), myWorkspace.getMyTableView(), true),
                                 makePane(myUserDefined.getTitle(), myUserDefined.getMyTableView(), false),

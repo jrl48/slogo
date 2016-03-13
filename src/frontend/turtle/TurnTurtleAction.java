@@ -30,9 +30,13 @@ public class TurnTurtleAction extends TurtleAction
 		currentAngle = startAngle;
 
 		if ( isRight )
+		{
 			this.isRight = 1;
+		}
 		else
+		{
 			this.isRight = -1;
+		}
 	}
 
 	/**
