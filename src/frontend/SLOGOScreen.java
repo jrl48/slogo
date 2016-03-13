@@ -37,13 +37,14 @@ public class SLOGOScreen {
     private TabPane myTabPane;
     private Group root;
     private EntryManager mySavedManager = new EntryManager();
-    private ComboBox<Entry> mySavedWorkspaces = new ComboBox<Entry>(mySavedManager.getEntryList());;
+    private ComboBox<Entry> mySavedWorkspaces = new ComboBox<Entry>(mySavedManager.getEntryList());
     private ResourceBundle sceneResources =
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);
     private Button newWorkspace = new Button(sceneResources.getString("NEWBUTTON"));
     private Button saveWorkspace = new Button(sceneResources.getString("SAVEBUTTON"));
     private HBox myControls = new HBox();
     private List<GridPane> myUIPaneList = new ArrayList<GridPane>();
+    private String buttonID = "BUTTONID";
 
     // List of controls to be added to scene to allow saving functionality
     private List<Node> mySaveControls =
@@ -81,7 +82,7 @@ public class SLOGOScreen {
      */
     private void initComboBox (Stage s) {
         mySavedWorkspaces.setPromptText(sceneResources.getString("SAVEBOX"));
-        mySavedWorkspaces.getStyleClass().add(sceneResources.getString("BUTTONID"));
+        mySavedWorkspaces.getStyleClass().add(sceneResources.getString(buttonID));
         mySavedWorkspaces.setConverter(new ModifiedStringConverter());
         mySavedWorkspaces.setCellFactory(c -> new StringDisplayCell());
         mySavedWorkspaces
@@ -142,10 +143,10 @@ public class SLOGOScreen {
      * @param s
      */
     private void initButtons (Stage s) {
-        newWorkspace.getStyleClass().add(sceneResources.getString("BUTTONID"));
+        newWorkspace.getStyleClass().add(sceneResources.getString(buttonID));
         newWorkspace.setOnAction(e -> addUserInterface(sceneResources.getString("WORKSPACE"), s,
                                                        true, null));
-        saveWorkspace.getStyleClass().add(sceneResources.getString("BUTTONID"));
+        saveWorkspace.getStyleClass().add(sceneResources.getString(buttonID));
         saveWorkspace.setOnAction(e -> saveUserInterface((GridPane) myTabPane.getSelectionModel()
                 .getSelectedItem().getContent()));
 

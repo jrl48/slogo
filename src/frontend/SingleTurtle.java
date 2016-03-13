@@ -1,33 +1,20 @@
 package frontend;
 
-import methodInterfaces.*;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.stage.Stage;
 
 
 /**
@@ -50,6 +37,7 @@ public class SingleTurtle implements Turtle {
     private static final double DISPLAY_HEIGHT = Display.HEIGHT;
     private static final String DEGREE = "\u00b0";
     private boolean isActive;
+    private double dashLength = 25.0;
     private StringProperty turtStatsProp = new SimpleStringProperty();
     private TurtlePreferences myPreferences = new TurtlePreferences();
 
@@ -235,7 +223,7 @@ public class SingleTurtle implements Turtle {
         line.setStroke(myPreferences.getPenColor());
         line.setStrokeWidth(myPreferences.getPenWidth());
         if(myPreferences.isDashed()){
-            line.getStrokeDashArray().add(25.0);//TODO magic number
+            line.getStrokeDashArray().add(dashLength);
         }
     }
     public void clearDisplay () {
