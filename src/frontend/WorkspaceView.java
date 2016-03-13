@@ -1,67 +1,21 @@
 package frontend;
 
-//
-//import javafx.scene.Node;
-//import javafx.scene.control.Label;
-//import javafx.scene.control.TableColumn;
-//import javafx.scene.control.TableView;
-//
-//public class WorkspaceView {
-//    private static final double WIDTH = 250;
-//    private static final double HEIGHT = 200;
-//    private static final double COMMAND_WIDTH = 170;
-//    private Label myTerminalLabel;
-//    private TableView<TerminalEntry> myTableView;
-//    
-//    public WorkspaceView(){
-//        initWorkspaceView();
-//    }
-//    
-//    private void initWorkspaceView(){
-//        initLabel();
-//        initTable();        
-//    }
-//
-//    @SuppressWarnings("unchecked")
-//    private void initTable () {
-//        myTableView = new TableView<TerminalEntry>();
-//        TableColumn<TerminalEntry, String> commandColumn = new TableColumn<TerminalEntry, String>("Name"); //TODO resource file
-//        commandColumn.setPrefWidth(COMMAND_WIDTH);
-//        TableColumn<TerminalEntry, Integer> resultColumn = new TableColumn<TerminalEntry, Integer>("Value"); //TODO resource file
-//        myTableView.getColumns().addAll(commandColumn,resultColumn);
-//        myTableView.getStyleClass().add("TABLEVIEWID"); //TODO deal with this
-//        myTableView.setPrefSize(WIDTH, HEIGHT);
-//    }
-//
-//    private void initLabel () {
-//        myTerminalLabel = new Label("Workspace"); //TODO set resource file
-//        myTerminalLabel.getStyleClass().add("LABELID"); //TODO deal with this
-//    }
-//
-//    public Node getMyTerminalLabel () {
-//        return myTerminalLabel;
-//    }
-//
-//
-//    public Node getMyTableView () {
-//        return myTableView;
-
-import java.util.List;
-import javafx.event.EventHandler;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.converter.DoubleStringConverter;
-import javafx.util.converter.NumberStringConverter;
 
 
+/**
+ * Displays all active global variables in the workspace
+ * 
+ * @author JoeLilien
+ *
+ */
 public class WorkspaceView extends ModuleView {
     private static final double WIDTH = 250;
     private static final double HEIGHT = 150;
-    private static final double VAR_WIDTH = 170;
-    private static final double VAL_WIDTH = 80;
+    private static final double VAR_WIDTH = 80;
+    private static final double VAL_WIDTH = 215;
     private int variableColIndex = 0;
     private int valueColIndex = 1;
 
@@ -95,8 +49,8 @@ public class WorkspaceView extends ModuleView {
     @Override
     protected void setSizing (TableView<Entry> table) { 
         table.setPrefSize(WIDTH, HEIGHT);
-        table.getColumns().get(variableColIndex).setPrefWidth(VAR_WIDTH);
-        table.getColumns().get(valueColIndex).setPrefWidth(VAL_WIDTH);
+        table.getColumns().get(variableColIndex).setMinWidth(VAR_WIDTH);
+        table.getColumns().get(valueColIndex).setMinWidth(VAL_WIDTH);
     }
 
 }

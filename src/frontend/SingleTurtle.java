@@ -1,34 +1,34 @@
 package frontend;
 
-import methodInterfaces.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
-import javafx.stage.Stage;
 
 
+/**
+ * One implementation of the Turtles.
+ * Turtle will be talking to the Backend, and maintaining its own crucial information.
+ * 
+ * @author JoeLilien
+ *
+ */
 public class SingleTurtle implements Turtle {
     private ImageView body;
-    private double x;
-    private double y;
-    private boolean pen;
+    private double x = 0.0;
+    private double y = 0.0;
+    private BooleanProperty pen = new SimpleBooleanProperty(false);
     private Pane myPane;
     private static final double WIDTH = 30;
     private static final double HEIGHT = 30;
@@ -37,26 +37,33 @@ public class SingleTurtle implements Turtle {
     private static final double DISPLAY_HEIGHT = Display.HEIGHT;
     private static final String DEGREE = "\u00b0";
     private boolean isActive;
+    private double dashLength = 25.0;
     private StringProperty turtStatsProp = new SimpleStringProperty();
     private TurtlePreferences myPreferences = new TurtlePreferences();
 
+    // Animation!!
+    private AnimationController animationController;
+    
     // List of Lines that are being drawn by the turtle
     private List<Line> lines = new ArrayList<Line>();    
 
-    public SingleTurtle (Pane myPane) {
+    public SingleTurtle (Pane myPane, AnimationController animationController) {
         this.myPane = myPane;
         this.body = new ImageView();
         Bindings.bindBidirectional(this.body.imageProperty(), myPreferences.getImageProperty());
         body.setFitWidth(WIDTH);
         body.setFitHeight(HEIGHT);
-        x = 0;
-        y = 0;
-        pen = false;
+        pen.bindBidirectional(myPreferences.isPenActive());
         isActive = true;
+        this.animationController = animationController;
+        
         updateTurtleVisualPosition(false);
         setMouseActions();
     }
     
+    /**
+     * Mouse handler, to treat selection
+     */
     private void setMouseActions () {
         initStatsTooltip();
         body.setOnMouseClicked(e->handleClick(e));
@@ -83,6 +90,10 @@ public class SingleTurtle implements Turtle {
         turtStatsProp.setValue(turtStats);
     }
     
+    /** 
+     * Gives out a string of the turtle's stats
+     * @return
+     */
     private String turtleStats(){
         StringBuilder turtStats = new StringBuilder();
         turtStats.append(String.format("Position = [%.2f, %.2f]\n",getTurtleX(),getTurtleY()));
@@ -118,12 +129,19 @@ public class SingleTurtle implements Turtle {
         this.y = y;
     }
 
+    /**
+     * Move turtle is passed to the Animation Controller, that will mediate how the turtle moves.
+     * @param length
+     */
     public void moveTurtleForward (double length) {
         double deltaX = Math.sin(getTurtleAngle() * Math.PI / 180) * length;
         double deltaY = Math.cos(getTurtleAngle() * Math.PI / 180) * length;
 
         // TODO:BUG: Large inputs crash program
+        /*
+         * TOROIDAL BEHAVIOR: Works but buggy, and won't work with animation for now.
         boolean flag = false;
+        
         do {
             flag = false;
 
@@ -160,17 +178,36 @@ public class SingleTurtle implements Turtle {
                 }
             }
         } while (flag);
+         */
+        // setCoordinates(getTurtleX() + deltaX, getTurtleY() + deltaY);
 
-        setCoordinates(getTurtleX() + deltaX, getTurtleY() + deltaY);
-        updateTurtleVisualPosition(false);
+
+
+        if ( pen.get() )
+        {
+        	Line newLine = new Line();
+        	setLineStyle(newLine);
+        	myPane.getChildren().add(newLine);       
+        	
+        	newLine.setStartX(getVisualX());
+        	newLine.setStartY(getVisualY());
+        	animationController.addTurtleToMove(this, getTurtleX(), getTurtleY(), 
+        			getTurtleX() + deltaX, 
+        			getTurtleY() + deltaY, newLine);
+        }
+        else
+        	animationController.addTurtleToMove(this, getTurtleX(), getTurtleY(), 
+        			getTurtleX() + deltaX, 
+        			getTurtleY() + deltaY);
+        // updateTurtleVisualPosition(false);
     }
 
     // Takes current Turtle's Logo's (x,y) position and update the ImageView's javafx (x,y)
     public void updateTurtleVisualPosition (boolean overridePen) {
-        double newX = DISPLAY_WIDTH / 2 + getTurtleX();
-        double newY = DISPLAY_HEIGHT / 2 - getTurtleY();
+    	double newX = DISPLAY_WIDTH / 2 + getTurtleX();
+    	double newY = DISPLAY_HEIGHT / 2 - getTurtleY();
 
-        if (isTurtlePenDown() && !overridePen) {
+    	if (isTurtlePenDown() && !overridePen) {
             Line newLine = new Line(getVisualX(), getVisualY(), newX, newY);
             setLineStyle(newLine);
             lines.add(newLine);
@@ -185,7 +222,9 @@ public class SingleTurtle implements Turtle {
     private void setLineStyle(Line line){
         line.setStroke(myPreferences.getPenColor());
         line.setStrokeWidth(myPreferences.getPenWidth());
-        line.getStrokeDashArray().add(myPreferences.getDashLength());
+        if(myPreferences.isDashed()){
+            line.getStrokeDashArray().add(dashLength);
+        }
     }
     public void clearDisplay () {
         // Deletes all lines
@@ -222,8 +261,11 @@ public class SingleTurtle implements Turtle {
         return body.getRotate();
     }
 
-    public void turnTurtle (double angle) {
-        body.setRotate(body.getRotate() + angle);
+    public void turnTurtle (double angle) 
+    {
+    	animationController.addTurtleToTurn(this, getTurtleAngle(), getTurtleAngle() + angle, 
+    			(angle > 0));
+        // body.setRotate(body.getRotate() + angle);
     }
 
     public void setTurtleAngle (double angle) {
@@ -231,15 +273,15 @@ public class SingleTurtle implements Turtle {
     }
 
     public void turtlePenDown () {
-        pen = true;
+        pen.set(true);
     }
 
     public void turtlePenUp () {
-        pen = false;
+        pen.set(false);
     }
 
     public boolean isTurtlePenDown () {
-        return pen;
+        return pen.get();
     }
 
     public void hideTurtle () {
@@ -253,28 +295,53 @@ public class SingleTurtle implements Turtle {
     public boolean getTurtleVisibility () {
         return (body.getOpacity() == 1);
     }
-    
+
     public void setTurtleCoordinates(double x, double y){
-        setCoordinates(x,y);
-        updateTurtleVisualPosition(false);
+    	setCoordinates(x,y);
+    	updateTurtleVisualPosition(false);
     }
+
+    /**
+     * Get the coordinates as list, instead of one by one.
+     */
+    public List<Double> getCoordinates() 
+    {
+    	return new ArrayList<Double>(Arrays.asList(x, y));
+    }
+
+    /**
+     * Override of one of the methods in Turtle Class, allows for a less-dimensional bounded
+     * set for the coordinates.
+	 */
+	public void setTurtleCoordinates(List newCoordinates) 
+	{
+		x = (double) newCoordinates.get(0);
+		y = (double) newCoordinates.get(1);
+	}
 
     @Override
     public void stamp () {
-        // TODO Auto-generated method stub
-        
+        System.out.println("STAMP");
     }
 
     @Override
     public int clearStamps () {
-        // TODO Auto-generated method stub
+        System.out.println("CLEARSTAMP");
         return 0;
     }
 
     @Override
     public TurtlePreferences getPreferences () {
-        // TODO Auto-generated method stub
-        return null;
+        return myPreferences;
     }
- 
+    
+    /**
+     * Updates an existing Line (used for animation)
+     * @param line
+     */
+    public void updateLine(Line line)
+    {
+        line.setEndX(DISPLAY_WIDTH / 2 + getTurtleX());
+        line.setEndY(DISPLAY_HEIGHT / 2 - getTurtleY());
+    }
 }

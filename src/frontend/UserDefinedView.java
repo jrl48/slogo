@@ -1,25 +1,22 @@
 package frontend;
 
-
-import java.util.List;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TitledPane;
 
+/**
+ * This class contains the View for the user-defined functions to be used in Slogo
+ * 
+ * @author JoeLilien
+ *
+ */
 public class UserDefinedView extends ModuleView{
     private static final double WIDTH = 250;
     private static final double HEIGHT = 350;
-    private static final double COMMAND_WIDTH = 90;
-    private static final double VAL_WIDTH = 160;
-    private int commandColInd = 0;
+    private static final double COMMAND_WIDTH = 200;
     private int valueColInd = 1;
 
     
     public UserDefinedView(CommandLine command, EntryManager manager, String labelTitle, String[] columnTitles){
         super(manager, labelTitle, columnTitles);
-        //getMyTitledPane().setExpanded(false);
         defineListener(command);        
     }
 
@@ -29,10 +26,8 @@ public class UserDefinedView extends ModuleView{
     }
     
     @Override
-    protected void setSizing (TableView<Entry> table) { //TODO fix this bug
+    protected void setSizing (TableView<Entry> table) {
         table.setPrefSize(WIDTH, HEIGHT);
-        table.getColumns().get(commandColInd).setPrefWidth(COMMAND_WIDTH);
-        table.getColumns().get(valueColInd).setPrefWidth(VAL_WIDTH);
+        table.getColumns().get(valueColInd).setPrefWidth(COMMAND_WIDTH); 
     }
-
 }

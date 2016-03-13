@@ -53,6 +53,18 @@ public class ParametersMap {
 		myParamMap.put("And", 2);
 		myParamMap.put("Or", 2);
 		myParamMap.put("Not", 1);	
+		
+		myParamMap.put("SetBackground", 1);
+		myParamMap.put("SetPenColor", 1);
+		myParamMap.put("SetPenSize", 1);
+		myParamMap.put("SetShape", 1);
+		myParamMap.put("SetPalette", 4);
+		myParamMap.put("PenColor", 0);
+		myParamMap.put("GetShape", 0);
+		myParamMap.put("Stamp", 0);
+		myParamMap.put("ClearStamps", 0);
+		
+		
 	}
 	
 	public int getNumParams(String s){

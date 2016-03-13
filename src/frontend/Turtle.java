@@ -1,14 +1,28 @@
 package frontend;
 
+import java.util.List;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 
+import javafx.scene.image.ImageView;
+
+/**
+ * The main "protagonist" of the program. Is in interface form because multiple turtles can be implemented, 
+ * and single and multiple turtles have commmon traits.
+ * 
+ * @author JoeLilien + AlanCavalcanti
+ *
+ */
 public interface Turtle {
 
     public ImageView getBody ();
 
     public void setTurtleCoordinates (double x, double y);
+    
+    public void setTurtleCoordinates (List<Double> newCoordinates);
+    
+    public List<Double> getCoordinates();
 
     public double getTurtleX ();
 

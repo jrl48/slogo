@@ -15,7 +15,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class ColorDisplayCell extends TableCell<Entry, Color> {
     private static final double SIZE = 8;
-    
+
     public ColorDisplayCell () {
         super();
     }
@@ -39,7 +39,7 @@ public class ColorDisplayCell extends TableCell<Entry, Color> {
         this.setTooltip(new Tooltip(" [r=" + (int) (col.getRed() * 255) + ",b=" +
                                     (int) (col.getBlue() * 255) + ",g=" +
                                     (int) (col.getGreen() * 255) + "]"));
-        Rectangle colRect = new Rectangle(SIZE,SIZE, col);
+        Rectangle colRect = new Rectangle(SIZE, SIZE, col);
         setGraphic(colRect);
     }
 }

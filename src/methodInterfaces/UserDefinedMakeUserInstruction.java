@@ -1,6 +1,5 @@
 package methodInterfaces;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import backend.CommandParser;
@@ -12,37 +11,54 @@ public class UserDefinedMakeUserInstruction implements UserDefinedInterface {
 
 	@Override
 	public void executeCommand(String command, CommandParser parser, List<String> userDefinedCommands,
-			EntryManager terminal, EntryManager commandManager, 
-			EntryManager workspace, EntryManager colorManager, EntryManager shapeManager) {
+			EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean read) {
 		String substring1 = new String();
 		String substring2 = new String();
 		int breakpoint = command.indexOf(']');
 		substring1 = command.substring(2, breakpoint + 1);
-		substring2 = command.substring(breakpoint + 4, command.length() - 1);
+		System.out.println("SUB1" + substring1);
+		substring2 = command.substring(breakpoint + 2 + 2, command.length() - 1);
+		if(substring2.equals("")){
+			terminal.addEntry(new StringNumEntry(command,1.0), false);
+			commandManager.addEntry(new StringStringEntry(substring1, " "), true);
+			return;
+		}
+		System.out.println("SUB2" + substring2);
 		substring1 = substring1.trim();
 		substring2 = substring2.trim();
+		commandManager.addEntry(new StringStringEntry(substring1, substring2), true);
 		
-		String substring1point5 = "";
-		String[] first = substring2.split("\\s+");
-		for(int i = 1; i < first.length; i++){
-			substring1point5 = substring1point5 +" " + first[i];
-		}
-		System.out.println(substring1point5);
-		String[] instructions = substring2.split("\\s+");
+		String parameters = substring1.substring(substring1.indexOf('[') + 1, substring1.indexOf(']')).trim();
+		System.out.println("SUB1.5" + parameters);
+		String finalString = parser.methodLoop(substring2, commandManager);
+		String[] instructions = finalString.split("\\s+");
 		for(int i = 0; i < instructions.length; i++){
 			String s = instructions[i];
 			if(parser.parseCommand(s).equals("")){
-				if(substring1point5.contains(s)){
-					instructions[i] = "1";
+				if(s.equals(substring1.split("\\s+")[0])){
+					
 				}
+				if(parameters.contains(s)){
+					instructions[i] = "0";
+				}
+				
 			}
 		}
-		if(parser.makeTree(instructions, workspace, commandManager) == null){
+	
+		String tempCommand = "";
+		for(String x: instructions){
+			tempCommand = tempCommand + " " + x;
+		}
+//		if(parser.makeTree(instructions, workspace, commandManager) == null){
+//			terminal.addEntry(new StringNumEntry(command,0.0), false);
+//		}
+		if(parser.parse(tempCommand.trim(), terminal, commandManager, workspace, false, false) == null){
 			terminal.addEntry(new StringNumEntry(command,0.0), false);
+			//commandManager.removeEntry(); //figure out how to remove the entry
 		}
 		else{
 			terminal.addEntry(new StringNumEntry(command,1.0), false);
-			commandManager.addEntry(new StringStringEntry(substring1, substring2), false);
+			commandManager.addEntry(new StringStringEntry(substring1, substring2), true);
 		}
 	}
 

@@ -16,8 +16,6 @@ import java.util.regex.Pattern;
 
 import frontend.*;
 
-/////WHEN 
-
 public class CommandParser {
 	
 	private UserDefinedCommands myUserDefinedHandler;
@@ -35,59 +33,73 @@ public class CommandParser {
 		myDisplay = display;
 	}
 	
-	public void parse(String command, EntryManager terminal, EntryManager commandManager, 
-			EntryManager workspace, EntryManager colorManager, EntryManager shapeManager, boolean updateString) {
+	public Object parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean updateString, boolean read) {
 		command = command.trim();
-		System.out.println("command: "+ command);
+		if(parsingHouseKeeping(updateString, command, terminal, workspace, commandManager) == null){
+			throwError("Not a Valid Command!");
+		}
+		
+		String instruction = parseCommand(command.split("\\s+")[0]);
+		if (myUserDefinedHandler.isLoopCommand(instruction)) {
+			myUserDefinedHandler.callCommand(command, instruction, this, terminal, 
+					commandManager, workspace, read);
+			return 0;
+		} 
+		else {
+			String newCommand = methodLoop(command, commandManager);
+			if(newCommand == null){
+				return null;
+			}
+			if(!command.equals(newCommand)){
+				parse(newCommand, terminal, commandManager, workspace, false, read);
+			}
+			else{
+			String[] commandPieces = newCommand.split("\\s");
+			List<ParseNode> commandTree = makeTree(commandPieces,workspace, commandManager);
+			if(commandTree == null){
+				throwError("Not a Valid Command!");
+				return null;
+			}
+			if(read){
+				treeReader(commandTree, terminal);
+			}}
+		}	
+		return 0;	
+	}
+	
+	private String parsingHouseKeeping(boolean updateString, String command, EntryManager terminal, EntryManager workspace, EntryManager commandManager){
 		if(updateString){
 			originalCommand = command;
 		}
-		if (command.equals("") )
-			return;
+		if (command.equals("")){
+			return "";
+		}
 		String[] commandPieces = command.split("\\s+");
 		if ( commandPieces.length == 0) {
-			throwError("Not a Valid Command!");
-			return;
+			return null;
 		}
-		String instruction = parseCommand(commandPieces[0]);
 		if ( commandPieces.length >= 2) {
 			Pattern p = Pattern.compile("\\((.*?)\\)");
 			Matcher m = p.matcher(command);
 			if(m.find()) {
-				handleGrouping(command,terminal,commandManager,workspace,colorManager,shapeManager,myTurtles);
-				return;
+				handleGrouping(command,terminal,commandManager,workspace,myTurtles);
+				return ""; //check this
 			}
 		}
-		if (myUserDefinedHandler.isLoopCommand(instruction)) {
-			myUserDefinedHandler.callCommand(command, instruction, this, terminal, 
-					commandManager, workspace, colorManager, shapeManager);
-		} 
-		else {
-			if(commandManager.contains(commandPieces[0]) != null){
-				commandPieces = methodDealer(commandManager, commandPieces, command);
-			}
-//			for(String x: commandPieces){
-//				System.out.println(x);
-//			}
-			
-			List<ParseNode> commandTree = makeTree(commandPieces,workspace, commandManager);
-			if(commandTree == null)
-			{
-				throwError("Not a Valid Command!");
-				return;
-			}
-			
-			for(ParseNode node: commandTree){
-				double result = readTree(node, myTurtles);
-				terminal.addEntry(new StringNumEntry(originalCommand,result),false);
-
-			}
-			
+		
+		return "";
+	}
+	
+	private void treeReader(List<ParseNode> commandTree, EntryManager terminal){
+		double result = 0.0;
+		for(ParseNode node: commandTree){
+			result = readTree(node, myTurtles);
 		}
+		terminal.addEntry(new StringNumEntry(originalCommand,result),false);
 	}
 	
 	private void handleGrouping(String command, EntryManager terminal, EntryManager commandManager,
-			EntryManager workspace, EntryManager colorManager, EntryManager shapeManager, MultipleTurtles myTurtles) {
+			EntryManager workspace, MultipleTurtles myTurtles) {
 		Pattern p = Pattern.compile("\\((.*?)\\)");
 		Matcher m = p.matcher(command);
 		String commandInParen = "";
@@ -113,165 +125,201 @@ public class CommandParser {
 		String[] originalCommandPieces = command.split("\\s+");
 		originalCommandPieces[0] = originalCommandPieces[0].replaceAll("\\(","");
 		if (originalCommandPieces[0] != "\\(") {
-			System.out.println(originalCommandPieces[0]);
 			newCommand = originalCommandPieces[0] + " " + newCommand;
 		}
-		parse(newCommand,terminal,commandManager,workspace, colorManager, shapeManager, false);
+		parse(newCommand,terminal,commandManager,workspace, false, true);
 		
 	}
-	private String[] methodDealer(EntryManager commandManager, String[] commandPieces, String command){
-		String originalParameters = (String)commandManager.contains(commandPieces[0]);
+	
+	private int getEndBracket(String command, int startBracket){
+		int endBracket = command.lastIndexOf(']');
+		int counter = 0;
+		for(int i = startBracket+ 1; i < command.length(); i++){
+			if(command.charAt(i) == ']'){
+				if(counter == 0){
+					return i;
+				}
+				else{
+					counter--;
+				}
+			}
+			if(command.charAt(i) == '['){
+				counter++;
+			}
+		}
+		
+		return endBracket;
+	}
+	
+	public String methodLoop(String command, EntryManager commandManager){
+		boolean hasMethods = true;
+		while(hasMethods){
+			hasMethods = false;
+			String [] commandPieces = command.split("\\s+");
+			for(String s: commandPieces){
+				if(commandManager.contains(s) != null){
+					hasMethods = true;
+					int loc = command.indexOf(s);
+					String str2 = methodDealer(commandManager, command.substring(loc));
+					if(str2 == null){
+						return null;
+					}
+					command = command.substring(0, loc) + str2;
+
+				}
+			}
+		}
+		
+		return command;
+	}
+	
+	private String methodDealer(EntryManager commandManager, String command){
+		String originalParameters = (String)commandManager.contains(command.split("\\s+")[0]);
 		int bracket = originalParameters.indexOf('[');
 		String parameters = originalParameters.substring(bracket+1, originalParameters.length() - 1).trim();
 		Map<String, String> paramToNum = new HashMap<String, String>();
 		bracket = command.indexOf('[');
-		int endBracket = command.lastIndexOf(']');
-		System.out.println("WEREWRWE");
-		
+		int endBracket = getEndBracket(command, bracket);
 		String insideCommand = command.substring(bracket+1, endBracket).trim();
-		System.out.println(insideCommand);
-//		if(insideCommand.contains("[") || insideCommand.contains("]")){
-//			for(String s: insideCommand.split("\\s+")){
-//				if(commandManager.contains(s) !=  ){
-//					
-//				}
-//			}
-//		}
-		String[] commandArray = command.substring(bracket+1, endBracket).trim().split("\\s+");
+		
 		String[] paramArray = parameters.split("\\s+");
-		if(commandArray.length != paramArray.length){
-			throwError("Incorrect Number of Parameters");
+		String[] commandArray;
+
+		if(insideCommand.contains("[") && insideCommand.contains("]")){
+			commandArray = stringReplacement(paramArray, insideCommand, commandManager);
 		}
+		else{
+			commandArray = insideCommand.split("\\s+");
+			if(commandArray.length != paramArray.length){
+				throwError("Incorrect Number of Parameters");
+				return null;
+			}
+		}
+
 		for(int x = 0; x < paramArray.length; x++){
 			paramToNum.put(paramArray[x], commandArray[x]);
 		}
 		
 		String actualCommands = (String) commandManager.getValue(originalParameters) +  command.substring(endBracket+1);
-		commandPieces = actualCommands.split("\\s+");
+		String[] commandPieces = actualCommands.split("\\s+");
+		String result = "";
 		for(int y = 0; y < commandPieces.length; y++){
 			if(paramToNum.containsKey(commandPieces[y])){
 				commandPieces[y] = paramToNum.get(commandPieces[y]);
 			}
+			result = result + " " + commandPieces[y];
 		}
-//		
-//		for (String x: commandPieces){
-//			System.out.println(x);
-//		}
-		return commandPieces;
+		return result.trim();
 	}
 	
-	public List<ParseNode> makeTree(String[] commands, EntryManager workspace, EntryManager commandManager){
+	private String[] stringReplacement(String[] paramArray, String tempString, EntryManager commandManager){
+		int arrayCount = 0;
+		int breakpoint = 0;
+		String[] commandArray = new String[paramArray.length];
+		while(arrayCount < commandArray.length){
+			tempString = tempString.substring(breakpoint).trim();
+			breakpoint = 0;
+			String[] tempArray = tempString.split("\\s+");
+			if(commandManager.contains(tempArray[0]) == null){
+				commandArray[arrayCount] = tempArray[0];
+				breakpoint = tempString.indexOf(" ");
+			}
+			else{
+				int tempStartBracket = tempString.indexOf('[');
+				int tempEndBracket = getEndBracket(tempString, tempStartBracket);
+				commandArray[arrayCount] = tempString.substring(0, tempEndBracket+1);
+				breakpoint = tempEndBracket+1;		
+			}
+			arrayCount++;
+		}
+
+		if(tempString.contains("[") && tempString.contains("]")){
+			tempString = tempString.substring(0, tempString.indexOf("[")) + tempString.substring(tempString.indexOf(']') +1 );
+		}
+		if(tempString.trim().contains(" ")){
+			throwError("Incorrect Number of Parameters");
+		}
+		return commandArray;
+	}
+	
+	private List<ParseNode> makeTree(String[] commands, EntryManager workspace, EntryManager commandManager){
 		List<ParseNode> rootList = new ArrayList<ParseNode>();
 		ParseNode root = new ParseNode(parseCommand(commands[0]));
 		rootList.add(root);
 		if(parseCommand(commands[0]).equals("")){
 			return null;
 		}
+		System.out.println(parseCommand(commands[0]));
 		List<ParseNode> instructions = new ArrayList<ParseNode>();
 		instructions.add(root);
 		for(int i = 1;i< commands.length; i++){
 			int size = instructions.size() - 1;
-			String parsedCommand = parseCommand(commands[i]);
+			String parsedCommand = parseCommand(commands[i]);   
 			ParseNode currentNode = new ParseNode(parsedCommand);
-			if(!parsedCommand.equals("")){
-				instructions.add(currentNode);
+			instructions = createNode(commands, i ,parsedCommand, instructions, currentNode, workspace);
+			if(instructions == null){
+				return null;
 			}
-			else if(commandManager.contains(commands[i]) != null){
-				String newString = "";
-				for(int j = i;j < commands.length; j++){
-					newString = newString + " " + commands [j];
-				}
-				newString = newString.trim();
-				String[] newCommands = newString.split("\\s+");
-				newCommands = methodDealer(commandManager, newCommands, newString);
-				List<ParseNode> newRoots = makeTree(newCommands, workspace, commandManager);
-				if(newRoots == null){
+			
+			ParseNode parent = parentNodeLoop(size, instructions);
+			if(parent == null){
+				if(currentNode.getName().equals("")){
 					return null;
 				}
-				System.out.println("WEREWRWEREW");
-				for(ParseNode newNode: newRoots){
-				//**************************REFACTOR THIS PART**************************
-				if(i > 0){
-					ParseNode originalParent = null;
-					ParseNode parent = instructions.get(size);
-					for(int j = size; j >= 0; j--){
-						parent = instructions.get(j);
-						int numParams = myParametersMap.getNumParams(parent.getName());
-						if(numParams == -1){
-							return null;
-						}
-						if(parent.getChildren().size() < numParams){
-							originalParent = parent;
-							break;
-						}
-					}
-					if(originalParent == null){
-						if(newNode.getName().equals("")){
-							return null;
-						}
-						rootList.add(newNode);
-						instructions.clear();
-						instructions.add(newNode);
-						root = newNode;
-					}
-					else{
-						parent.addChild(newNode);
-					}
-				}
-				//***********************************VA**********************************
-				}
-				System.out.println(rootList);
-				return rootList;
+				rootList.add(currentNode);
+				instructions.clear();
+				instructions.add(currentNode);
+				root = currentNode;
 			}
 			else{
-				try{
-					if(commands[i].charAt(0) == ':'){
-						String variable = commands[i].substring(1);
-						if(workspace.getValue(variable) == null){
-							workspace.addEntry(new StringNumEntry(variable,0.0),true);
-
-						}
-						else{
-							currentNode.setValue((double) workspace.getValue(variable));
-						}
-					}
-					else{
-						currentNode.setValue(Double.parseDouble(commands[i]));
-					}
-				}
-				catch(NumberFormatException exception){
-					return null;
-				}
-			}
-			if(i > 0){
-				ParseNode originalParent = null;
-				ParseNode parent = instructions.get(size);
-				for(int j = size; j >= 0; j--){
-					parent = instructions.get(j);
-					int numParams = myParametersMap.getNumParams(parent.getName());
-					if(numParams == -1){
-						return null;
-					}
-					if(parent.getChildren().size() < numParams){
-						originalParent = parent;
-						break;
-					}
-				}
-				if(originalParent == null){
-					if(currentNode.getName().equals("")){
-						return null;
-					}
-					rootList.add(currentNode);
-					instructions.clear();
-					instructions.add(currentNode);
-					root = currentNode;
-				}
-				else{
-					parent.addChild(currentNode);
-				}
+				parent.addChild(currentNode);
 			}
 		}
 		return rootList;
+	}
+	
+	private ParseNode parentNodeLoop(int size, List<ParseNode> instructions ){
+		ParseNode originalParent = null;
+		ParseNode parent = instructions.get(size);
+		for(int j = size; j >= 0; j--){
+			parent = instructions.get(j);
+			int numParams = myParametersMap.getNumParams(parent.getName());
+			if(numParams == -1){
+				return null;
+			}
+			if(parent.getChildren().size() < numParams){
+				originalParent = parent;
+				break;
+			}
+		}
+		return originalParent;
+	}
+	
+	private List<ParseNode> createNode(String[] commands, int i, String parsedCommand, List<ParseNode> instructions, ParseNode currentNode, EntryManager workspace){
+		if(!parsedCommand.equals("")){
+			instructions.add(currentNode);
+		}
+		else{
+			try{
+				if(commands[i].charAt(0) == ':'){
+					String variable = commands[i].substring(1);
+					if(workspace.getValue(variable) == null){
+						workspace.addEntry(new StringNumEntry(variable,0.0),true);
+					}
+					else{
+						currentNode.setValue((double) workspace.getValue(variable));
+					}
+				}
+				else{
+					currentNode.setValue(Double.parseDouble(commands[i]));
+				}
+			}
+			catch(NumberFormatException exception){
+				return null;
+			}
+		}
+		
+		return instructions;
 	}
 	
 	private double readTree(ParseNode root, MultipleTurtles MyTurtles){
@@ -301,10 +349,6 @@ public class CommandParser {
 		if(count == 0){
 			if(current.getChildren().size() == myParametersMap.getNumParams(current.getName())){
 				Commands commandMap = new Commands();
-				//call the correct method with current
-				//make sure I have the correct # of kids
-				//current == the instruction
-				//its kids == the inputs
 				List<ParseNode> nodeChildren = current.getChildren();
 				for(ParseNode node: nodeChildren){
 					if(!node.getName().equals("")){
