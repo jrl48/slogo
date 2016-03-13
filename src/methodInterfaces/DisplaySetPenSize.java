@@ -3,7 +3,7 @@ package methodInterfaces;
 import frontend.Display;
 import frontend.DisplayPreferences;
 import frontend.EntryManager;
-import frontend.SingleTurtle;
+import frontend.turtle.SingleTurtle;
 import javafx.scene.paint.Color;
 
 public class DisplaySetPenSize implements DisplayInterface {

@@ -6,21 +6,24 @@ public class ParseNode {
 	    
 	    private String myName;
 	    private double myValue;
-	    private int arrayValues[];
+	    private List<Double> myMultiValues;
 	    private List<ParseNode> myChildren;
 
 
 	    public ParseNode(String name) {
+	    	myMultiValues = new ArrayList<Double>();
 	        myValue = 0;
 	        myName = name;
-//	        arrayValues[] = new 
 	        myChildren = new ArrayList<ParseNode>();
 	    }
 	    
-//	    public ParseNode(String value, List<String> children ) {
-//	        myValue = value;
-//	        myChildren = children;
-//	    }
+	    public void addMultiValues(double vals){
+	    	myMultiValues.add(vals);
+	    }
+	    
+	    public List<Double> getMultiValues(){
+	    	return myMultiValues;
+	    }
 	    
 	    public void setValue(double value){
 	    	myValue = value;

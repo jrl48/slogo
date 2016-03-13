@@ -1,10 +1,10 @@
-package frontend;
+package frontend.turtle;
 
 import java.util.List;
+
+import frontend.TurtlePreferences;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-
-
 import javafx.scene.image.ImageView;
 
 /**
@@ -19,9 +19,7 @@ public interface Turtle {
     public ImageView getBody ();
 
     public void setTurtleCoordinates (double x, double y);
-    
-    public void setTurtleCoordinates (List<Double> newCoordinates);
-    
+        
     public List<Double> getCoordinates();
 
     public double getTurtleX ();

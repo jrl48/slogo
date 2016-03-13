@@ -1,8 +1,14 @@
-package frontend;
+package frontend.turtle;
 
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
 import java.util.Map;
+
+import frontend.Display;
+import frontend.DisplayPreferences;
+import frontend.Entry;
+import frontend.EntryManager;
+import frontend.StringObjectEntry;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,12 +22,14 @@ import methodInterfaces.DisplaySetPenSize;
 import methodInterfaces.DisplaySetShape;
 import methodInterfaces.DisplayShape;
 import methodInterfaces.DisplayStamp;
+import methodInterfaces.MultiTurtleInterface;
 import methodInterfaces.TurtleBackward;
 import methodInterfaces.TurtleClearScreen;
 import methodInterfaces.TurtleForward;
 import methodInterfaces.TurtleHeading;
 import methodInterfaces.TurtleHideTurtle;
 import methodInterfaces.TurtleHome;
+import methodInterfaces.TurtleID;
 import methodInterfaces.TurtleInterface;
 import methodInterfaces.TurtleIsPenDown;
 import methodInterfaces.TurtleIsShowing;
@@ -33,6 +41,9 @@ import methodInterfaces.TurtleSetHeading;
 import methodInterfaces.TurtleSetPosition;
 import methodInterfaces.TurtleSetTowards;
 import methodInterfaces.TurtleShowTurtle;
+import methodInterfaces.TurtleTell;
+import methodInterfaces.TurtleTellMulti;
+import methodInterfaces.TurtleTurtles;
 import methodInterfaces.TurtleXCor;
 import methodInterfaces.TurtleYCor;
 
@@ -44,6 +55,8 @@ public class MultipleTurtles {
     private DisplayPreferences myDisplayPreferences;
     private Map<String, TurtleInterface> turtleInstructions =
             new HashMap<String, TurtleInterface>();
+    private Map<String, MultiTurtleInterface> multiTurtleInstructions =
+            new HashMap<String, MultiTurtleInterface>();
     private Map<String, DisplayInterface> displayInstructions = new HashMap<String, DisplayInterface>();
     private ObjectProperty<Image> defaultTurtleImage;
     private AnimationController animationController;
@@ -68,7 +81,13 @@ public class MultipleTurtles {
 
     public void addTurtle () {       
         Turtle turtle = new SingleTurtle(myDisplayPane, animationController);
-        turtleManager.addEntry(new StringObjectEntry("Turtle " + turtleManager.getEntryList().size(), turtle), false);
+        turtleManager.addEntry(new StringObjectEntry("Turtle " + turtleManager.getEntryList().size()+1, turtle), false);
+        myDisplayPane.getChildren().add(turtle.getBody());
+    }
+    
+    public void addTurtle (int id) {      
+        Turtle turtle = new SingleTurtle(myDisplayPane, animationController);
+        turtleManager.addEntry(new StringObjectEntry("Turtle " + id, turtle), false);
         myDisplayPane.getChildren().add(turtle.getBody());
     }
 
@@ -100,14 +119,14 @@ public class MultipleTurtles {
         displayInstructions.put("GetPenColor", new DisplayPenColor());
         displayInstructions.put("GetShape", new DisplayShape());
         displayInstructions.put("Stamp", new DisplayStamp());
-        // turtleInstructions.put("Id", new TurtleID());
-        // turtleInstructions.put("Turtles", new TurtleTurtles());
-        // turtleInstructions.put("Tell", new TurtleTell());
-        // turtleInstructions.put("Ask", new TurtleAsk());
-        // turtleInstructions.put("AskWith", new TurtleAskWith());
+        multiTurtleInstructions.put("ID", new TurtleID());
+        multiTurtleInstructions.put("Turtles", new TurtleTurtles());
+        multiTurtleInstructions.put("Tell", new TurtleTellMulti());
+      //  multiTurtleInstructions.put("Ask", new TurtleAsk());
+        //multiTurtleInstructions.put("AskWith", new TurtleAskWith());
     }
 
-    public double executeCommand (String s, double[] args) {
+    public double executeCommand (String s, double[] args, MultipleTurtles myTurtles) {
     		double value = 0.0;
     		for (Entry t : turtleManager.getEntryList()) {
     			SingleTurtle turtle = (SingleTurtle) t.getSecondValue();
@@ -116,27 +135,46 @@ public class MultipleTurtles {
     		    		TurtleInterface turtleCommand = turtleInstructions.get(s);
     		    		value = turtleCommand.executeCommand(args, turtle);
     		    	}
-    		    	else{
+    		    	else if(turtleInstructions.containsKey(s)){
     		    		System.out.println("??");
     		    		DisplayInterface displayCommand = displayInstructions.get(s);
     		    		value = displayCommand.executeCommand(args, turtle, myDisplay, myDisplayPreferences, colorManager, shapeManager);
     		    	}
     			}
     		}
+    		
+    		if(multiTurtleInstructions.containsKey(s)){
+    			MultiTurtleInterface turtleCommand = multiTurtleInstructions.get(s);
+	    		value = turtleCommand.executeCommand(args, turtleManager, myTurtles);
+    		}
     		return value;
     }
 
     public double executeCommand (String s, double[] args, List<Integer> activeTurtles) {
-  
+    	if(!turtleInstructions.containsKey(s)){
+		    return 0.0;
+    	}
         TurtleInterface turtleCommand = turtleInstructions.get(s);
         double value = 0.0;
+        Set<Integer> currentTurtles = new HashSet<Integer>();
+        
         for (int i = 0; i < turtleManager.getEntryList().size(); i++) {
-            if (activeTurtles.contains(i)) {
+        	int id = Integer.parseInt(((String) turtleManager.getEntryList().get(i).getFirstValue()).split("\\s+")[1]);
+        	System.out.println(id);
+            if (activeTurtles.contains(id)) {
+              	currentTurtles.add(id);
                 SingleTurtle turtle =
                         (SingleTurtle) turtleManager.getEntryList().get(i).getSecondValue();
                 value = turtleCommand.executeCommand(args, turtle);
             }
         }
+        
+        for(int x: activeTurtles){
+        	if(!currentTurtles.contains(x)){
+        		addTurtle( (int) x);
+        	}
+        }
+        
         return value;
     }
 }

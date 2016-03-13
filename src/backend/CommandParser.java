@@ -2,7 +2,6 @@ package backend;
 
 
 import java.util.*;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,8 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import frontend.*;
-
-/////WHEN 
+import frontend.turtle.MultipleTurtles;
 
 public class CommandParser {
 	
@@ -37,29 +35,18 @@ public class CommandParser {
 	
 	public Object parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean updateString, boolean read) {
 		command = command.trim();
-		if(updateString){
-			originalCommand = command;
-		}
-		if (command.equals("")){
-			return 0;
-		}
-		String[] commandPieces = command.split("\\s+");
-		if ( commandPieces.length == 0) {
+		if(parsingHouseKeeping(updateString, command, terminal, workspace, commandManager) == null){
 			throwError("Not a Valid Command!");
-			return null;
 		}
-		String instruction = parseCommand(commandPieces[0]);
-		if ( commandPieces.length >= 2) {
-			Pattern p = Pattern.compile("\\((.*?)\\)");
-			Matcher m = p.matcher(command);
-			if(m.find()) {
-				handleGrouping(command,terminal,commandManager,workspace,myTurtles);
-				return 0; //check this
-			}
-		}
+		
+		String instruction = parseCommand(command.split("\\s+")[0]);
 		if (myUserDefinedHandler.isLoopCommand(instruction)) {
-			myUserDefinedHandler.callCommand(command, instruction, this, terminal, 
-					commandManager, workspace, read);
+			Double loopVal = myUserDefinedHandler.callCommand(command, instruction, this, terminal, 
+					commandManager, workspace, read, myTurtles);
+			if(loopVal != null){
+				terminal.addEntry(new StringNumEntry(originalCommand,loopVal),false);
+			}
+			return 0;
 		} 
 		else {
 			String newCommand = methodLoop(command, commandManager);
@@ -68,26 +55,50 @@ public class CommandParser {
 			}
 			if(!command.equals(newCommand)){
 				parse(newCommand, terminal, commandManager, workspace, false, read);
-				return 0;
 			}
-			
-			commandPieces = newCommand.split("\\s");
-			System.out.println(newCommand);
+			else{
+			String[] commandPieces = newCommand.split("\\s");
 			List<ParseNode> commandTree = makeTree(commandPieces,workspace, commandManager);
 			if(commandTree == null){
 				throwError("Not a Valid Command!");
 				return null;
 			}
-			if(!read){
-				return 0;
-			}
-			double result = 0.0;
-			for(ParseNode node: commandTree){
-				result = readTree(node, myTurtles);
-			}
-			terminal.addEntry(new StringNumEntry(originalCommand,result),false);
+			if(read){
+				treeReader(commandTree, terminal);
+			}}
 		}	
 		return 0;	
+	}
+	
+	private String parsingHouseKeeping(boolean updateString, String command, EntryManager terminal, EntryManager workspace, EntryManager commandManager){
+		if(updateString){
+			originalCommand = command;
+		}
+		if (command.equals("")){
+			return "";
+		}
+		String[] commandPieces = command.split("\\s+");
+		if ( commandPieces.length == 0) {
+			return null;
+		}
+		if ( commandPieces.length >= 2) {
+			Pattern p = Pattern.compile("\\((.*?)\\)");
+			Matcher m = p.matcher(command);
+			if(m.find()) {
+				handleGrouping(command,terminal,commandManager,workspace,myTurtles);
+				return ""; //check this
+			}
+		}
+		
+		return "";
+	}
+	
+	private void treeReader(List<ParseNode> commandTree, EntryManager terminal){
+		double result = 0.0;
+		for(ParseNode node: commandTree){
+			result = readTree(node, myTurtles);
+		}
+		terminal.addEntry(new StringNumEntry(originalCommand,result),false);
 	}
 	
 	private void handleGrouping(String command, EntryManager terminal, EntryManager commandManager,
@@ -241,7 +252,6 @@ public class CommandParser {
 		if(parseCommand(commands[0]).equals("")){
 			return null;
 		}
-		System.out.println(parseCommand(commands[0]));
 		List<ParseNode> instructions = new ArrayList<ParseNode>();
 		instructions.add(root);
 		for(int i = 1;i< commands.length; i++){
