@@ -42,7 +42,7 @@ public class Commands{
 			MathInterface command = instructions.get(s);
 			return command.executeCommand(args);
 		} else {
-			return myTurtles.executeCommand(s, args);
+			return myTurtles.executeCommand(s, args, myTurtles);
 		}	
 	}
 	
