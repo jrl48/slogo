@@ -21,7 +21,7 @@ public abstract class ModuleView {
     private static final double WIDTH = 300;
     private ResourceBundle sceneResources =
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);
-    private final String[] entryValues = new String[] { sceneResources.getString("FIRSTVALUE"),
+    private String[] entryValues = new String[] { sceneResources.getString("FIRSTVALUE"),
                                                         sceneResources.getString("SECONDVALUE") };
     private TableView<Entry> myTableView;
     private String title;
