@@ -13,6 +13,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import methodInterfaces.DisplayClearStamps;
 import methodInterfaces.DisplayInterface;
 import methodInterfaces.DisplayPenColor;
 import methodInterfaces.DisplaySetBackground;
@@ -119,6 +120,7 @@ public class MultipleTurtles {
         displayInstructions.put("GetPenColor", new DisplayPenColor());
         displayInstructions.put("GetShape", new DisplayShape());
         displayInstructions.put("Stamp", new DisplayStamp());
+        displayInstructions.put("ClearStamps", new DisplayClearStamps());
         multiTurtleInstructions.put("ID", new TurtleID());
         multiTurtleInstructions.put("Turtles", new TurtleTurtles());
         multiTurtleInstructions.put("Tell", new TurtleTellMulti());
@@ -127,6 +129,7 @@ public class MultipleTurtles {
     }
 
     public double executeCommand (String s, double[] args, MultipleTurtles myTurtles) {
+    	System.out.println(s);
     		double value = 0.0;
     		for (Entry t : turtleManager.getEntryList()) {
     			SingleTurtle turtle = (SingleTurtle) t.getSecondValue();
@@ -135,7 +138,7 @@ public class MultipleTurtles {
     		    		TurtleInterface turtleCommand = turtleInstructions.get(s);
     		    		value = turtleCommand.executeCommand(args, turtle);
     		    	}
-    		    	else if(turtleInstructions.containsKey(s)){
+    		    	else if(displayInstructions.containsKey(s)){
     		    		System.out.println("??");
     		    		DisplayInterface displayCommand = displayInstructions.get(s);
     		    		value = displayCommand.executeCommand(args, turtle, myDisplay, myDisplayPreferences, colorManager, shapeManager);
