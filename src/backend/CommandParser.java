@@ -249,7 +249,6 @@ public class CommandParser {
 		if(parseCommand(commands[0]).equals("")){
 			return null;
 		}
-		System.out.println(parseCommand(commands[0]));
 		List<ParseNode> instructions = new ArrayList<ParseNode>();
 		instructions.add(root);
 		for(int i = 1;i< commands.length; i++){
