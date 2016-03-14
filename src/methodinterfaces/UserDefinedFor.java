@@ -45,10 +45,14 @@ public class UserDefinedFor implements UserDefinedInterface {
 			Entry repcount = new StringNumEntry(loopStuff[0],startNum);
 			workspace.addEntry(repcount, true);
 			for ( Integer i = startNum; i < endNum; i+=increment ) {
+				boolean add = false;
+				if(i == endNum - 1){
+					add = true;
+				}
 				workspace.removeEntry(repcount);
 				repcount.setSecondValue((double)i);
 				workspace.addEntry(repcount, true);
-				parser.parse(newCommand, terminal, commandManager, workspace, false, read);
+				parser.parse(newCommand, terminal, commandManager, workspace, false, read, add);
 			}
 		} catch (NumberFormatException e) {
 			parser.throwError("Not a Valid Command!");

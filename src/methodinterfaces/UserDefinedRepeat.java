@@ -32,10 +32,14 @@ public class UserDefinedRepeat implements UserDefinedInterface  {
 			Entry repcount = new StringNumEntry("repcount",0.0);
 			workspace.addEntry(repcount, true);
 			for ( int i = 1; i <= expr; i++) {
+				boolean add = false;
+				if(i == expr){
+					add = true;
+				}
 				workspace.removeEntry(repcount);
 				repcount.setSecondValue((double)i);
 				workspace.addEntry(repcount, true);
-				parser.parse(newCommand, terminal, commandManager, workspace, false, read);
+				parser.parse(newCommand, terminal, commandManager, workspace, false, read, add);
 			}
 		} catch (NumberFormatException e) {
 			parser.throwError("Not a Valid Command!");

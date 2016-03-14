@@ -39,9 +39,9 @@ public class UserDefinedIfElse implements UserDefinedInterface {
 				return;
 			}
 			if ( expr != 0 )
-				parser.parse(newTrueCommand, terminal, commandManager, workspace, false, read);
+				parser.parse(newTrueCommand, terminal, commandManager, workspace, false, read, true);
 			else
-				parser.parse(newFalseCommand, terminal, commandManager, workspace, false, read);
+				parser.parse(newFalseCommand, terminal, commandManager, workspace, false, read, true);
 		} catch (NumberFormatException e) {
 			parser.throwError("Not a Valid Command!");
 		}

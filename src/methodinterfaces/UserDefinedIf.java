@@ -30,7 +30,7 @@ public class UserDefinedIf implements UserDefinedInterface {
 				return;
 			}
 			if ( expr != 0 )
-				parser.parse(newCommand, terminal, commandManager, workspace, false, read);
+				parser.parse(newCommand, terminal, commandManager, workspace, false, read, true);
 			else
 				terminal.addEntry(new StringNumEntry(command,0.0), false);
 		} catch (NumberFormatException e) {

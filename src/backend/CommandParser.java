@@ -31,51 +31,56 @@ public class CommandParser {
 		myLanguage = "English";
 	}
 	
-	public Object parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean updateString, boolean read) {
+	public Object parse(String command, EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean updateString, boolean read, boolean add) {
 		command = command.trim();
 		if(parsingHouseKeeping(updateString, command, terminal, workspace, commandManager) == null){
 			throwError("Not a Valid Command!");
 		}
 		else if(parsingHouseKeeping(updateString, command, terminal, workspace, commandManager).equals("")){
 			return 0;
-		}
-		
+		}	
 		String instruction = parseCommand(command.split("\\s+")[0]);
 		if (myUserDefinedHandler.isLoopCommand(instruction)) {
-			loopHandler(command,instruction, terminal, commandManager, workspace, read);
+			loopHandler(command,instruction, terminal, commandManager, workspace, read, add);
 			return 0;
 		} 
 		else {
+			for(String s: command.split("\\s+")){
+				if(myUserDefinedHandler.isLoopCommand(parseCommand(s))){
+					parse(command.substring(0, command.indexOf(s)).trim(), terminal, commandManager, workspace, false, read, false);
+					parse(command.substring(command.indexOf(s)).trim(), terminal, commandManager, workspace, false, read, true);
+					return 0;
+				}
+			}
 			String newCommand = methodLoop(command, commandManager);
 			if(newCommand == null){
 				return null;
 			}
 			if(!command.equals(newCommand)){
-				parse(newCommand, terminal, commandManager, workspace, false, read);
+				parse(newCommand, terminal, commandManager, workspace, false, read, true);
 			}
 			else{
 			String[] commandPieces = newCommand.split("\\s");
-			System.out.println(newCommand);
 			List<ParseNode> commandTree = makeTree(commandPieces,workspace, commandManager);
 			if(commandTree == null){
 				throwError("Not a Valid Command!");
 				return null;
 			}
 			if(read){
-				treeReader(commandTree, terminal);
+				treeReader(commandTree, terminal, add );
 			}}
 		}	
 		return 0;	
 	}
 	
-	private void loopHandler(String command, String instruction, EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean read){
+	private void loopHandler(String command, String instruction, EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean read, boolean add){
 		Double loopVal = myUserDefinedHandler.callCommand(command, instruction, this, terminal, 
 				commandManager, workspace, read, myTurtles);
 		command = command.substring(command.lastIndexOf(']')+1).trim();
 		if(loopVal != null && command.equals("")){
 			terminal.addEntry(new StringNumEntry(originalCommand,loopVal),false);
 		}
-		parse(command, terminal, commandManager, workspace, false, read);
+		parse(command, terminal, commandManager, workspace, false, read, add);
 	}
 	
 	private String parsingHouseKeeping(boolean updateString, String command, EntryManager terminal, EntryManager workspace, EntryManager commandManager){
@@ -101,12 +106,15 @@ public class CommandParser {
 		return " ";
 	}
 	
-	private void treeReader(List<ParseNode> commandTree, EntryManager terminal){
+	private void treeReader(List<ParseNode> commandTree, EntryManager terminal, boolean add){
 		double result = 0.0;
 		for(ParseNode node: commandTree){
 			result = readTree(node, myTurtles);
 		}
-		terminal.addEntry(new StringNumEntry(originalCommand,result),false);
+		
+		if(add){
+			terminal.addEntry(new StringNumEntry(originalCommand,result),false);
+		}
 	}
 	
 	private void handleGrouping(String command, EntryManager terminal, EntryManager commandManager,
@@ -138,7 +146,7 @@ public class CommandParser {
 		if (originalCommandPieces[0] != "\\(") {
 			newCommand = originalCommandPieces[0] + " " + newCommand;
 		}
-		parse(newCommand,terminal,commandManager,workspace, false, true);
+		parse(newCommand,terminal,commandManager,workspace, false, true, true);
 		
 	}
 	
@@ -176,7 +184,6 @@ public class CommandParser {
 						return null;
 					}
 					command = command.substring(0, loc) + str2;
-
 				}
 			}
 		}

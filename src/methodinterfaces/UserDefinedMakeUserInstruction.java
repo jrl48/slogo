@@ -19,14 +19,9 @@ public class UserDefinedMakeUserInstruction implements UserDefinedInterface {
 		System.out.println("SUB1" + substring1);
 		substring2 = command.substring(breakpoint + 2 + 2, command.length() - 1);
 		if(substring2.equals("")){
-			terminal.addEntry(new StringNumEntry(command,1.0), false);
-			commandManager.addEntry(new StringStringEntry(substring1, " "), true);
+			terminal.addEntry(new StringNumEntry(command,0.0), false);
 			return;
 		}
-		System.out.println("SUB2" + substring2);
-		substring1 = substring1.trim();
-		substring2 = substring2.trim();
-		commandManager.addEntry(new StringStringEntry(substring1, substring2), true);
 		
 		String parameters = substring1.substring(substring1.indexOf('[') + 1, substring1.indexOf(']')).trim();
 		System.out.println("SUB1.5" + parameters);
@@ -52,13 +47,13 @@ public class UserDefinedMakeUserInstruction implements UserDefinedInterface {
 //		if(parser.makeTree(instructions, workspace, commandManager) == null){
 //			terminal.addEntry(new StringNumEntry(command,0.0), false);
 //		}
-		if(parser.parse(tempCommand.trim(), terminal, commandManager, workspace, false, false) == null){
+		if(parser.parse(tempCommand.trim(), terminal, commandManager, workspace, false, false, false) == null){
 			terminal.addEntry(new StringNumEntry(command,0.0), false);
 			//commandManager.removeEntry(); //figure out how to remove the entry
 		}
 		else{
 			terminal.addEntry(new StringNumEntry(command,1.0), false);
-			commandManager.addEntry(new StringStringEntry(substring1, substring2), true);
+			commandManager.addEntry(new StringStringEntry(substring1.trim(), substring2.trim()), true);
 		}
 	}
 

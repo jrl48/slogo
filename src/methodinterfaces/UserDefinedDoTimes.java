@@ -44,10 +44,14 @@ public class UserDefinedDoTimes implements UserDefinedInterface {
 			Entry repcount = new StringNumEntry(variableLimit[0],0.0);
 			workspace.addEntry(repcount, true);
 			for ( Integer i = 1; i <= varLim; i++ ) {
+				boolean add = false;
+				if(i == varLim){
+					add = true;
+				}
 				workspace.removeEntry(repcount);
 				repcount.setSecondValue((double)i);
 				workspace.addEntry(repcount, true);
-				parser.parse(newCommand, terminal, commandManager, workspace, false, read);
+				parser.parse(newCommand, terminal, commandManager, workspace, false, read, add);
 			}
 		} catch (NumberFormatException e) {
 			parser.throwError("Not a Valid Command!");
