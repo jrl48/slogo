@@ -36,14 +36,13 @@ public class CommandParser {
 		if(parsingHouseKeeping(updateString, command, terminal, workspace, commandManager) == null){
 			throwError("Not a Valid Command!");
 		}
+		else if(parsingHouseKeeping(updateString, command, terminal, workspace, commandManager).equals("")){
+			return 0;
+		}
 		
 		String instruction = parseCommand(command.split("\\s+")[0]);
 		if (myUserDefinedHandler.isLoopCommand(instruction)) {
-			Double loopVal = myUserDefinedHandler.callCommand(command, instruction, this, terminal, 
-					commandManager, workspace, read, myTurtles);
-			if(loopVal != null){
-				terminal.addEntry(new StringNumEntry(originalCommand,loopVal),false);
-			}
+			loopHandler(command,instruction, terminal, commandManager, workspace, read);
 			return 0;
 		} 
 		else {
@@ -56,6 +55,7 @@ public class CommandParser {
 			}
 			else{
 			String[] commandPieces = newCommand.split("\\s");
+			System.out.println(newCommand);
 			List<ParseNode> commandTree = makeTree(commandPieces,workspace, commandManager);
 			if(commandTree == null){
 				throwError("Not a Valid Command!");
@@ -66,6 +66,16 @@ public class CommandParser {
 			}}
 		}	
 		return 0;	
+	}
+	
+	private void loopHandler(String command, String instruction, EntryManager terminal, EntryManager commandManager, EntryManager workspace, boolean read){
+		Double loopVal = myUserDefinedHandler.callCommand(command, instruction, this, terminal, 
+				commandManager, workspace, read, myTurtles);
+		command = command.substring(command.lastIndexOf(']')+1).trim();
+		if(loopVal != null && command.equals("")){
+			terminal.addEntry(new StringNumEntry(originalCommand,loopVal),false);
+		}
+		parse(command, terminal, commandManager, workspace, false, read);
 	}
 	
 	private String parsingHouseKeeping(boolean updateString, String command, EntryManager terminal, EntryManager workspace, EntryManager commandManager){
@@ -88,7 +98,7 @@ public class CommandParser {
 			}
 		}
 		
-		return "";
+		return " ";
 	}
 	
 	private void treeReader(List<ParseNode> commandTree, EntryManager terminal){
