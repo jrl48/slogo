@@ -39,7 +39,7 @@ public class TurtlePreferences extends Preferences {
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + "Pref");
     private ColorPicker penColor = new ColorPicker(Color.BLACK);
     private ObjectProperty<Image> imageProperty =
-            new SimpleObjectProperty<Image>(new Image(getClass().getClassLoader()
+            new SimpleObjectProperty<>(new Image(getClass().getClassLoader()
                     .getResourceAsStream(UserInterface.DEFAULT_RESOURCE_PACKAGE + "turtle.png")));
     private Button chooseImage = new Button(prefResources.getString("IMAGE_CHOICE_TITLE"));
     private ContextMenu prefWindow;
@@ -49,23 +49,23 @@ public class TurtlePreferences extends Preferences {
 
     // List of Menu Options in ContextMenu
     private List<Menu> myOptions =
-            new ArrayList<Menu>(Arrays.asList(new Menu("Turtle Image"), new Menu("PenProperties")));
+            new ArrayList<>(Arrays.asList(new Menu("Turtle Image"), new Menu("PenProperties")));
 
     // List of Options Specific to Turtle Image Setting
     private ArrayList<MenuItem> turtleImageSubOptions =
-            new ArrayList<MenuItem>(Arrays.asList(new CustomMenuItem(chooseImage)));
+            new ArrayList<>(Arrays.asList(new CustomMenuItem(chooseImage)));
 
     // Lists of Options Specific to Pen Properties Settings (need both because of bug inherit in
     // javafx.customCell)
     private ArrayList<MenuItem> penPropertiesSubOptions =
-            new ArrayList<MenuItem>(Arrays.asList(new CustomMenuItem(penDash),
+            new ArrayList<>(Arrays.asList(new CustomMenuItem(penDash),
                                                   new CustomMenuItem(penActive)));
     private List<Node> additionalPenProperties =
-            new ArrayList<Node>(Arrays.asList(penWidthField, penColor));
+            new ArrayList<>(Arrays.asList(penWidthField, penColor));
 
     // Combined List of All SubOptions Lists
     private List<ArrayList<MenuItem>> myControls =
-            new ArrayList<ArrayList<MenuItem>>(Arrays.asList(turtleImageSubOptions,
+            new ArrayList<>(Arrays.asList(turtleImageSubOptions,
                                                              penPropertiesSubOptions));
 
     /**

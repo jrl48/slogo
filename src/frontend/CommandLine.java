@@ -79,7 +79,7 @@ public class CommandLine {
         enterPressed = false;
 
         if (!myTextField.getText().isEmpty()) {
-            parser.parse(myTextField.getText(), terminal, command, workspace, true, true);
+            parser.parse(myTextField.getText(), terminal, command, workspace, true, true, true);
             myTextField.clear();
         }
 
@@ -106,13 +106,19 @@ public class CommandLine {
 
     {
         if (code == KeyCode.SHIFT)
+        {
             shiftPressed = beingPressed;
+        }
 
         else if (code == KeyCode.ENTER)
+        {
             enterPressed = beingPressed;
+        }
 
         if (enterPressed && shiftPressed)
+        {
             enterCommand(parser, terminal, command, workspace);
+        }
 
     }
 

@@ -18,7 +18,7 @@ public class LanguagePreferences {
     private ResourceBundle sceneResources =
             ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + UserInterface.SCENE);
     private List<String> languages =
-            new ArrayList<String>(Arrays.asList(sceneResources.getString("CHINESE"),
+            new ArrayList<>(Arrays.asList(sceneResources.getString("CHINESE"),
                                                 sceneResources.getString("ENGLISH"),
                                                 sceneResources.getString("FRENCH"),
                                                 sceneResources.getString("GERMAN"),
@@ -33,7 +33,7 @@ public class LanguagePreferences {
 
     private void init (LanguageManager manager, CommandParser parser) {
         manager.addAll(languages);
-        myComboBox = new ComboBox<String>(manager.getChoiceList());
+        myComboBox = new ComboBox<>(manager.getChoiceList());
         myComboBox.setPromptText(sceneResources.getString("LANGUAGES"));
         myComboBox.getStyleClass().add(sceneResources.getString("BUTTONID"));
         myComboBox.setOnAction(e -> changeLanguage(parser, myComboBox.getValue()));

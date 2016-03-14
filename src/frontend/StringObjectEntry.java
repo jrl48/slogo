@@ -1,6 +1,5 @@
 package frontend;
 
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -17,7 +16,7 @@ public class StringObjectEntry implements Entry{
     
     public StringObjectEntry(String firstVal, Object secondVal){
         this.firstValue = new SimpleStringProperty(firstVal);
-        this.secondValue = new SimpleObjectProperty<Object>(secondVal);
+        this.secondValue = new SimpleObjectProperty<>(secondVal);
     }
     public SimpleStringProperty getFirstValueProperty(){
         return firstValue;

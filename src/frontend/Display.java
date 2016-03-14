@@ -11,6 +11,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 
 /**
@@ -28,7 +29,7 @@ public class Display {
     public static final double WIDTH = 500;
     public static final double HEIGHT = 450;
 
-    public Display (DisplayPreferences dispPref, EntryManager turtleManager) {
+    public Display (DisplayPreferences dispPref) {
         initPane(dispPref);
     }
 
@@ -42,6 +43,7 @@ public class Display {
         myPane = new Pane(root);
         myPane.getStyleClass().add(sceneResources.getString("DISPLAYID"));
         myPane.setPrefSize(WIDTH, HEIGHT);
+        myPane.setClip(new Rectangle(WIDTH, HEIGHT));
         setPaneBinding(myPane, dispPref.getDispColorPicker());
     }
 

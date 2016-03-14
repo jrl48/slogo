@@ -16,7 +16,7 @@ import javafx.scene.image.ImageView;
 public class ShapePaletteView extends PaletteView {
     private int shapeColInd = 1;
     private List<Entry> myDefaults =
-            new ArrayList<Entry>(Arrays
+            new ArrayList<>(Arrays
                     .asList(new StringObjectEntry("1", new ImageView(getImage("turtle.png"))),
                             new StringObjectEntry("2", new ImageView(getImage("turtleTest.png"))),
                             new StringObjectEntry("3", new ImageView(getImage("turtle_gif.gif"))),

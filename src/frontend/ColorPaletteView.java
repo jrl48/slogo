@@ -16,7 +16,7 @@ public class ColorPaletteView extends PaletteView {
 
     private int colorColInd = 1;
     private List<Entry> myDefaults =
-            new ArrayList<Entry>(Arrays.asList(new StringObjectEntry("1", Color.WHITE),
+            new ArrayList<>(Arrays.asList(new StringObjectEntry("1", Color.WHITE),
                                                new StringObjectEntry("2", Color.RED),
                                                new StringObjectEntry("3", Color.ORANGE),
                                                new StringObjectEntry("4", Color.YELLOW),

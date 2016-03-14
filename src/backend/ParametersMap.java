@@ -54,6 +54,8 @@ public class ParametersMap {
 		myParamMap.put("Or", 2);
 		myParamMap.put("Not", 1);	
 		
+		myParamMap.put("ID", 0);
+		myParamMap.put("Turtles", 0);
 		myParamMap.put("SetBackground", 1);
 		myParamMap.put("SetPenColor", 1);
 		myParamMap.put("SetPenSize", 1);
