@@ -10,6 +10,7 @@ public class TurtleAsk implements SpecialTurtleInterface {
 
 	@Override
 	public double executeCommand(String command, MultipleTurtles myTurtle, CommandParser parser) {
+	    try{
 		String params = command.substring(command.indexOf('[')+1, command.indexOf(']')).trim();
 		String[] commandArray = command.substring(command.indexOf('[', command.indexOf(']'))+1, command.length() -1).trim().split("\\s+");
 		String newCommand = commandArray[0];
@@ -26,6 +27,11 @@ public class TurtleAsk implements SpecialTurtleInterface {
 		}
 		
 		return myTurtle.executeCommand(parser.parseCommand(newCommand), args, paramArray);
+	    }
+	    catch(StringIndexOutOfBoundsException e){
+	        parser.throwError("Not a valid command");
+	    }
+	    return 0;
 	}
 
 }

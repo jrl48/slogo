@@ -80,9 +80,9 @@ public class CommandParser {
 		if(loopVal != null && command.equals("")){
 			terminal.addEntry(new StringNumEntry(originalCommand,loopVal),false);
 		}
-		if(!instruction.equals("MakeVariable")){
-			parse(command, terminal, commandManager, workspace, false, read, add);
-		}
+		//if(!instruction.equals("MakeVariable")){
+		//parse(command, terminal, commandManager, workspace, false, read, add);
+		//}
 	}
 	
 	private String parsingHouseKeeping(boolean updateString, String command, EntryManager terminal, EntryManager workspace, EntryManager commandManager){
