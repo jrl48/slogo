@@ -1,3 +1,7 @@
+// This entire file is part of my masterpiece.
+// Virginia Cheng
+// This is part of my masterpiece because it is an example of using the interface and how it works with the MultipleTurtles class.
+
 package methodinterfaces;
 
 import java.util.HashSet;

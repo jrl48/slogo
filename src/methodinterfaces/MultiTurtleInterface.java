@@ -1,3 +1,7 @@
+//This code is a part of my masterpiece
+// Virginia Cheng
+// It is apart of my masterpiece because it uses interfaces to allow the program to easily create different commands.
+
 package methodinterfaces;
 
 import frontend.EntryManager;

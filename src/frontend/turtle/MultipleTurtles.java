@@ -1,3 +1,14 @@
+// This code is part of my masterpiece
+// Virginia Cheng
+// I chose this code because I think it shows my current understand of "reflection",
+// and although it is not real reflection and could be improved with the use of resource files, I believe it is well designed
+// because it uses the the map to execute the commands rather than having a big switch case.
+// Also it manages all the single turtle objects in a centralized location, which goes with the idea of encapsulation.
+// Here the only methods accessible by on outside class are the executeCommands() and the add methods(),
+// but the creation of the turtle map and how the single turtles are accessed is hidden.
+// This class also allows the program to access any specific turtle command on any active turtle or choosen turtle.
+
+
 package frontend.turtle;
 
 import java.util.*;
@@ -125,7 +136,6 @@ public class MultipleTurtles {
     }
 
     public double executeCommand (String s, double[] args, MultipleTurtles myTurtles) {
-    	System.out.println(s);
     		double value = 0.0;
     		for (Entry t : turtleManager.getEntryList()) {
     			SingleTurtle turtle = (SingleTurtle) t.getSecondValue();
@@ -159,7 +169,6 @@ public class MultipleTurtles {
         
         for (int i = 0; i < turtleManager.getEntryList().size(); i++) {
         	int id = Integer.parseInt(((String) turtleManager.getEntryList().get(i).getFirstValue()).split("\\s+")[1]);
-        	System.out.println(id);
             if (activeTurtles.contains(id)) {
               	currentTurtles.add(id);
                 SingleTurtle turtle =

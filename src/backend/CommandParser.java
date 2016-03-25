@@ -104,7 +104,6 @@ public class CommandParser {
 				return ""; //check this
 			}
 		}
-		
 		return " ";
 	}
 	
@@ -113,7 +112,6 @@ public class CommandParser {
 		for(ParseNode node: commandTree){
 			result = readTree(node, myTurtles);
 		}
-		
 		if(add){
 			terminal.addEntry(new StringNumEntry(originalCommand,result),false);
 		}
@@ -153,6 +151,7 @@ public class CommandParser {
 	}
 	
 	private int getEndBracket(String command, int startBracket){
+		
 		int endBracket = command.lastIndexOf(']');
 		int counter = 0;
 		for(int i = startBracket+ 1; i < command.length(); i++){
