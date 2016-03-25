@@ -61,4 +61,10 @@ public class ShapePaletteView extends PaletteView {
                 .setCellFactory(c -> new ImageDisplayCell());
     }
 
+    @Override
+    protected void addToDefaultsList (String index, String value) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }

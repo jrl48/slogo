@@ -1,6 +1,10 @@
+// This entire file is part of my masterpiece.
+// Joe Lilien
 package frontend;
 
+import java.util.Enumeration;
 import java.util.List;
+import java.util.ResourceBundle;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -29,6 +33,31 @@ public abstract class PaletteView extends ModuleView {
     protected PaletteView (EntryManager manager, String title, String[] colTitles) {
         super(manager, title, colTitles);
     }
+
+    /**
+     * Iterates through the ResourceBundle passed in as a parameter and calls the addToDefaultsList
+     * Method at each iteration. Works to generate the list of default for each PaletteView subclass
+     * that is instantiated, based on the appropriate properties file
+     * 
+     * @param defaultProperties
+     */
+    protected void generateDefaultsList (ResourceBundle defaultProperties) {
+        Enumeration<String> defaultKeys = defaultProperties.getKeys();
+        while (defaultKeys.hasMoreElements()) {
+            String index = defaultKeys.nextElement();
+            String value = defaultProperties.getString(index);
+            addToDefaultsList(index, value);
+        }
+    }
+
+    /**
+     * Uses Reflection to add a new Entry item to the list of defaults, based on the index and value
+     * parameters passed in. Implementation differs by subclass palette needs (i.e shape vs color)
+     * 
+     * @param index
+     * @param value
+     */
+    protected abstract void addToDefaultsList (String index, String value);
 
     /**
      * Initializes default values in PaletteView's EntryManager to a given list input, defined by

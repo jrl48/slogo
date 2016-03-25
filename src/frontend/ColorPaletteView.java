@@ -1,3 +1,5 @@
+// This entire file is part of my masterpiece.
+// Joe Lilien
 package frontend;
 
 import javafx.scene.control.TableColumn;
@@ -14,16 +16,10 @@ import javafx.scene.paint.Color;
  */
 public class ColorPaletteView extends PaletteView {
 
-    private int colorColInd = 1;
-    private List<Entry> myDefaults =
-            new ArrayList<>(Arrays.asList(new StringObjectEntry("1", Color.WHITE),
-                                               new StringObjectEntry("2", Color.RED),
-                                               new StringObjectEntry("3", Color.ORANGE),
-                                               new StringObjectEntry("4", Color.YELLOW),
-                                               new StringObjectEntry("5", Color.GREEN),
-                                               new StringObjectEntry("6", Color.BLUE),
-                                               new StringObjectEntry("7", Color.MAGENTA),
-                                               new StringObjectEntry("8", Color.BLACK)));
+    private List<Entry> myDefaults = new ArrayList<>();
+    private int myColorColInd = 1;
+    private ResourceBundle myDefaultResources =
+            ResourceBundle.getBundle(UserInterface.DEFAULT_RESOURCE_PACKAGE + "ColorDefaults");
 
     /**
      * Constructor extends functionality of PaletteView constructor and initializes default values
@@ -39,6 +35,7 @@ public class ColorPaletteView extends PaletteView {
                              String[] colTitles,
                              DisplayPreferences display) {
         super(manager, title, colTitles);
+        generateDefaultsList(myDefaultResources);
         initDefaults(myDefaults, manager);
         setCustomCells();
         defineListener(display);
@@ -72,13 +69,33 @@ public class ColorPaletteView extends PaletteView {
 
     /**
      * Sets CellFactory of Shape Column to ColorDisplayCells which will display a visual
-     * representation of the Color they hold
+     * representation of the Color they hold. Note: although cast is unchecked, this is the only
+     * location in which the customized color display cells are to be used, so this method is not at
+     * risk of causing any errors
      */
     @Override
     @SuppressWarnings("unchecked")
     protected void setCustomCells () {
-        ((TableColumn<Entry, Color>) getMyTableView().getColumns().get(colorColInd))
+        ((TableColumn<Entry, Color>) getMyTableView().getColumns().get(myColorColInd))
                 .setCellFactory(c -> new ColorDisplayCell());
+    }
+
+    /**
+     * Implementation of abstract method, uses reflection to generate a new StringObjectEntry based
+     * on String arguments and add it to myDefaults List
+     */
+    @Override
+    protected void addToDefaultsList (String index, String value) {
+        try {
+            myDefaults.add(new StringObjectEntry(index,
+                                                 (Color) Color.class.getField(value).get(null)));
+        }
+        catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException
+                | SecurityException e) {
+            ErrorMessage err =
+                    new ErrorMessage(super.getSceneResources().getString("INVALID_DEFAULT"));
+            err.showError();
+        }
     }
 
 }
