@@ -88,9 +88,7 @@ public class MultipleTurtles {
     }
 
     public void addTurtle () {       
-        Turtle turtle = new SingleTurtle(myDisplayPane, animationController);
-        turtleManager.addEntry(new StringObjectEntry("Turtle " + turtleManager.getEntryList().size()+1, turtle), false);
-        myDisplayPane.getChildren().add(turtle.getBody());
+        addTurtle(turtleManager.getEntryList().size()+1);
     }
     
     public void addTurtle (int id) {      
