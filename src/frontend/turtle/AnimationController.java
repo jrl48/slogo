@@ -1,3 +1,20 @@
+// This entire file is part of my masterpiece.
+// Alan Cavalcanti
+
+/*
+ * This piece of code represents my Masterpiece. It's the animation controller.
+ * Initially, it would simply take in the Turtles and what they would do, and apply
+ * their transformation. Besides buggy, the code was too similar and verbose.
+ * 
+ * So while refactoring, I redesigned the code to have a queue of a series of Actions 
+ * that the Turtle could effectively do. Using abstract Class hierarchy and generics,
+ * the Animation controller pops the queue, and updates the Turtles' and Lines' parameters.
+ * 
+ * With this change, the solutions seems more elegant, and cut down the amount of code
+ * in the methods significantly (to the point that the methods have one line now)
+ * 
+ */
+
 package frontend.turtle;
 
 import java.util.ArrayList;

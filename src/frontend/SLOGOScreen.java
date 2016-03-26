@@ -1,4 +1,4 @@
-package frontend;
+	package frontend;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +48,7 @@ public class SLOGOScreen {
 
     // List of controls to be added to scene to allow saving functionality
     private List<Node> mySaveControls =
-            new ArrayList<>(Arrays.asList(saveWorkspace, mySavedWorkspaces, newWorkspace));
+            new ArrayList<Node>(Arrays.asList(saveWorkspace, mySavedWorkspaces, newWorkspace));
 
     public void init (Stage s) {
         s.setTitle(sceneResources.getString("TITLE"));
