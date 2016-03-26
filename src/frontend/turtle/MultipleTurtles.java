@@ -1,60 +1,25 @@
 // This code is part of my masterpiece
 // Virginia Cheng
-// I chose this code because I think it shows my current understand of "reflection",
-// and although it is not real reflection and could be improved with the use of resource files, I believe it is well designed
-// because it uses the the map to execute the commands rather than having a big switch case.
+// I chose this code because I think it shows my current understand of reflection (in the makeMap() method) :
+// it utilizes a resource files and the while loop instead of having a hardcoded map, which hides a layer of the program from the user, as well as keeping all data values in a centralized resource file.
 // Also it manages all the single turtle objects in a centralized location, which goes with the idea of encapsulation.
-// Here the only methods accessible by on outside class are the executeCommands() and the add methods(),
-// but the creation of the turtle map and how the single turtles are accessed is hidden.
-// This class also allows the program to access any specific turtle command on any active turtle or choosen turtle.
+// Here the only methods accessible by on outside class are the executeCommands() and the add methods(), but the creation of the turtle map and how the single turtles are accessed is hidden.
+// This class also allows the program to access any specific turtle command on any active turtle or chosen turtle.
 
 
 package frontend.turtle;
 
 import java.util.*;
-
+import java.lang.reflect.InvocationTargetException;
 import frontend.Display;
 import frontend.DisplayPreferences;
 import frontend.Entry;
 import frontend.EntryManager;
 import frontend.StringObjectEntry;
-import javafx.beans.property.ObjectProperty;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
-import methodinterfaces.DisplayClearStamps;
 import methodinterfaces.DisplayInterface;
-import methodinterfaces.DisplayPenColor;
-import methodinterfaces.DisplaySetBackground;
-import methodinterfaces.DisplaySetPalette;
-import methodinterfaces.DisplaySetPenColor;
-import methodinterfaces.DisplaySetPenSize;
-import methodinterfaces.DisplaySetShape;
-import methodinterfaces.DisplayShape;
-import methodinterfaces.DisplayStamp;
 import methodinterfaces.MultiTurtleInterface;
-import methodinterfaces.TurtleBackward;
-import methodinterfaces.TurtleClearScreen;
-import methodinterfaces.TurtleForward;
-import methodinterfaces.TurtleHeading;
-import methodinterfaces.TurtleHideTurtle;
-import methodinterfaces.TurtleHome;
-import methodinterfaces.TurtleID;
 import methodinterfaces.TurtleInterface;
-import methodinterfaces.TurtleIsPenDown;
-import methodinterfaces.TurtleIsShowing;
-import methodinterfaces.TurtleLeft;
-import methodinterfaces.TurtlePenDown;
-import methodinterfaces.TurtlePenUp;
-import methodinterfaces.TurtleRight;
-import methodinterfaces.TurtleSetHeading;
-import methodinterfaces.TurtleSetPosition;
-import methodinterfaces.TurtleSetTowards;
-import methodinterfaces.TurtleShowTurtle;
-import methodinterfaces.TurtleTellMulti;
-import methodinterfaces.TurtleTurtles;
-import methodinterfaces.TurtleXCor;
-import methodinterfaces.TurtleYCor;
-
 
 public class MultipleTurtles {
     private EntryManager turtleManager;
@@ -66,10 +31,11 @@ public class MultipleTurtles {
     private Map<String, MultiTurtleInterface> multiTurtleInstructions =
             new HashMap<String, MultiTurtleInterface>();
     private Map<String, DisplayInterface> displayInstructions = new HashMap<String, DisplayInterface>();
-    private ObjectProperty<Image> defaultTurtleImage;
     private AnimationController animationController;
     private EntryManager colorManager;
     private EntryManager shapeManager;
+    private static final String RESOURCE_STRING = "resources/backendResources/";
+
 
     public MultipleTurtles (EntryManager turtleManager,
                             Pane displayPane, EntryManager colorManager, EntryManager shapeManager, Display myDisplay, DisplayPreferences myDisplayPreferences,
@@ -84,13 +50,19 @@ public class MultipleTurtles {
         this.shapeManager = shapeManager;
 
         addTurtle();
-        createTurtleMap();
+        
+        ResourceBundle myTurtleResources = ResourceBundle.getBundle(RESOURCE_STRING+ "turtleCommands");
+        
+        try {
+			createMap(myTurtleResources);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
     }
-
+   
     public void addTurtle () {       
-        Turtle turtle = new SingleTurtle(myDisplayPane, animationController);
-        turtleManager.addEntry(new StringObjectEntry("Turtle " + turtleManager.getEntryList().size()+1, turtle), false);
-        myDisplayPane.getChildren().add(turtle.getBody());
+        addTurtle(turtleManager.getEntryList().size()+1);
     }
     
     public void addTurtle (int id) {      
@@ -98,41 +70,16 @@ public class MultipleTurtles {
         turtleManager.addEntry(new StringObjectEntry("Turtle " + id, turtle), false);
         myDisplayPane.getChildren().add(turtle.getBody());
     }
-
-    private void createTurtleMap () { // could make this a loop with a resource file and reflection
-                                      // <<< do if there is time
-        turtleInstructions.put("Forward", new TurtleForward());
-        turtleInstructions.put("Backward", new TurtleBackward());
-        turtleInstructions.put("Right", new TurtleRight());
-        turtleInstructions.put("Left", new TurtleLeft());
-        turtleInstructions.put("SetHeading", new TurtleSetHeading());
-        turtleInstructions.put("SetTowards", new TurtleSetTowards());
-        turtleInstructions.put("SetPosition", new TurtleSetPosition());
-        turtleInstructions.put("PenUp", new TurtlePenUp());
-        turtleInstructions.put("PenDown", new TurtlePenDown());
-        turtleInstructions.put("ShowTurtle", new TurtleShowTurtle());
-        turtleInstructions.put("HideTurtle", new TurtleHideTurtle());
-        turtleInstructions.put("Home", new TurtleHome());
-        turtleInstructions.put("ClearScreen", new TurtleClearScreen());
-        turtleInstructions.put("XCoordinate", new TurtleXCor());
-        turtleInstructions.put("YCoordinate", new TurtleYCor());
-        turtleInstructions.put("Heading", new TurtleHeading());
-        turtleInstructions.put("IsPenDown", new TurtleIsPenDown());
-        turtleInstructions.put("IsShowing", new TurtleIsShowing());        
-        displayInstructions.put("SetBackground", new DisplaySetBackground());
-        displayInstructions.put("SetPenColor", new DisplaySetPenColor());
-        displayInstructions.put("SetPenSize", new DisplaySetPenSize());
-        displayInstructions.put("SetShape", new DisplaySetShape());
-        displayInstructions.put("SetPalette", new DisplaySetPalette());
-        displayInstructions.put("GetPenColor", new DisplayPenColor());
-        displayInstructions.put("GetShape", new DisplayShape());
-        displayInstructions.put("Stamp", new DisplayStamp());
-        displayInstructions.put("ClearStamps", new DisplayClearStamps());
-        multiTurtleInstructions.put("ID", new TurtleID());
-        multiTurtleInstructions.put("Turtles", new TurtleTurtles());
-        multiTurtleInstructions.put("Tell", new TurtleTellMulti());
-      //  multiTurtleInstructions.put("Ask", new TurtleAsk());
-        //multiTurtleInstructions.put("AskWith", new TurtleAskWith());
+    
+    private void createMap(ResourceBundle myResource) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, ClassNotFoundException{
+    	Enumeration<String> myKeys = myResource.getKeys();
+    	while (myKeys.hasMoreElements()) {
+            String name = myKeys.nextElement();
+            String className = myResource.getString(name);
+            Class<?> myClass = Class.forName(className);
+            Object instance = myClass.newInstance();
+            turtleInstructions.put(name, (TurtleInterface) instance);
+       }
     }
 
     public double executeCommand (String s, double[] args, MultipleTurtles myTurtles) {
@@ -145,7 +92,6 @@ public class MultipleTurtles {
     		    		value = turtleCommand.executeCommand(args, turtle);
     		    	}
     		    	else if(displayInstructions.containsKey(s)){
-    		    		System.out.println("??");
     		    		DisplayInterface displayCommand = displayInstructions.get(s);
     		    		value = displayCommand.executeCommand(args, turtle, myDisplay, myDisplayPreferences, colorManager, shapeManager);
     		    	}
@@ -171,8 +117,7 @@ public class MultipleTurtles {
         	int id = Integer.parseInt(((String) turtleManager.getEntryList().get(i).getFirstValue()).split("\\s+")[1]);
             if (activeTurtles.contains(id)) {
               	currentTurtles.add(id);
-                SingleTurtle turtle =
-                        (SingleTurtle) turtleManager.getEntryList().get(i).getSecondValue();
+                SingleTurtle turtle = (SingleTurtle) turtleManager.getEntryList().get(i).getSecondValue();
                 value = turtleCommand.executeCommand(args, turtle);
             }
         }
