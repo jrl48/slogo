@@ -26,10 +26,8 @@ public class MultipleTurtles {
     private Pane myDisplayPane;
     private Display myDisplay;
     private DisplayPreferences myDisplayPreferences;
-    private Map<String, TurtleInterface> turtleInstructions =
-            new HashMap<String, TurtleInterface>();
-    private Map<String, MultiTurtleInterface> multiTurtleInstructions =
-            new HashMap<String, MultiTurtleInterface>();
+    private Map<String, TurtleInterface> turtleInstructions = new HashMap<String, TurtleInterface>();
+    private Map<String, MultiTurtleInterface> multiTurtleInstructions = new HashMap<String, MultiTurtleInterface>();
     private Map<String, DisplayInterface> displayInstructions = new HashMap<String, DisplayInterface>();
     private AnimationController animationController;
     private EntryManager colorManager;
@@ -37,8 +35,7 @@ public class MultipleTurtles {
     private static final String RESOURCE_STRING = "resources/backendResources/";
 
 
-    public MultipleTurtles (EntryManager turtleManager,
-                            Pane displayPane, EntryManager colorManager, EntryManager shapeManager, Display myDisplay, DisplayPreferences myDisplayPreferences,
+    public MultipleTurtles (EntryManager turtleManager,Pane displayPane, EntryManager colorManager, EntryManager shapeManager, Display myDisplay, DisplayPreferences myDisplayPreferences,
                             AnimationController animationController) {
     	
     	this.myDisplay = myDisplay;
