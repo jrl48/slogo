@@ -39,4 +39,20 @@ be added to multiple classes rather than just classes with two parameters.
 
 ### Alternate Designs
 
+* The original design handled the projects extensions extremely well, as it allowed for a simple, repetitive process to add more commands and generally followed good coding conventions by reducing the dependencies between the frontend and the backend.
+* The original APIs only altered slightly over the course of the project, as we realized that there were a handful of methods in the CommandParser class that needed to be accessed by other backend classes, so those needed to be added to the API.
+* Two design decisions that were discussed:
+  1. The main design decision we discussed both as a group and with our TAs was the use of reflection to execute commands from the backend versus if-else loops or case-switch statements, and all parties came to the easy conclusion that reflection was preferable because it created more efficient code by using one HashMap rather than iterating through an entire chunky statement to find the correct command; the use of reflection was better in every way.
+  2. Another design discussion I had with my TA was about how to implement commands for multiple turtles, and the discussion was whether to go through all Turtle commands and add a for loop to each one (which would be bad design because it creates a huge dependency on all Turtle commands and the MultipleTurtles commands) or to create a MultipleTurtles class that stores instances of Turtles and changing the Turtle commands to operate on a MultipleTurtles object (which made more sense because only the HashMap in the Commands class had to be edited to create this functionality). After we figured out the alternative to adding for loops everywhere, we realized that this newfound alternative was definitely preferable.
+
 ### Conclusions
+* The two best features of this design:
+  1. One of the best features of this design is the use of reflection to turn the command input by the user into a workable command. It uses a HashMap that maps strings to classes, so a string from the properties file maps to a particular class that has the executeCommand
+method. Since the CommandParser access the Commands class that contains this map and calls executeCommand on whatever string the input
+corresponds to within the properties file, this functionality works out beautifully. It looks cleaner and is more efficient than the alternatives.
+  2. Another design feature that is important is the dearth of dependencies between the frontend and the backend. The only contact that the two spheres have is the passing of EntryManagers (to update the UserInterface) and the frontend's use of the parse command within CommandParser. This is good design convention because it reduces the amount of changes that the frontend would have to endure if the backend were to alter its design.
+* The two worst features of this design:
+  1. One of the worst features of this design is the use of two different classes for the command HashMap for the user defined commands and for the rest of the commands. If we were to spend more time on the project, we would like to find a way to merge these classes into one so that the same map can be accessed by all commands rather than the use of a single if-else loop to differentiate between user 
+defined commands and other commands.
+  2. Another of the worst features in this design is the sheer mass of the CommandParser class. With the amount of methods that this class contains, it could definitely be split into a few smaller entities with the main CommandParser class acting as the umbrella over all of these methods.
+* To become a better designer, I need to focus on refactoring classes in smaller chunks rather than writing all of my code and then circling back to the beginning to refactor from top to bottom. Refactoring in smaller pieces would definitely benefit the quality of my code. I should also continue to think about efficiency and the avoidance of CodeSmells as I code, because I believe that this has greatly augmented the quality of my code.
