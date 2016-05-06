@@ -185,5 +185,9 @@ public class TurtlePreferences extends Preferences {
     public void setImageProperty (ImageView image) {
         imageProperty.setValue(image.getImage());
     }
+    
+    public ContextMenu getContextMenu() {
+        return prefWindow;
+    }
 
 }

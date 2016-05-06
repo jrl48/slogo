@@ -54,6 +54,7 @@ public class UserInterface {
     private WorkspaceView myWorkspace;
     private UserDefinedView myUserDefined;
     private TurtleManagerView myTurtleManagerView;
+    private TurtleInformationView myTurtleInfo;
     private ColorPaletteView myColorView;
     private ShapePaletteView myShapeView;
     private EntryManager myTerminalManager;
@@ -131,6 +132,9 @@ public class UserInterface {
         myTurtleManagerView =
                 new TurtleManagerView(myTurtleManager, "Active Turtles",
                                       new String[] { "ID", "Turtle" });
+        myTurtleInfo = 
+                new TurtleInformationView(myTurtleManager, "Turtle Information",
+                                          new String[] { "Turtle", "Information"});
         myUserDefined =
                 new UserDefinedView(myCommandLine, myCommandManager,
                                     sceneResources.getString("USERCOMMANDS"),
@@ -181,6 +185,8 @@ public class UserInterface {
                                 makePane(myUserDefined.getTitle(), myUserDefined.getMyTableView(), false),
                                 makePane(myTurtleManagerView.getTitle(),
                                          myTurtleManagerView.getMyTableView(), false),
+                                makePane(myTurtleInfo.getTitle(),
+                                         myTurtleInfo.getMyTableView(),false),
                                 makePane(myShapeView.getTitle(),
                                          sideBySideTable(myColorView.getMyTableView(),
                                                          myShapeView.getMyTableView()), false)));

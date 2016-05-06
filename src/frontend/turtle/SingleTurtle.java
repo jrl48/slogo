@@ -115,7 +115,8 @@ public class SingleTurtle implements Turtle {
      * Gives out a string of the turtle's stats
      * @return
      */
-    private String turtleStats(){
+    @Override
+    public String turtleStats(){
         StringBuilder turtStats = new StringBuilder();
         turtStats.append(String.format("Position = [%.2f, %.2f]%n",getTurtleX(),getTurtleY()));
         turtStats.append(String.format("Heading = %.2f",getTurtleAngle())+DEGREE+"\n");

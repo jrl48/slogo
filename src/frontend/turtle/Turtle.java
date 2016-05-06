@@ -50,6 +50,8 @@ public interface Turtle {
 
 	int clearStamps();
 
-	TurtlePreferences getPreferences();    
+	TurtlePreferences getPreferences();
+
+    String turtleStats ();    
 
 }
