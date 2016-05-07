@@ -35,6 +35,7 @@ public class SingleTurtle implements Turtle {
     private double x = 0.0;
     private double y = 0.0;
     private BooleanProperty pen = new SimpleBooleanProperty(false);
+    private boolean wrap;
     private Pane myPane;
     private static final double WIDTH = 30;
     private static final double HEIGHT = 30;
@@ -64,7 +65,7 @@ public class SingleTurtle implements Turtle {
         isActive = true;
         this.animationController = animationController;
         stamps = new ArrayList<>();
-        
+        wrap = false;
         angle = 0;
         
         updateTurtleVisualPosition();
@@ -346,11 +347,17 @@ public class SingleTurtle implements Turtle {
     private void setCoordinates (double x, double y) {        
         this.x = x;
         this.y = y;
+        if ( wrap )
+        	wrap(x,y);
     }
 
     public void updateTurtleVisualPosition (List<Double> newPosition) {
     	double newX = DISPLAY_WIDTH / 2 + newPosition.get(0);
     	double newY = DISPLAY_HEIGHT / 2 - newPosition.get(1);
+    	if ( wrap ) {
+    		newX = visualWrapX(newX);
+    		newY = visualWrapY(newY);
+    	}
 
         // When updating coordinates, compensate the X and Y because they reference the edge of the
         // image, not the center
@@ -362,4 +369,36 @@ public class SingleTurtle implements Turtle {
     {
     	updateTurtleVisualPosition(new ArrayList<Double>(Arrays.asList(getTurtleX(), getTurtleY())));
     }
+    
+    public void wrap(double x, double y) {
+    	if ( y > (DISPLAY_HEIGHT/2.0) )
+    		this.y -= DISPLAY_HEIGHT;
+		if ( y < ((-1.0)*DISPLAY_HEIGHT/2.0))
+			this.y += DISPLAY_HEIGHT;
+    	if ( x > (DISPLAY_WIDTH/2.0) )
+    		this.x -= DISPLAY_WIDTH;
+		if ( x < ((-1)*DISPLAY_WIDTH/2.0))
+			this.x += DISPLAY_HEIGHT;
+    }
+    
+	public double visualWrapX(double x) {
+		if ( x > DISPLAY_WIDTH)
+			return 0;
+		if ( x < 0 )
+			return DISPLAY_WIDTH;
+		return x;
+	}
+	
+	public double visualWrapY(double y) {
+		if ( y > DISPLAY_HEIGHT)
+			return 0;
+		if ( y < 0)
+			return DISPLAY_HEIGHT;
+		return y;
+	}
+    
+    public void setWrap(boolean wrap) {
+    	this.wrap = wrap;
+    }
+    
 }

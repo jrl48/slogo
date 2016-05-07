@@ -20,6 +20,8 @@ import methodinterfaces.DisplaySetPenSize;
 import methodinterfaces.DisplaySetShape;
 import methodinterfaces.DisplayShape;
 import methodinterfaces.DisplayStamp;
+import methodinterfaces.DisplayWindow;
+import methodinterfaces.DisplayWrap;
 import methodinterfaces.MultiTurtleInterface;
 import methodinterfaces.TurtleBackward;
 import methodinterfaces.TurtleClearScreen;
@@ -120,6 +122,8 @@ public class MultipleTurtles {
         multiTurtleInstructions.put("ID", new TurtleID());
         multiTurtleInstructions.put("Turtles", new TurtleTurtles());
         multiTurtleInstructions.put("Tell", new TurtleTellMulti());
+        turtleInstructions.put("Wrap", new DisplayWrap());
+        turtleInstructions.put("Window", new DisplayWindow());
       //  multiTurtleInstructions.put("Ask", new TurtleAsk());
         //multiTurtleInstructions.put("AskWith", new TurtleAskWith());
     }
@@ -162,24 +166,12 @@ public class MultipleTurtles {
     }
 
     public double executeCommand (String s, double[] args, List<Integer> activeTurtles) {
-<<<<<<< HEAD:src/frontend/MultipleTurtles.java
     	double value = 0.0;
-||||||| merged common ancestors
-  
-=======
     	if(!turtleInstructions.containsKey(s)){
 		    return 0.0;
     	}
->>>>>>> e08aaad3555ee7067850df6b53095f69fbd61bec:src/frontend/turtle/MultipleTurtles.java
         TurtleInterface turtleCommand = turtleInstructions.get(s);
-<<<<<<< HEAD:src/frontend/MultipleTurtles.java
-||||||| merged common ancestors
-        double value = 0.0;
-=======
-        double value = 0.0;
         Set<Integer> currentTurtles = new HashSet<Integer>();
-        
->>>>>>> e08aaad3555ee7067850df6b53095f69fbd61bec:src/frontend/turtle/MultipleTurtles.java
         for (int i = 0; i < turtleManager.getEntryList().size(); i++) {
         	int id = Integer.parseInt(((String) turtleManager.getEntryList().get(i).getFirstValue()).split("\\s+")[1]);
         	System.out.println(id);

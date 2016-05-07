@@ -76,7 +76,5 @@ public class Display {
     public Pane getPane () {
         return myPane;
     }
-    
-    
 
 }
