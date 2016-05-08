@@ -1,7 +1,11 @@
 package frontend;
 
+import frontend.turtle.SingleTurtle;
+import javafx.event.EventType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 
 /**
@@ -19,6 +23,9 @@ public class TurtleManagerView extends ModuleView {
     public TurtleManagerView (EntryManager manager, String labelTitle, String[] colTitles) {
         super(manager, labelTitle, colTitles);
         setCustomCells();
+        
+        // Right-clicking the table makes it open the preferences 
+        getMyTableView().setOnMouseClicked(e -> clickedTable(e,getMyTableView().getSelectionModel().getSelectedItem()));
     }
 
     /**
@@ -35,5 +42,16 @@ public class TurtleManagerView extends ModuleView {
         table.setPrefSize(WIDTH, HEIGHT);
         table.getColumns().get(idInd).setMinWidth(ID_WIDTH);
     }
+    
+    private void clickedTable(MouseEvent mouseEvent, Entry clickedEntry)
+    {
+    	SingleTurtle clickedTurtle = (SingleTurtle)getMyTableView().getColumns().get(1).getCellData(clickedEntry); 
+    	if(mouseEvent.getButton().equals(MouseButton.SECONDARY)){
+            clickedTurtle.getPreferences().openPreferences(
+            		clickedTurtle.getBody(), mouseEvent.getScreenX(), mouseEvent.getScreenY());
+        }
+    	System.out.println(getMyTableView().getColumns().get(1).getCellData(clickedEntry));
+    }
+    
 
 }
