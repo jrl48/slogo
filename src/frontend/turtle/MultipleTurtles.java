@@ -7,42 +7,8 @@ import frontend.DisplayPreferences;
 import frontend.Entry;
 import frontend.EntryManager;
 import frontend.StringObjectEntry;
-import javafx.beans.property.ObjectProperty;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
-import methodinterfaces.DisplayClearStamps;
-import methodinterfaces.DisplayInterface;
-import methodinterfaces.DisplayPenColor;
-import methodinterfaces.DisplaySetBackground;
-import methodinterfaces.DisplaySetPalette;
-import methodinterfaces.DisplaySetPenColor;
-import methodinterfaces.DisplaySetPenSize;
-import methodinterfaces.DisplaySetShape;
-import methodinterfaces.DisplayShape;
-import methodinterfaces.DisplayStamp;
-import methodinterfaces.MultiTurtleInterface;
-import methodinterfaces.TurtleBackward;
-import methodinterfaces.TurtleClearScreen;
-import methodinterfaces.TurtleForward;
-import methodinterfaces.TurtleHeading;
-import methodinterfaces.TurtleHideTurtle;
-import methodinterfaces.TurtleHome;
-import methodinterfaces.TurtleID;
-import methodinterfaces.TurtleInterface;
-import methodinterfaces.TurtleIsPenDown;
-import methodinterfaces.TurtleIsShowing;
-import methodinterfaces.TurtleLeft;
-import methodinterfaces.TurtlePenDown;
-import methodinterfaces.TurtlePenUp;
-import methodinterfaces.TurtleRight;
-import methodinterfaces.TurtleSetHeading;
-import methodinterfaces.TurtleSetPosition;
-import methodinterfaces.TurtleSetTowards;
-import methodinterfaces.TurtleShowTurtle;
-import methodinterfaces.TurtleTellMulti;
-import methodinterfaces.TurtleTurtles;
-import methodinterfaces.TurtleXCor;
-import methodinterfaces.TurtleYCor;
+import methodinterfaces.*;
 
 
 public class MultipleTurtles {
@@ -55,7 +21,7 @@ public class MultipleTurtles {
     private Map<String, MultiTurtleInterface> multiTurtleInstructions =
             new HashMap<String, MultiTurtleInterface>();
     private Map<String, DisplayInterface> displayInstructions = new HashMap<String, DisplayInterface>();
-    private ObjectProperty<Image> defaultTurtleImage;
+   // private ObjectProperty<Image> defaultTurtleImage;
     private AnimationController animationController;
     private EntryManager colorManager;
     private EntryManager shapeManager;
@@ -88,8 +54,7 @@ public class MultipleTurtles {
         myDisplayPane.getChildren().add(turtle.getBody());
     }
 
-    private void createTurtleMap () { // could make this a loop with a resource file and reflection
-                                      // <<< do if there is time
+    private void createTurtleMap () {
         turtleInstructions.put("Forward", new TurtleForward());
         turtleInstructions.put("Backward", new TurtleBackward());
         turtleInstructions.put("Right", new TurtleRight());
@@ -107,7 +72,10 @@ public class MultipleTurtles {
         turtleInstructions.put("YCoordinate", new TurtleYCor());
         turtleInstructions.put("Heading", new TurtleHeading());
         turtleInstructions.put("IsPenDown", new TurtleIsPenDown());
-        turtleInstructions.put("IsShowing", new TurtleIsShowing());        
+        turtleInstructions.put("IsShowing", new TurtleIsShowing());    
+        turtleInstructions.put("Fence", new TurtleFence());
+        turtleInstructions.put("Wrap", new TurtleWrap());
+        turtleInstructions.put("Window", new TurtleWindow());
         displayInstructions.put("SetBackground", new DisplaySetBackground());
         displayInstructions.put("SetPenColor", new DisplaySetPenColor());
         displayInstructions.put("SetPenSize", new DisplaySetPenSize());
@@ -120,12 +88,9 @@ public class MultipleTurtles {
         multiTurtleInstructions.put("ID", new TurtleID());
         multiTurtleInstructions.put("Turtles", new TurtleTurtles());
         multiTurtleInstructions.put("Tell", new TurtleTellMulti());
-      //  multiTurtleInstructions.put("Ask", new TurtleAsk());
-        //multiTurtleInstructions.put("AskWith", new TurtleAskWith());
     }
 
     public double executeCommand (String s, double[] args, MultipleTurtles myTurtles) {
-    	System.out.println(s);
     		double value = 0.0;
     		for (Entry t : turtleManager.getEntryList()) {
     			SingleTurtle turtle = (SingleTurtle) t.getSecondValue();

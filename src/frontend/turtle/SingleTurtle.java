@@ -1,9 +1,6 @@
 package frontend.turtle;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import frontend.Display;
 import frontend.TurtlePreferences;
@@ -20,6 +17,10 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
+import methodinterfaces.ITurtleMove;
+import methodinterfaces.TurtleMoveFence;
+import methodinterfaces.TurtleMoveWindow;
+import methodinterfaces.TurtleMoveWrap;
 
 
 /**
@@ -43,6 +44,8 @@ public class SingleTurtle implements Turtle {
     private static final double DISPLAY_HEIGHT = Display.HEIGHT;
     private static final String DEGREE = "\u00b0";
     private boolean isActive;
+    private int edgeType;
+    private Map<Integer,ITurtleMove> myEdgeMap;
     private static final double DASH_LENGTH = 25.0; 
     private static final double TRANSPARENT = 0.5;
     
@@ -57,18 +60,32 @@ public class SingleTurtle implements Turtle {
     public SingleTurtle (Pane myPane, AnimationController animationController) {
         this.myPane = myPane;
         this.body = new ImageView();
+        this.edgeType = 2;
         Bindings.bindBidirectional(this.body.imageProperty(), myPreferences.getImageProperty());
         body.setFitWidth(WIDTH);
         body.setFitHeight(HEIGHT);
         pen.bindBidirectional(myPreferences.isPenActive());
         isActive = true;
+        initEdgeMap();
         this.animationController = animationController;
         stamps = new ArrayList<>();
-        
         angle = 0;
+        
         
         updateTurtleVisualPosition();
         setMouseActions();
+    }
+    
+    private void initEdgeMap(){
+    	myEdgeMap = new HashMap<Integer, ITurtleMove>();
+    	myEdgeMap.put(1, new TurtleMoveWrap());
+    	myEdgeMap.put(2, new TurtleMoveWindow());
+    	myEdgeMap.put(3, new TurtleMoveFence());  	
+    }
+    
+    public int setTurtleEdge(int type){
+    	edgeType = type;
+		return type;
     }
     
     /**
@@ -136,6 +153,7 @@ public class SingleTurtle implements Turtle {
     public void moveTurtleForward (double length) {
         double deltaX = Math.sin(getTurtleAngle() * Math.PI / 180) * length;
         double deltaY = Math.cos(getTurtleAngle() * Math.PI / 180) * length;
+        double[] newPosition = myEdgeMap.get(edgeType).move(this, deltaX, deltaY, length);
         
         // If pen is down, create a new action and bind a new line
         if ( pen.get() )
@@ -145,17 +163,17 @@ public class SingleTurtle implements Turtle {
         	myPane.getChildren().add(newLine);       
         	animationController.addTurtleToMove(this, 
         			new ArrayList<Double>(Arrays.asList(getTurtleX(), getTurtleY())),
-        			new ArrayList<Double>(Arrays.asList(getTurtleX() + deltaX, getTurtleY() + deltaY)),
+        			new ArrayList<Double>(Arrays.asList(newPosition[0], newPosition[1])),
         			newLine);
         }
         // If not, just create new action
         else
         	animationController.addTurtleToMove(this, 
         			new ArrayList<Double>(Arrays.asList(getTurtleX(), getTurtleY())),
-        			new ArrayList<Double>(Arrays.asList(getTurtleX() + deltaX, getTurtleY() + deltaY)));
+        			new ArrayList<Double>(Arrays.asList(newPosition[0], newPosition[1])));
         
-        
-        setCoordinates(getTurtleX() + deltaX, getTurtleY() + deltaY);
+        setCoordinates(newPosition[0], newPosition[1]);
+       
     }
     
     /**
@@ -283,6 +301,14 @@ public class SingleTurtle implements Turtle {
     public void setVisualAngle ( double angle )
     {
     	body.setRotate(angle);
+    }
+    
+    public double getDisplayWidth(){
+    	return DISPLAY_WIDTH;
+    }
+    
+    public double getDisplayHeight(){
+    	return DISPLAY_HEIGHT;
     }
 
     public void turtlePenDown () {

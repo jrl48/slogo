@@ -41,7 +41,7 @@ public class TurtlePreferences extends Preferences {
     private ObjectProperty<Image> imageProperty =
             new SimpleObjectProperty<>(new Image(getClass().getClassLoader()
                     .getResourceAsStream(UserInterface.DEFAULT_RESOURCE_PACKAGE + "turtle.png")));
-    private Button chooseImage = new Button(prefResources.getString("IMAGE_CHOICE_TITLE"));
+    private Button chooseImage = new Button(prefResources.getString("IMAGE_CHOICE_TITLE")); //FOUND IT
     private ContextMenu prefWindow;
     private TextField penWidthField = new TextField("Set Pen Width");
     private CheckBox penDash = new CheckBox("Dashed Line");

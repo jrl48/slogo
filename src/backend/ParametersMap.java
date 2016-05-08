@@ -65,6 +65,9 @@ public class ParametersMap {
 		myParamMap.put("GetShape", 0);
 		myParamMap.put("Stamp", 0);
 		myParamMap.put("ClearStamps", 0);
+		myParamMap.put("Fence", 0);
+		myParamMap.put("Wrap", 0);
+		myParamMap.put("Window", 0);
 		
 		
 	}
